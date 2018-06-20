@@ -1,0 +1,434 @@
+package com.commonwebview.webview;
+
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.content.Context;
+import android.content.ContextWrapper;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Message;
+import android.view.View;
+import android.view.ViewGroup.LayoutParams;
+import android.webkit.ConsoleMessage;
+import android.webkit.GeolocationPermissions;
+import android.webkit.JsPromptResult;
+import android.webkit.JsResult;
+import android.webkit.PermissionRequest;
+import android.webkit.ValueCallback;
+import android.webkit.WebChromeClient;
+import android.webkit.WebStorage;
+import android.webkit.WebView;
+import android.widget.FrameLayout;
+
+import java.util.ArrayList;
+
+import bean.MediaEntity;
+
+/**
+ * {@link WebChromeClient} 包装器
+ *
+ * @author a_liYa
+ * @date 2017/11/10 09:46.
+ */
+public class ChromeClientWrapper extends WebChromeClient
+        implements WebLifecycleFragment.OnActivityResultCallback {
+
+    private CommonWebView mWebProView;
+
+    private WebChromeClient webChromeClient;
+
+    private ValueCallback<Uri> mUploadMessage;
+    private ValueCallback<Uri[]> mUploadMessage21;
+
+    /**
+     * 选择文件 - result_code
+     */
+    public final static int FILE_CHOOSER_RESULT_CODE = 10;
+
+    public ChromeClientWrapper(CommonWebView webProView) {
+        super();
+        mWebProView = webProView;
+    }
+
+    public WebChromeClient getWrapper() {
+        return webChromeClient;
+    }
+
+    public void setWrapper(WebChromeClient webChromeClient) {
+        this.webChromeClient = webChromeClient;
+    }
+
+    private Activity findAttachActivity() {
+        if (mWebProView != null) {
+            View parent = (View) mWebProView.getParent();
+            if (parent != null) {
+                Context context = parent.getContext();
+                while (context instanceof ContextWrapper) {
+                    if (context instanceof Activity) {
+                        return (Activity) context;
+                    }
+                    context = ((ContextWrapper) context).getBaseContext();
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void onProgressChanged(WebView view, int newProgress) {
+        if (webChromeClient != null) {
+            webChromeClient.onProgressChanged(view, newProgress);
+        } else {
+            super.onProgressChanged(view, newProgress);
+        }
+    }
+
+    @Override
+    public void onReceivedTitle(WebView view, String title) {
+        if (webChromeClient != null) {
+            webChromeClient.onReceivedTitle(view, title);
+        } else {
+            super.onReceivedTitle(view, title);
+        }
+    }
+
+    @Override
+    public void onReceivedIcon(WebView view, Bitmap icon) {
+        if (webChromeClient != null) {
+            webChromeClient.onReceivedIcon(view, icon);
+        } else {
+            super.onReceivedIcon(view, icon);
+        }
+    }
+
+    @Override
+    public void onReceivedTouchIconUrl(WebView view, String url, boolean precomposed) {
+        if (webChromeClient != null) {
+            webChromeClient.onReceivedTouchIconUrl(view, url, precomposed);
+        } else {
+            super.onReceivedTouchIconUrl(view, url, precomposed);
+        }
+    }
+
+    private FrameLayout container;
+    private CustomViewCallback customViewCallback;
+
+    @Override
+    public void onShowCustomView(View view, CustomViewCallback callback) {
+        if (container != null) {
+            callback.onCustomViewHidden();
+            return;
+        }
+        Activity activity = findAttachActivity();
+        if (activity == null) return;
+
+        FrameLayout decor = (FrameLayout) activity.getWindow().getDecorView();
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        container = new WebFullScreenContainer(activity.getApplication());
+        decor.addView(container, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        container.addView(view, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        customViewCallback = callback;
+        mWebProView.setVisibility(View.GONE);
+    }
+
+    @Deprecated
+    @Override
+    public void onShowCustomView(View view, int requestedOrientation, CustomViewCallback callback) {
+        if (webChromeClient != null) {
+            webChromeClient.onShowCustomView(view, requestedOrientation, callback);
+        } else {
+            super.onShowCustomView(view, requestedOrientation, callback);
+        }
+    }
+
+    @Override
+    public void onHideCustomView() {
+        if (container == null) {
+            return;
+        }
+
+        Activity activity = findAttachActivity();
+        if (activity == null) return;
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        FrameLayout decor = (FrameLayout) activity.getWindow().getDecorView();
+        decor.removeView(container);
+        container = null;
+        customViewCallback.onCustomViewHidden();
+        mWebProView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public boolean onCreateWindow(WebView view, boolean isDialog, boolean isUserGesture,
+                                  Message resultMsg) {
+        if (webChromeClient != null &&
+                webChromeClient.onCreateWindow(view, isDialog, isUserGesture, resultMsg)) {
+            return true;
+        }
+        return super.onCreateWindow(view, isDialog, isUserGesture, resultMsg);
+    }
+
+    @Override
+    public void onRequestFocus(WebView view) {
+        if (webChromeClient != null) {
+            webChromeClient.onRequestFocus(view);
+        } else {
+            super.onRequestFocus(view);
+        }
+    }
+
+    @Override
+    public void onCloseWindow(WebView window) {
+        if (webChromeClient != null) {
+            webChromeClient.onCloseWindow(window);
+        } else {
+            super.onCloseWindow(window);
+        }
+    }
+
+    @Override
+    public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+        if (webChromeClient != null && webChromeClient.onJsAlert(view, url, message, result)) {
+            return true;
+        }
+        return super.onJsAlert(view, url, message, result);
+    }
+
+    @Override
+    public boolean onJsConfirm(WebView view, String url, String message, JsResult result) {
+        if (webChromeClient != null && webChromeClient.onJsConfirm(view, url, message, result)) {
+            return true;
+        }
+        return super.onJsConfirm(view, url, message, result);
+    }
+
+    @Override
+    public boolean onJsPrompt(WebView view, String url, String message, String defaultValue,
+                              JsPromptResult result) {
+        if (webChromeClient != null
+                && webChromeClient.onJsPrompt(view, url, message, defaultValue, result)) {
+            return true;
+        }
+        return super.onJsPrompt(view, url, message, defaultValue, result);
+    }
+
+    @Override
+    public boolean onJsBeforeUnload(WebView view, String url, String message, JsResult result) {
+        if (webChromeClient != null
+                && webChromeClient.onJsBeforeUnload(view, url, message, result)) {
+            return true;
+        }
+        return super.onJsBeforeUnload(view, url, message, result);
+    }
+
+    @Override
+    public void onExceededDatabaseQuota(String url, String databaseIdentifier, long quota,
+                                        long estimatedDatabaseSize, long totalQuota,
+                                        WebStorage.QuotaUpdater quotaUpdater) {
+        if (webChromeClient != null) {
+            webChromeClient.onExceededDatabaseQuota(url, databaseIdentifier, quota,
+                    estimatedDatabaseSize, totalQuota, quotaUpdater);
+        } else {
+            super.onExceededDatabaseQuota(url, databaseIdentifier, quota, estimatedDatabaseSize,
+                    totalQuota, quotaUpdater);
+        }
+    }
+
+    @Override
+    public void onReachedMaxAppCacheSize(long requiredStorage, long quota, WebStorage
+            .QuotaUpdater quotaUpdater) {
+        if (webChromeClient != null) {
+            webChromeClient.onReachedMaxAppCacheSize(requiredStorage, quota, quotaUpdater);
+        } else {
+            super.onReachedMaxAppCacheSize(requiredStorage, quota, quotaUpdater);
+        }
+    }
+
+    @Override
+    public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions
+            .Callback callback) {
+        callback.invoke(origin, true, true);
+        if (webChromeClient != null) {
+            webChromeClient.onGeolocationPermissionsShowPrompt(origin, callback);
+        } else {
+            super.onGeolocationPermissionsShowPrompt(origin, callback);
+        }
+    }
+
+    @Override
+    public void onGeolocationPermissionsHidePrompt() {
+        if (webChromeClient != null) {
+            webChromeClient.onGeolocationPermissionsHidePrompt();
+        } else {
+            super.onGeolocationPermissionsHidePrompt();
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public void onPermissionRequest(PermissionRequest request) {
+        if (webChromeClient != null) {
+            webChromeClient.onPermissionRequest(request);
+        } else {
+            super.onPermissionRequest(request);
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public void onPermissionRequestCanceled(PermissionRequest request) {
+        if (webChromeClient != null) {
+            webChromeClient.onPermissionRequestCanceled(request);
+        } else {
+            super.onPermissionRequestCanceled(request);
+        }
+    }
+
+    @Override
+    public boolean onJsTimeout() {
+        if (webChromeClient != null && webChromeClient.onJsTimeout()) {
+            return true;
+        } else {
+            return super.onJsTimeout();
+        }
+    }
+
+    @Override
+    public void onConsoleMessage(String message, int lineNumber, String sourceID) {
+        if (webChromeClient != null) {
+            webChromeClient.onConsoleMessage(message, lineNumber, sourceID);
+        }
+        super.onConsoleMessage(message, lineNumber, sourceID);
+    }
+
+    @Override
+    public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+        if (webChromeClient != null) {
+            return webChromeClient.onConsoleMessage(consoleMessage);
+        } else {
+            return super.onConsoleMessage(consoleMessage);
+        }
+    }
+
+    @Override
+    public Bitmap getDefaultVideoPoster() {
+        if (webChromeClient != null) {
+            return webChromeClient.getDefaultVideoPoster();
+        } else {
+            return super.getDefaultVideoPoster();
+        }
+    }
+
+    @Override
+    public View getVideoLoadingProgressView() {
+        if (webChromeClient != null) {
+            return webChromeClient.getVideoLoadingProgressView();
+        }
+        return super.getVideoLoadingProgressView();
+    }
+
+    @Override
+    public void getVisitedHistory(ValueCallback<String[]> callback) {
+        if (webChromeClient != null) {
+            webChromeClient.getVisitedHistory(callback);
+        } else {
+            super.getVisitedHistory(callback);
+        }
+    }
+
+    // For Android <3.0 目前无需支持
+    public void openFileChooser(ValueCallback<Uri> uploadMsg) {
+//        if (mCallBackMethodFragment != null) {
+//            mUploadMessage = uploadMsg;
+//            Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+//            i.addCategory(Intent.CATEGORY_OPENABLE);
+//            i.setType("image/*");
+//            mCallBackMethodFragment.startActivityForResult(Intent.createChooser(i, "File " +
+//                            "Chooser"),
+//                    FILE_CHOOSER_RESULT_CODE);
+//        }
+    }
+
+    // For Android 3.0+
+    public void openFileChooser(ValueCallback uploadMsg, String acceptType) {
+        mUploadMessage = uploadMsg;
+        openFileChooser();
+    }
+
+    //For Android 4.0-4.3 4.4.4
+    public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType, String capture) {
+        mUploadMessage = uploadMsg;
+        openFileChooser();
+    }
+
+    // For Android 4.4 无方法。。。
+
+    //For Android 5.0+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback,
+                                     FileChooserParams fileChooserParams) {
+        if (webChromeClient != null
+                && webChromeClient.onShowFileChooser(webView, filePathCallback,
+                fileChooserParams)) {
+            return true;
+        }
+        if (mUploadMessage21 != null) {
+            mUploadMessage21.onReceiveValue(null);
+            mUploadMessage21 = null;
+        }
+        mUploadMessage21 = filePathCallback;
+        openFileChooser();
+        return true;
+    }
+
+    /**
+     * 照片选择器
+     */
+    private void openFileChooser() {
+        if (mWebProView != null && mWebProView.getFragment() != null) {
+            WebLifecycleFragment fragment = mWebProView.getFragment();
+            fragment.addOnActivityResultCallback(this);
+            Nav.with(fragment)
+                    .toPath("/core/MediaSelectActivity", FILE_CHOOSER_RESULT_CODE);
+        }
+    }
+
+    @Override
+    public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == FILE_CHOOSER_RESULT_CODE) {
+            if (null != mUploadMessage21) {
+                Uri[] uris = null;
+                if (data != null) {
+                    ArrayList<MediaEntity> list = data.getParcelableArrayListExtra("key_data");
+                    if (list != null && !list.isEmpty()) {
+                        uris = new Uri[list.size()];
+                        for (int i = 0; i < list.size(); i++) {
+                            uris[i] = list.get(i).getUri();
+                        }
+                    }
+                }
+                mUploadMessage21.onReceiveValue(uris);
+                mUploadMessage21 = null;
+            } else if (null != mUploadMessage) {
+                Uri result = null;
+                if (data != null && Activity.RESULT_OK == resultCode) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                        ArrayList<MediaEntity> list = data.getParcelableArrayListExtra("key_data");
+                        if (list != null && !list.isEmpty()) {
+                            result = list.get(0).getUri();
+                        }
+                    } else {
+                        result = data.getData();
+                    }
+                }
+                mUploadMessage.onReceiveValue(result);
+                mUploadMessage = null;
+            }
+        }
+        return requestCode == FILE_CHOOSER_RESULT_CODE;
+    }
+
+}
