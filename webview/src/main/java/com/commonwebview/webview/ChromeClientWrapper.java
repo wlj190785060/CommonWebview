@@ -23,9 +23,7 @@ import android.webkit.WebStorage;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 
-import java.util.ArrayList;
-
-import bean.MediaEntity;
+import port.WebviewCBHelper;
 
 /**
  * {@link WebChromeClient} 包装器
@@ -43,6 +41,8 @@ public class ChromeClientWrapper extends WebChromeClient
     private ValueCallback<Uri> mUploadMessage;
     private ValueCallback<Uri[]> mUploadMessage21;
 
+    private WebviewCBHelper mHelper;
+
     /**
      * 选择文件 - result_code
      */
@@ -51,6 +51,12 @@ public class ChromeClientWrapper extends WebChromeClient
     public ChromeClientWrapper(CommonWebView webProView) {
         super();
         mWebProView = webProView;
+    }
+
+    public ChromeClientWrapper(CommonWebView webProView, WebviewCBHelper helper) {
+        super();
+        mWebProView = webProView;
+        mHelper = helper;
     }
 
     public WebChromeClient getWrapper() {
@@ -385,48 +391,23 @@ public class ChromeClientWrapper extends WebChromeClient
     }
 
     /**
-     * 照片选择器
+     * TODO 照片选择器，也抽离出来
      */
     private void openFileChooser() {
         if (mWebProView != null && mWebProView.getFragment() != null) {
             WebLifecycleFragment fragment = mWebProView.getFragment();
             fragment.addOnActivityResultCallback(this);
-            Nav.with(fragment)
-                    .toPath("/core/MediaSelectActivity", FILE_CHOOSER_RESULT_CODE);
+            //跳转到图片选中页面
+            if (mHelper != null) {
+                mHelper.NavToImageSelect(fragment, FILE_CHOOSER_RESULT_CODE);
+            }
         }
     }
 
     @Override
     public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == FILE_CHOOSER_RESULT_CODE) {
-            if (null != mUploadMessage21) {
-                Uri[] uris = null;
-                if (data != null) {
-                    ArrayList<MediaEntity> list = data.getParcelableArrayListExtra("key_data");
-                    if (list != null && !list.isEmpty()) {
-                        uris = new Uri[list.size()];
-                        for (int i = 0; i < list.size(); i++) {
-                            uris[i] = list.get(i).getUri();
-                        }
-                    }
-                }
-                mUploadMessage21.onReceiveValue(uris);
-                mUploadMessage21 = null;
-            } else if (null != mUploadMessage) {
-                Uri result = null;
-                if (data != null && Activity.RESULT_OK == resultCode) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                        ArrayList<MediaEntity> list = data.getParcelableArrayListExtra("key_data");
-                        if (list != null && !list.isEmpty()) {
-                            result = list.get(0).getUri();
-                        }
-                    } else {
-                        result = data.getData();
-                    }
-                }
-                mUploadMessage.onReceiveValue(result);
-                mUploadMessage = null;
-            }
+        if (mHelper != null) {
+            mHelper.openFileResultCallBack(requestCode, resultCode, data, mUploadMessage, mUploadMessage21);
         }
         return requestCode == FILE_CHOOSER_RESULT_CODE;
     }

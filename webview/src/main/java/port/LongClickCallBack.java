@@ -9,6 +9,8 @@ package port;
 interface LongClickCallBack {
     /**
      * 用于传递图片地址
+     * @param imgUrl
+     * @param isScanerImg
      */
     void onLongClickCallBack(String imgUrl, boolean isScanerImg);
 }

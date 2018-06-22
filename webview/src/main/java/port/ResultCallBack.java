@@ -8,7 +8,8 @@ package port;
 
 interface ResultCallBack {
     /**
-     * do sth
+     * 可以做登录返回等特殊操作
+     * @return
      */
     boolean OnResultCallBack();
 }
