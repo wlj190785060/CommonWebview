@@ -13,10 +13,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.google.zxing.Result;
-
 import port.WebviewCBHelper;
-import scanerhelp.ImageScanerUtils;
 
 /**
  * 通用webview
@@ -206,8 +203,6 @@ public class CommonWebView extends WebView implements View.OnLongClickListener {
     }
 
     /**
-     * webview长按获取图片地址
-     *
      * @param v
      * @return
      */
@@ -215,42 +210,8 @@ public class CommonWebView extends WebView implements View.OnLongClickListener {
     public boolean onLongClick(View v) {
         final HitTestResult htr = getHitTestResult();//获取所点击的内容
         if (htr.getType() == HitTestResult.IMAGE_TYPE && helper != null) {//判断被点击的类型为图片
-            scanerImg(htr.getExtra());
+            helper.OnScanerImg(htr.getExtra());
         }
         return false;
-    }
-
-    private ThreadManager.ThreadPoolProxy pool;
-
-    /**
-     * 二维码图片解析,自定义实现获取到地址之后的操作
-     */
-    private void scanerImg(final String imgUrl) {
-        pool = ThreadManager.getSinglePool();
-        pool.execute(new Runnable() {
-            @Override
-            public void run() {
-                ImageScanerUtils imgUtils = ImageScanerUtils.get();
-                if (imgUtils != null) {
-                    Result result = imgUtils.handleQRCodeFormBitmap(imgUtils.getBitmap(imgUrl));
-                    //链接
-                    if (result != null) {//是二维码
-                        helper.onLongClickCallBack(result.getText(), true);
-                    } else {//不是二维码
-                        helper.onLongClickCallBack(imgUrl, false);
-                    }
-
-                }
-            }
-        });
-    }
-
-    /**
-     * 关闭线程池
-     */
-    public void stopThreadPool() {
-        if (pool != null) {
-            pool.stop();
-        }
     }
 }
