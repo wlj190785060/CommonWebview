@@ -344,19 +344,6 @@ public class ChromeClientWrapper extends WebChromeClient
         }
     }
 
-    // For Android <3.0 目前无需支持
-    public void openFileChooser(ValueCallback<Uri> uploadMsg) {
-//        if (mCallBackMethodFragment != null) {
-//            mUploadMessage = uploadMsg;
-//            Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-//            i.addCategory(Intent.CATEGORY_OPENABLE);
-//            i.setType("image/*");
-//            mCallBackMethodFragment.startActivityForResult(Intent.createChooser(i, "File " +
-//                            "Chooser"),
-//                    FILE_CHOOSER_RESULT_CODE);
-//        }
-    }
-
     // For Android 3.0+
     public void openFileChooser(ValueCallback uploadMsg, String acceptType) {
         mUploadMessage = uploadMsg;
