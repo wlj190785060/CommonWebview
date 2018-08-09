@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment;
 import android.webkit.ValueCallback;
 
 /**
- * webview回调辅助类
+ * webview回调辅助类，可扩展
  * Created by wanglinjie.
  * create time:2018/6/20  下午4:59
  */

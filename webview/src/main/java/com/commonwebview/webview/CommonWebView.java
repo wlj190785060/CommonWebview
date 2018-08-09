@@ -28,6 +28,7 @@ public class CommonWebView extends WebView implements View.OnLongClickListener {
 
     private WebClientWrapper mWebClientWrapper;
     private ChromeClientWrapper mChromeClientWrapper;
+
     private WebviewCBHelper helper;
 
     private static final String FRAGMENT_TAG = "webView_fragment_lifecycle";
@@ -37,7 +38,7 @@ public class CommonWebView extends WebView implements View.OnLongClickListener {
      *
      * @param context
      */
-    public CommonWebView(Context context, WebviewCBHelper helper) {
+    public CommonWebView(Context context) {
         super(context);
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
             super.removeJavascriptInterface("searchBoxJavaBridge_");
@@ -45,10 +46,9 @@ public class CommonWebView extends WebView implements View.OnLongClickListener {
             super.removeJavascriptInterface("accessibilityTraversal");
         }
         init();
-        this.helper = helper;
     }
 
-    public CommonWebView(Context context, AttributeSet attrs, WebviewCBHelper helper) {
+    public CommonWebView(Context context, AttributeSet attrs) {
         super(context, attrs);
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
             super.removeJavascriptInterface("searchBoxJavaBridge_");
@@ -56,10 +56,9 @@ public class CommonWebView extends WebView implements View.OnLongClickListener {
             super.removeJavascriptInterface("accessibilityTraversal");
         }
         init();
-        this.helper = helper;
     }
 
-    public CommonWebView(Context context, AttributeSet attrs, int defStyleAttr, WebviewCBHelper helper) {
+    public CommonWebView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
             super.removeJavascriptInterface("searchBoxJavaBridge_");
@@ -67,6 +66,13 @@ public class CommonWebView extends WebView implements View.OnLongClickListener {
             super.removeJavascriptInterface("accessibilityTraversal");
         }
         init();
+    }
+
+    public WebviewCBHelper getHelper() {
+        return helper;
+    }
+
+    public void setHelper(WebviewCBHelper helper) {
         this.helper = helper;
     }
 
@@ -89,7 +95,9 @@ public class CommonWebView extends WebView implements View.OnLongClickListener {
      */
     private void configWebView() {
         WebSettings settings = getSettings();
+        requestFocus(View.FOCUS_DOWN);
         settings.setJavaScriptEnabled(true); // 启用支持javaScript
+//        addJavascriptInterface(new ZJXWWebJsInterface(this), "zjxw");
         settings.setGeolocationEnabled(true);
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
         settings.setUseWideViewPort(true);

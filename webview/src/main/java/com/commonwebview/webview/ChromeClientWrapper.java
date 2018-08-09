@@ -41,6 +41,7 @@ public class ChromeClientWrapper extends WebChromeClient
     private ValueCallback<Uri> mUploadMessage;
     private ValueCallback<Uri[]> mUploadMessage21;
 
+    //特殊逻辑处理
     private WebviewCBHelper mHelper;
 
     /**
@@ -51,12 +52,7 @@ public class ChromeClientWrapper extends WebChromeClient
     public ChromeClientWrapper(CommonWebView webProView) {
         super();
         mWebProView = webProView;
-    }
-
-    public ChromeClientWrapper(CommonWebView webProView, WebviewCBHelper helper) {
-        super();
-        mWebProView = webProView;
-        mHelper = helper;
+        mHelper = mWebProView.getHelper();
     }
 
     public WebChromeClient getWrapper() {
