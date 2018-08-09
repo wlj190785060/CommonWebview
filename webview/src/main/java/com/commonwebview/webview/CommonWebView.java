@@ -76,6 +76,15 @@ public class CommonWebView extends WebView implements View.OnLongClickListener {
         this.helper = helper;
     }
 
+    //扩展wrapper
+    public WebClientWrapper getmWebClientWrapper() {
+        return mWebClientWrapper;
+    }
+
+    public ChromeClientWrapper getmChromeClientWrapper() {
+        return mChromeClientWrapper;
+    }
+
     public WebLifecycleFragment getFragment() {
         return mLifecycleFragment;
     }

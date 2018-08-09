@@ -5,13 +5,22 @@ import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.webkit.ValueCallback;
 
+import com.commonwebview.webview.CommonWebView;
+
 /**
- * webview回调辅助类，可扩展
+ * webview回调辅助抽象类，可扩展
  * Created by wanglinjie.
  * create time:2018/6/20  下午4:59
  */
 
-public class WebviewCBHelper implements LongClickCallBack, ResultCallBack, UserAgentDefined, OpenFileChooser, ScanerImgCallBack {
+public abstract class WebviewCBHelper implements LongClickCallBack, ResultCallBack, UserAgentDefined, OpenFileChooser, ScanerImgCallBack {
+
+    private CommonWebView webview;
+
+    public WebviewCBHelper(CommonWebView webview) {
+        this.webview = webview;
+    }
+
     @Override
     public String getUserAgent() {
         return null;
