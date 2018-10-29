@@ -150,6 +150,10 @@ public class CommonWebView extends WebView implements View.OnLongClickListener {
         } else {
             settings.setUserAgentString(userAgent + "; ");
         }
+        //设置websetting
+        if (getHelper() != null) {
+            helper.webViewSetting(this);
+        }
         setOnLongClickListener(this);
 
     }
@@ -228,9 +232,11 @@ public class CommonWebView extends WebView implements View.OnLongClickListener {
      */
     @Override
     public boolean onLongClick(View v) {
-        final HitTestResult htr = getHitTestResult();//获取所点击的内容
-        if (htr.getType() == HitTestResult.IMAGE_TYPE && helper != null) {//判断被点击的类型为图片
-            helper.OnScanerImg(htr.getExtra());
+        if (helper.isNeedScanerImg()) {
+            final HitTestResult htr = getHitTestResult();//获取所点击的内容
+            if (htr.getType() == HitTestResult.IMAGE_TYPE && helper != null) {//判断被点击的类型为图片
+                helper.OnScanerImg(htr.getExtra());
+            }
         }
         return false;
     }

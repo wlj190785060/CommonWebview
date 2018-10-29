@@ -1,13 +1,15 @@
+import java.util.concurrent.TimeUnit
+
 apply plugin: 'com.android.library'
 apply from: 'http://10.100.62.98:8086/nexus/service/local/artifact/maven/redirect?r=releases&g=cn.daily.android&a=publish&e=gradle&v=0.0.4'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
 
 
     defaultConfig {
         minSdkVersion 17
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
 
@@ -25,11 +27,20 @@ android {
 
 }
 
+
+configurations.all {
+    //设置module缓存时间
+    resolutionStrategy.cacheChangingModulesFor(0, TimeUnit.SECONDS)
+    resolutionStrategy {
+        force 'com.android.support:appcompat-v7:28.0.0'
+    }
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'com.android.support:appcompat-v7:27.0.2'
-    implementation 'com.android.support:design:27.0.2'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support:design:28.0.0'
     implementation 'com.google.zxing:core:3.3.0'
     implementation 'cn.daily.android:commonutils:0.0.4-SNAPSHOT'
 }

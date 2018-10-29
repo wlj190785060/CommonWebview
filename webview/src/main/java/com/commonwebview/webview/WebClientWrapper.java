@@ -18,10 +18,10 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 /**
- * {@link WebViewClient } 包装器
+ * 通用webview
  *
- * @author a_liYa
- * @date 2017/11/10 上午9:46.
+ * @author wanglinjie
+ * @date 2018/6/20 09:44.
  */
 class WebClientWrapper extends WebViewClient {
 

@@ -26,10 +26,10 @@ import android.widget.FrameLayout;
 import port.WebviewCBHelper;
 
 /**
- * {@link WebChromeClient} 包装器
+ * 通用webview
  *
- * @author a_liYa
- * @date 2017/11/10 09:46.
+ * @author wanglinjie
+ * @date 2018/6/20 09:44.
  */
 public class ChromeClientWrapper extends WebChromeClient
         implements WebLifecycleFragment.OnActivityResultCallback {

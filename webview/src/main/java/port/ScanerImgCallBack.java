@@ -19,4 +19,10 @@ interface ScanerImgCallBack {
      * 取消解码线程，在页面结束时调用
      */
     void OnCancelScanerThread();
+
+    /**
+     * 是否需要支持二维码识别
+     * @return  true 支持
+     */
+    boolean isNeedScanerImg();
 }
