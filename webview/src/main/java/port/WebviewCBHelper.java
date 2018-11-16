@@ -57,6 +57,16 @@ public abstract class WebviewCBHelper implements LongClickCallBack, ResultCallBa
 
     }
 
+    /**
+     * 老版本方法，不推荐使用
+     * @param imgUrl
+     */
+    @Deprecated
+    @Override
+    public void OnScanerImg(String imgUrl) {
+
+    }
+
     //是否需要支持二维码 默认支持
     @Override
     public boolean isNeedScanerImg() {

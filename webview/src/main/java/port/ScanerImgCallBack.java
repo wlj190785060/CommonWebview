@@ -17,6 +17,12 @@ interface ScanerImgCallBack {
     void OnScanerImg(final String imgUrl,final boolean isStream);
 
     /**
+     * 1.0版本的图片解析
+     * @param imgUrl
+     */
+    void OnScanerImg(final String imgUrl);
+
+    /**
      * 取消解码线程，在页面结束时调用
      */
     void OnCancelScanerThread();

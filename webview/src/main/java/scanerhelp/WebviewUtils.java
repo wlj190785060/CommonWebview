@@ -13,31 +13,33 @@ import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeReader;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Hashtable;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * 图片二维码解析工具类
+ * webview工具类
  * Created by wanglinjie.
  * create time:2018/4/19  下午3:19
  */
 
-public class ImageScanerUtils {
+public class WebviewUtils {
 
-    private volatile static ImageScanerUtils instance;
+    private volatile static WebviewUtils instance;
 
-    private ImageScanerUtils() {
+    private WebviewUtils() {
     }
 
-    public static ImageScanerUtils get() {
+    public static WebviewUtils get() {
         if (instance == null) {
-            synchronized (ImageScanerUtils.class) {
+            synchronized (WebviewUtils.class) {
                 if (instance == null) {
-                    instance = new ImageScanerUtils();
+                    instance = new WebviewUtils();
                 }
             }
         }
@@ -72,7 +74,7 @@ public class ImageScanerUtils {
      * 校验二维码
      *
      * @param bitmap
-     * @return 调用方式：ImageScanerUtils.handleQRCodeFormBitmap(getBitmap(sUrl));
+     * @return 调用方式：WebviewUtils.handleQRCodeFormBitmap(getBitmap(sUrl));
      */
     public Result handleQRCodeFormBitmap(Bitmap bitmap) {
         if (bitmap == null) return null;
@@ -106,6 +108,7 @@ public class ImageScanerUtils {
 
     /**
      * 判断字符串是否为URL
+     *
      * @param urls 用户头像key
      * @return true:是URL、false:不是URL
      */
@@ -121,6 +124,20 @@ public class ImageScanerUtils {
             isurl = true;
         }
         return isurl;
+    }
+
+    /**
+     * @return Properties对象
+     */
+    public Properties getConfigProperties() {
+        Properties props = new Properties();
+        InputStream in = WebviewUtils.class.getResourceAsStream("/publish.properties");
+        try {
+            props.load(in);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return props;
     }
 
 }
