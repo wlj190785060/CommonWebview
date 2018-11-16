@@ -15,10 +15,10 @@ import com.commonwebview.webview.CommonWebView;
 
 public abstract class WebviewCBHelper implements LongClickCallBack, ResultCallBack, UserAgentDefined, OpenFileChooser, ScanerImgCallBack, WebViewSetting {
 
-    private CommonWebView webview;
-
-    public WebviewCBHelper(CommonWebView webview) {
-        this.webview = webview;
+    /**
+     * 需要在子类中创建对象
+     */
+    private WebviewCBHelper() {
     }
 
     //设置us
@@ -53,12 +53,13 @@ public abstract class WebviewCBHelper implements LongClickCallBack, ResultCallBa
 
     //二维码识别业务逻辑
     @Override
-    public void OnScanerImg(String imgUrl,boolean isStream) {
+    public void OnScanerImg(String imgUrl, boolean isStream) {
 
     }
 
     /**
      * 老版本方法，不推荐使用
+     *
      * @param imgUrl
      */
     @Deprecated
