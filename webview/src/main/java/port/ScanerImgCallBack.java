@@ -12,8 +12,9 @@ interface ScanerImgCallBack {
      * 二维码解析逻辑
      *
      * @param imgUrl
+     * @param isStream 是否为图片流
      */
-    void OnScanerImg(final String imgUrl);
+    void OnScanerImg(final String imgUrl,final boolean isStream);
 
     /**
      * 取消解码线程，在页面结束时调用

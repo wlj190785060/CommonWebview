@@ -53,7 +53,7 @@ public abstract class WebviewCBHelper implements LongClickCallBack, ResultCallBa
 
     //二维码识别业务逻辑
     @Override
-    public void OnScanerImg(String imgUrl) {
+    public void OnScanerImg(String imgUrl,boolean isStream) {
 
     }
 

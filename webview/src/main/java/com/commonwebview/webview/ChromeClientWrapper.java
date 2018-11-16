@@ -118,6 +118,12 @@ public class ChromeClientWrapper extends WebChromeClient
     private FrameLayout container;
     private CustomViewCallback customViewCallback;
 
+    /**
+     * 支持全屏播放视频
+     *
+     * @param view
+     * @param callback
+     */
     @Override
     public void onShowCustomView(View view, CustomViewCallback callback) {
         if (container != null) {

@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Base64;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -18,6 +19,7 @@ import com.zjrb.core.utils.UIUtils;
 
 import cn.zgy.utils.system.NetworkUtil;
 import port.WebviewCBHelper;
+import scanerhelp.ImageScanerUtils;
 
 /**
  * 通用webview
@@ -107,7 +109,7 @@ public class CommonWebView extends WebView implements View.OnLongClickListener {
         WebSettings settings = getSettings();
         requestFocus(View.FOCUS_DOWN);
         settings.setJavaScriptEnabled(true); // 启用支持javaScript
-//        addJavascriptInterface(new ZJXWWebJsInterface(this), "zjxw");
+        //默认不支持添加JS注入
         settings.setGeolocationEnabled(true);
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
         settings.setUseWideViewPort(true);
@@ -228,6 +230,9 @@ public class CommonWebView extends WebView implements View.OnLongClickListener {
     }
 
     /**
+     * 长按识别二维码功能
+     * 支持本地图片流,需要将回传的string转换成byte[]用Glide加载
+     *
      * @param v
      * @return
      */
@@ -235,8 +240,14 @@ public class CommonWebView extends WebView implements View.OnLongClickListener {
     public boolean onLongClick(View v) {
         if (helper != null && helper.isNeedScanerImg()) {
             final HitTestResult htr = getHitTestResult();//获取所点击的内容
-            if (htr.getType() == HitTestResult.IMAGE_TYPE && helper != null) {//判断被点击的类型为图片
-                helper.OnScanerImg(htr.getExtra());
+            if (htr.getType() == HitTestResult.IMAGE_TYPE && !TextUtils.isEmpty(htr.getExtra())) {//判断被点击的类型为图片
+                //如果是链接
+                if (ImageScanerUtils.get().isHttpUrl(htr.getExtra())) {
+                    helper.OnScanerImg(htr.getExtra(), false);
+                } else {
+                    //本地图片
+                    helper.OnScanerImg(Base64.decode(htr.getExtra(), Base64.DEFAULT).toString(), true);
+                }
             }
         }
         return false;
