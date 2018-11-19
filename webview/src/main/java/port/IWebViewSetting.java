@@ -7,7 +7,7 @@ import com.commonwebview.webview.CommonWebView;
  * Created by wanglinjie.
  * create time:2018/10/17  下午2:09
  */
-public interface WebViewSetting {
+public interface IWebViewSetting {
     /**
      * @param webview
      */

@@ -11,7 +11,7 @@ import android.webkit.ValueCallback;
  * create time:2018/6/21  下午3:16
  */
 
-public interface OpenFileChooser {
+public interface IOpenFileChooser {
     /**
      * 路由到图片选择页面
      *

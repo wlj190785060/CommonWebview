@@ -6,7 +6,7 @@ package port;
  * create time:2018/4/19  下午3:13
  */
 
-interface ResultCallBack {
+interface IResultCallBack {
     /**
      * 可以做登录返回等特殊操作
      * @return

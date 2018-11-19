@@ -6,7 +6,7 @@ package port;
  * create time:2018/6/22  下午4:47
  */
 
-interface ScanerImgCallBack {
+interface IScanerImgCallBack {
 
     /**
      * 二维码解析逻辑
