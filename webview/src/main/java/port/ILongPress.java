@@ -6,7 +6,7 @@ package port;
  * create time:2018/4/19  下午3:13
  */
 
-interface LongClickCallBack {
+interface ILongPress {
     /**
      * 用于传递图片地址
      * @param imgUrl

@@ -14,9 +14,9 @@ import com.commonwebview.webview.CommonWebView;
  * create time:2018/6/20  下午4:59
  */
 
-public abstract class WebviewCBHelper implements LongClickCallBack, IResultCallBack,
+public abstract class WebviewCBHelper implements ILongPress, IResultBack,
         IUserAgent, IOpenFileChooser,
-        IScanerImgCallBack, IWebViewSetting {
+        IScanerImg, IWebViewSetting {
 
     //配置js注入，重新设置webview等
     private JsInterface jsInterface;
