@@ -1,5 +1,7 @@
 package scanerhelp;
 
+import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -28,7 +30,7 @@ import java.util.regex.Pattern;
  * create time:2018/4/19  下午3:19
  */
 
-public class WebviewUtils {
+final public class WebviewUtils {
 
     private volatile static WebviewUtils instance;
 
@@ -138,6 +140,18 @@ public class WebviewUtils {
             e.printStackTrace();
         }
         return props;
+    }
+
+    /**
+     * 判断当前 context 是否为夜间模式.
+     *
+     * @param context The current context.
+     * @return true : 表示为夜间模式.
+     */
+    public boolean isUiModeNight(Context context) {
+        final Configuration config = context.getResources().getConfiguration();
+        final int currentUiMode = config.uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        return Configuration.UI_MODE_NIGHT_YES == currentUiMode;
     }
 
 }

@@ -17,6 +17,8 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import port.WebviewCBHelper;
+
 /**
  * 通用webview
  *
@@ -26,9 +28,11 @@ import android.webkit.WebViewClient;
 class WebClientWrapper extends WebViewClient {
 
     private WebViewClient webViewClient;
+    private WebviewCBHelper helper;
 
-    public WebClientWrapper() {
+    public WebClientWrapper(WebviewCBHelper helper) {
         super();
+        this.helper = helper;
     }
 
     public WebViewClient getWrapper() {
@@ -78,6 +82,10 @@ class WebClientWrapper extends WebViewClient {
             webViewClient.onPageFinished(view, url);
         }
         super.onPageFinished(view, url);
+        //获取稿件源码,需要绑定js对象
+        if(helper != null){
+            view.loadUrl("javascript:window." + helper.getWebViewJsObject() + ".getHtmlSrc('<head>'+" + "document.getElementsByTagName('html')[0].innerHTML+'</head>');");
+        }
     }
 
     @Override
@@ -173,6 +181,7 @@ class WebClientWrapper extends WebViewClient {
 
     /**
      * 对于部分网页证书报错的问题
+     *
      * @param view
      * @param handler
      * @param error

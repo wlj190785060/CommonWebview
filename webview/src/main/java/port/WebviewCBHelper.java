@@ -2,6 +2,7 @@ package port;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.CallSuper;
 import android.support.v4.app.Fragment;
 import android.webkit.ValueCallback;
 
@@ -13,7 +14,12 @@ import com.commonwebview.webview.CommonWebView;
  * create time:2018/6/20  下午4:59
  */
 
-public abstract class WebviewCBHelper implements LongClickCallBack, ResultCallBack, UserAgentDefined, OpenFileChooser, ScanerImgCallBack, WebViewSetting {
+public abstract class WebviewCBHelper implements LongClickCallBack, ResultCallBack,
+        UserAgentDefined, OpenFileChooser,
+        ScanerImgCallBack, WebViewSetting {
+
+    //配置js注入，重新设置webview等
+    private JsInterface jsInterface;
 
     /**
      * 需要在子类中创建对象
@@ -80,9 +86,14 @@ public abstract class WebviewCBHelper implements LongClickCallBack, ResultCallBa
 
     }
 
-    //配置js注入，重新设置webview等
+    @CallSuper
     @Override
-    public void webViewSetting(CommonWebView webview) {
+    public void setWebviewConfig(CommonWebView webview) {
+        webview.addJavascriptInterface(jsInterface = new JsInterface(getWebViewJsObject()), getWebViewJsObject());
+    }
+
+    public JsInterface getJsObject() {
+        return jsInterface;
     }
 
 }

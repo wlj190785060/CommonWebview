@@ -77,6 +77,7 @@ public class CommonWebView extends WebView implements View.OnLongClickListener {
         return helper;
     }
 
+    //必须要设置
     public void setHelper(WebviewCBHelper helper) {
         this.helper = helper;
     }
@@ -99,8 +100,8 @@ public class CommonWebView extends WebView implements View.OnLongClickListener {
         if (mChromeClientWrapper == null) {
             super.setWebChromeClient(mChromeClientWrapper = new ChromeClientWrapper(this));
         }
-        if (mWebClientWrapper == null) {
-            super.setWebViewClient(mWebClientWrapper = new WebClientWrapper());
+        if (mWebClientWrapper == null && helper != null) {
+            super.setWebViewClient(mWebClientWrapper = new WebClientWrapper(helper));
         }
     }
 
@@ -111,7 +112,9 @@ public class CommonWebView extends WebView implements View.OnLongClickListener {
         WebSettings settings = getSettings();
         requestFocus(View.FOCUS_DOWN);
         settings.setJavaScriptEnabled(true); // 启用支持javaScript
-        //默认不支持添加JS注入
+        if (helper != null) {
+            helper.setWebviewConfig(this);
+        }
         settings.setGeolocationEnabled(true);
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
         settings.setUseWideViewPort(true);
@@ -155,10 +158,6 @@ public class CommonWebView extends WebView implements View.OnLongClickListener {
         } else {
             settings.setUserAgentString(userAgent + "; ");
         }
-        //设置websetting
-        if (helper != null && getHelper() != null) {
-            helper.webViewSetting(this);
-        }
         setOnLongClickListener(this);
 
     }
@@ -186,8 +185,8 @@ public class CommonWebView extends WebView implements View.OnLongClickListener {
 
     @Override
     public void setWebViewClient(WebViewClient client) {
-        if (mWebClientWrapper == null) {
-            super.setWebViewClient(mWebClientWrapper = new WebClientWrapper());
+        if (mWebClientWrapper == null && helper != null) {
+            super.setWebViewClient(mWebClientWrapper = new WebClientWrapper(helper));
         }
         mWebClientWrapper.setWrapper(client);
     }
@@ -261,5 +260,23 @@ public class CommonWebView extends WebView implements View.OnLongClickListener {
             }
         }
         return false;
+    }
+
+
+    /**
+     * webview暂停时音频也要暂停
+     */
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (helper != null && helper.getJsObject() != null && helper.getJsObject().getAudioCount() > 0) {
+            final String execUrl = "javascript:musicPause();";
+            post(new Runnable() {
+                @Override
+                public void run() {
+                    loadUrl(execUrl);
+                }
+            });
+        }
     }
 }
