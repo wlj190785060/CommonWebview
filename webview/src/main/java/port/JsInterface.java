@@ -5,32 +5,37 @@ import android.webkit.JavascriptInterface;
 
 import com.zjrb.core.utils.click.ClickTracker;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import scanerhelp.HtmlPauseUtils;
-import serialmap.SerializableHashMap;
 
 /**
  * JS公共类，JS必须要继承该类
  * Created by wanglinjie.
  * create time:2018/11/16  下午3:53
  */
-public class JsInterface {
+public class JsInterface implements IimgBrower {
 
     /**
      * 记录是否被预览过的集合
      */
-    private SerializableHashMap map, map1;
-    private String[] mImgSrcs;
-    private List<Map<String, String>> mSrcs;
     private String mText;
+    //图片
+    private String[] mImgSrcs;
+    //超链接图片,src->a
+    private List<Map<String, String>> mSrcs;
     //音频数量
     private int audioCount = 0;
     private String jsObject;
+
     public JsInterface(String jsObject) {
         this.jsObject = jsObject;
     }
+
+    //TODO
 
     /**
      * @param imgSrcs 获取网页图集
@@ -39,13 +44,11 @@ public class JsInterface {
         mImgSrcs = imgSrcs;
 
         if (imgSrcs != null && imgSrcs.length > 0) {
-            map = new SerializableHashMap();
-            for (int i = 0; i < mImgSrcs.length; i++) {
-                map.getMap().put(i, false);
-            }
         }
 
     }
+
+    //TODO
 
     /**
      * 超链接图片
@@ -55,10 +58,6 @@ public class JsInterface {
     private void setImgSrcs(List<Map<String, String>> srcs) {
         mSrcs = srcs;
         if (mSrcs != null && mSrcs.size() > 0) {
-            map1 = new SerializableHashMap();
-            for (int i = 0; i < mSrcs.size(); i++) {
-                map1.getMap().put(i, false);
-            }
         }
     }
 
@@ -93,7 +92,7 @@ public class JsInterface {
      */
     @JavascriptInterface
     public void getHtmlSrc(String htmlCode) {
-        HtmlPauseUtils.parseHandleHtml(jsObject,htmlCode, new HtmlPauseUtils.ImgSrcsCallBack() {
+        HtmlPauseUtils.parseHandleHtml(jsObject, htmlCode, new HtmlPauseUtils.ImgSrcsCallBack() {
             @Override
             public void callBack(String[] imgSrcs) {
                 //兼容现有浙江新闻/县市报/24小时
@@ -131,8 +130,6 @@ public class JsInterface {
     }
 
     /**
-     * 通过Glide加载图片进行更换
-     *
      * @param index 点击图片
      */
     @JavascriptInterface
@@ -140,12 +137,11 @@ public class JsInterface {
         if (ClickTracker.isDoubleClick()) {
             return;
         }
+        imageBrowseCB(mImgSrcs[index]);
     }
 
 
     /**
-     * 超链接图片点击
-     *
      * @param index 点击超链接图片
      */
     @JavascriptInterface
@@ -153,6 +149,28 @@ public class JsInterface {
         if (ClickTracker.isDoubleClick()) {
             return;
         }
+        String imgUrl = "";
+        if (mSrcs.get(index) != null && !mSrcs.get(index).isEmpty()) {
+            Set keys = mSrcs.get(index).keySet();
+            if (keys != null) {
+                Iterator iterator = keys.iterator();
+                while (iterator.hasNext()) {
+                    imgUrl = iterator.next().toString();
+                }
+            }
+        }
+        imageABrowseCB(imgUrl);
+    }
+
+    //用户自己实现业务逻辑
+    @Override
+    public void imageABrowseCB(String url) {
+
+    }
+
+    @Override
+    public void imageBrowseCB(String url) {
+
     }
 
 }
