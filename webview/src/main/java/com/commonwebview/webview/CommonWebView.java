@@ -254,15 +254,6 @@ public class CommonWebView extends WebView implements View.OnLongClickListener {
                 //如果是链接
                 if (WebviewUtils.get().isHttpUrl(htr.getExtra())) {
                     helper.OnScanerImg(htr.getExtra(), false);
-//                    Properties properties = WebviewUtils.get().getConfigProperties();
-//                    //兼容老版本1.0.0.5以下版本
-//                    if (properties != null && !TextUtils.isEmpty(properties.getProperty("version"))
-//                            && Long.parseLong(properties.getProperty("version").replaceAll("[^\\d]+", "")) >= 1005L) {
-//                        helper.OnScanerImg(htr.getExtra(), false);
-//                    } else {
-//                        helper.OnScanerImg(htr.getExtra());
-//                    }
-
                 } else {
                     //本地图片
                     helper.OnScanerImg(Base64.decode(htr.getExtra(), Base64.DEFAULT).toString(), true);

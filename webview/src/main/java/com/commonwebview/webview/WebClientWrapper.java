@@ -90,10 +90,6 @@ class WebClientWrapper extends WebViewClient {
             webViewClient.onPageFinished(view, url);
         }
         super.onPageFinished(view, url);
-        //获取稿件源码,需要绑定js对象，解析里面的图片、文本等资源
-//        if (helper != null) {
-//            view.loadUrl("javascript:window." + helper.getWebViewJsObject() + ".getHtmlSrc('<head>'+" + "document.getElementsByTagName('html')[0].innerHTML+'</head>');");
-//        }
     }
 
     @Override
@@ -132,13 +128,12 @@ class WebClientWrapper extends WebViewClient {
         if (helper != null && !TextUtils.isEmpty(helper.getWebViewJsObject()) && !CssJsUtils.get().isInject()) {
             String page = CssJsUtils.get().getUrlData(helper, request, CookieManager.getInstance().getCookie(request.getUrl().toString()), "null", "js/basic.js");
             return new WebResourceResponse("text/html", "utf-8", new ByteArrayInputStream(page.getBytes()));
-
+        } else {
+            if (webViewClient != null) {
+                return webViewClient.shouldInterceptRequest(view, request);
+            }
+            return super.shouldInterceptRequest(view, request);
         }
-
-        if (webViewClient != null) {
-            return webViewClient.shouldInterceptRequest(view, request);
-        }
-        return super.shouldInterceptRequest(view, request);
     }
 
     @Override

@@ -181,9 +181,8 @@ final public class HtmlPauseUtils {
 
                     }
                 }
-                //TODO  事件怎么注入
                 if (isNeedOnClick && !TextUtils.isEmpty(mJsObject)) {
-                    node.attr("onClick", "imageBrowse(" + mJsObject + index + ")");
+                    node.attr("onClick", "imageBrowse(" + mJsObject + "," + index + ")");
                 }
             }
         }
@@ -225,9 +224,8 @@ final public class HtmlPauseUtils {
 
                     }
                 }
-                //TODO 事件怎么注入
                 if (isNeedOnClick && !TextUtils.isEmpty(mJsObject)) {
-                    node.attr("onClick", "imageABrowse(" + mJsObject + index + ")");
+                    node.attr("onClick", "imageABrowse(" + mJsObject + "," + index + ")");
                 }
             }
         }

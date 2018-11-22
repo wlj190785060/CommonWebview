@@ -87,7 +87,6 @@ final public class CssJsUtils {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             //设置请求的header
             for (Map.Entry<String, String> entry : headers.entrySet()) {
-                System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
                 connection.setRequestProperty(entry.getKey(), entry.getValue());
             }
             //扫码请求登录网页cookies一定要设置，不然后台判断登录状态会出错
@@ -209,4 +208,5 @@ final public class CssJsUtils {
 
         return res;
     }
+
 }
