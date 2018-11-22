@@ -32,7 +32,7 @@ final public class HtmlPauseUtils {
      * 解析处理Html内容
      *
      * @param jsObject      JS绑定对象名
-     * @param html          HtmlBody字符串
+     * @param html          Html的Body字符串(针对链接稿需要进行取值)
      * @param callBack      图片
      * @param callBack1     超链接图片
      * @param textBack      标题
@@ -181,6 +181,7 @@ final public class HtmlPauseUtils {
 
                     }
                 }
+                //TODO  事件怎么注入
                 if (isNeedOnClick && !TextUtils.isEmpty(mJsObject)) {
                     node.attr("onClick", "imageBrowse(" + mJsObject + index + ")");
                 }
@@ -224,6 +225,7 @@ final public class HtmlPauseUtils {
 
                     }
                 }
+                //TODO 事件怎么注入
                 if (isNeedOnClick && !TextUtils.isEmpty(mJsObject)) {
                     node.attr("onClick", "imageABrowse(" + mJsObject + index + ")");
                 }

@@ -50,7 +50,7 @@ public class CommonWebView extends WebView implements View.OnLongClickListener {
             super.removeJavascriptInterface("accessibility");
             super.removeJavascriptInterface("accessibilityTraversal");
         }
-        init();
+        configWebView();
     }
 
     public CommonWebView(Context context, AttributeSet attrs) {
@@ -60,7 +60,7 @@ public class CommonWebView extends WebView implements View.OnLongClickListener {
             super.removeJavascriptInterface("accessibility");
             super.removeJavascriptInterface("accessibilityTraversal");
         }
-        init();
+        configWebView();
     }
 
     public CommonWebView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -70,16 +70,18 @@ public class CommonWebView extends WebView implements View.OnLongClickListener {
             super.removeJavascriptInterface("accessibility");
             super.removeJavascriptInterface("accessibilityTraversal");
         }
-        init();
+        configWebView();
     }
 
     public WebviewCBHelper getHelper() {
         return helper;
     }
 
-    //必须要设置
+    //必须要设置,怎么提前设置？
     public void setHelper(WebviewCBHelper helper) {
         this.helper = helper;
+        //重置设置相关参数
+        init();
     }
 
     //扩展wrapper
@@ -96,11 +98,16 @@ public class CommonWebView extends WebView implements View.OnLongClickListener {
     }
 
     private void init() {
-        configWebView();
-        if (mChromeClientWrapper == null) {
-            super.setWebChromeClient(mChromeClientWrapper = new ChromeClientWrapper(this));
+
+        if (helper != null) {
+            helper.setWebviewConfig(this);
         }
-        if (mWebClientWrapper == null && helper != null) {
+
+        if (helper != null && !TextUtils.isEmpty(this.helper.getUserAgent())) {
+            getSettings().setUserAgentString(getSettings().getUserAgentString() + "; " + this.helper.getUserAgent());
+        }
+
+        if (helper != null) {
             super.setWebViewClient(mWebClientWrapper = new WebClientWrapper(helper));
         }
     }
@@ -112,9 +119,6 @@ public class CommonWebView extends WebView implements View.OnLongClickListener {
         WebSettings settings = getSettings();
         requestFocus(View.FOCUS_DOWN);
         settings.setJavaScriptEnabled(true); // 启用支持javaScript
-        if (helper != null) {
-            helper.setWebviewConfig(this);
-        }
         settings.setGeolocationEnabled(true);
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
         settings.setUseWideViewPort(true);
@@ -153,14 +157,19 @@ public class CommonWebView extends WebView implements View.OnLongClickListener {
 
         String userAgent = settings.getUserAgentString();
         //自定义ua
-        if (helper != null && !TextUtils.isEmpty(this.helper.getUserAgent())) {
-            settings.setUserAgentString(userAgent + "; " + this.helper.getUserAgent());
-        } else {
-            settings.setUserAgentString(userAgent + "; ");
-        }
+        settings.setUserAgentString(userAgent + "; ");
         setOnLongClickListener(this);
 
+        if (mChromeClientWrapper == null) {
+            super.setWebChromeClient(mChromeClientWrapper = new ChromeClientWrapper(this));
+        }
+
+        if (mWebClientWrapper == null) {
+            super.setWebViewClient(mWebClientWrapper = new WebClientWrapper());
+        }
+
     }
+
 
     /**
      * 对返回结果做特殊处理，客户端实现接口
@@ -244,14 +253,15 @@ public class CommonWebView extends WebView implements View.OnLongClickListener {
             if (htr.getType() == HitTestResult.IMAGE_TYPE && !TextUtils.isEmpty(htr.getExtra())) {//判断被点击的类型为图片
                 //如果是链接
                 if (WebviewUtils.get().isHttpUrl(htr.getExtra())) {
-                    Properties properties = WebviewUtils.get().getConfigProperties();
-                    //兼容老版本1.0.0.5以下版本
-                    if (properties != null && !TextUtils.isEmpty(properties.getProperty("version"))
-                            && Long.parseLong(properties.getProperty("version").replaceAll("[^\\d]+", "")) >= 1005L) {
-                        helper.OnScanerImg(htr.getExtra(), false);
-                    } else {
-                        helper.OnScanerImg(htr.getExtra());
-                    }
+                    helper.OnScanerImg(htr.getExtra(), false);
+//                    Properties properties = WebviewUtils.get().getConfigProperties();
+//                    //兼容老版本1.0.0.5以下版本
+//                    if (properties != null && !TextUtils.isEmpty(properties.getProperty("version"))
+//                            && Long.parseLong(properties.getProperty("version").replaceAll("[^\\d]+", "")) >= 1005L) {
+//                        helper.OnScanerImg(htr.getExtra(), false);
+//                    } else {
+//                        helper.OnScanerImg(htr.getExtra());
+//                    }
 
                 } else {
                     //本地图片

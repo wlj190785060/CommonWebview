@@ -1,15 +1,14 @@
-// 预览图片
 function imageBrowse(jsObject,index) {
+    alert(jsObject);
     jsObject.imageBrowse(index);
 }
 
-// 预览超链接图片
 function imageABrowse(jsObject,index) {
+    alert(jsObject);
     jsObject.imageABrowse(index);
 }
 
-//暂停所有音频
- function musicPause(){
+function musicPause(){
     var audio = document.getElementsByTagName("audio")
     for(var i = 0; i < audio.length; i++) {
         var a = document.getElementsByTagName("audio")[i];

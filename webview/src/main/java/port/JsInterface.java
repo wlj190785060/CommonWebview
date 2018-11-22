@@ -29,6 +29,7 @@ public class JsInterface implements IimgBrower {
     private List<Map<String, String>> mSrcs;
     //音频数量
     private int audioCount = 0;
+    //js绑定对象名
     private String jsObject;
 
     public JsInterface(String jsObject) {
@@ -90,9 +91,8 @@ public class JsInterface implements IimgBrower {
      *
      * @param htmlCode
      */
-    @JavascriptInterface
-    public void getHtmlSrc(String htmlCode) {
-        HtmlPauseUtils.parseHandleHtml(jsObject, htmlCode, new HtmlPauseUtils.ImgSrcsCallBack() {
+    public String setAttrHtmlSrc(String htmlCode) {
+        return HtmlPauseUtils.parseHandleHtml(jsObject, htmlCode, new HtmlPauseUtils.ImgSrcsCallBack() {
             @Override
             public void callBack(String[] imgSrcs) {
                 //兼容现有浙江新闻/县市报/24小时

@@ -7,8 +7,10 @@ import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.webkit.ClientCertRequest;
+import android.webkit.CookieManager;
 import android.webkit.HttpAuthHandler;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceError;
@@ -17,7 +19,10 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import java.io.ByteArrayInputStream;
+
 import port.WebviewCBHelper;
+import scanerhelp.CssJsUtils;
 
 /**
  * 通用webview
@@ -33,6 +38,9 @@ class WebClientWrapper extends WebViewClient {
     public WebClientWrapper(WebviewCBHelper helper) {
         super();
         this.helper = helper;
+    }
+
+    public WebClientWrapper() {
     }
 
     public WebViewClient getWrapper() {
@@ -82,10 +90,10 @@ class WebClientWrapper extends WebViewClient {
             webViewClient.onPageFinished(view, url);
         }
         super.onPageFinished(view, url);
-        //获取稿件源码,需要绑定js对象
-        if(helper != null){
-            view.loadUrl("javascript:window." + helper.getWebViewJsObject() + ".getHtmlSrc('<head>'+" + "document.getElementsByTagName('html')[0].innerHTML+'</head>');");
-        }
+        //获取稿件源码,需要绑定js对象，解析里面的图片、文本等资源
+//        if (helper != null) {
+//            view.loadUrl("javascript:window." + helper.getWebViewJsObject() + ".getHtmlSrc('<head>'+" + "document.getElementsByTagName('html')[0].innerHTML+'</head>');");
+//        }
     }
 
     @Override
@@ -106,6 +114,8 @@ class WebClientWrapper extends WebViewClient {
     }
 
     //这里有特殊逻辑就自己重写方法
+    //该方法在非UI线程中运行，可以在这里做网络访问等耗时操作
+    //不适合在onPageFinished中注入JS/CSS，也闪一下(重新加载)
     @Override
     public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
         if (webViewClient != null) {
@@ -118,6 +128,13 @@ class WebClientWrapper extends WebViewClient {
     @Override
     public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest
             request) {
+        //注入相关的css和js
+        if (helper != null && !TextUtils.isEmpty(helper.getWebViewJsObject()) && !CssJsUtils.get().isInject()) {
+            String page = CssJsUtils.get().getUrlData(helper, request, CookieManager.getInstance().getCookie(request.getUrl().toString()), "null", "js/basic.js");
+            return new WebResourceResponse("text/html", "utf-8", new ByteArrayInputStream(page.getBytes()));
+
+        }
+
         if (webViewClient != null) {
             return webViewClient.shouldInterceptRequest(view, request);
         }

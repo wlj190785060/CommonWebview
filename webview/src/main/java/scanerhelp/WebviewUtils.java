@@ -128,19 +128,19 @@ final public class WebviewUtils {
         return isurl;
     }
 
-    /**
-     * @return Properties对象
-     */
-    public Properties getConfigProperties() {
-        Properties props = new Properties();
-        InputStream in = WebviewUtils.class.getResourceAsStream("/publish.properties");
-        try {
-            props.load(in);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return props;
-    }
+//    /**
+//     * @return Properties对象
+//     */
+//    public Properties getConfigProperties() {
+//        Properties props = new Properties();
+//        InputStream in = WebviewUtils.class.getResourceAsStream("/publish.properties");
+//        try {
+//            props.load(in);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return props;
+//    }
 
     /**
      * 判断当前 context 是否为夜间模式.

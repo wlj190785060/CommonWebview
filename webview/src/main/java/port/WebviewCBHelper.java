@@ -14,18 +14,12 @@ import com.commonwebview.webview.CommonWebView;
  * create time:2018/6/20  下午4:59
  */
 
-public abstract class WebviewCBHelper implements ILongPress, IResultBack,
+public class WebviewCBHelper implements ILongPress, IResultBack,
         IUserAgent, IOpenFileChooser,
         IScanerImg, IWebViewSetting {
 
     //配置js注入，重新设置webview等
     private JsInterface jsInterface;
-
-    /**
-     * 需要在子类中创建对象
-     */
-    private WebviewCBHelper() {
-    }
 
     //设置us
     @Override
@@ -90,6 +84,11 @@ public abstract class WebviewCBHelper implements ILongPress, IResultBack,
     @Override
     public void setWebviewConfig(CommonWebView webview) {
         webview.addJavascriptInterface(jsInterface = new JsInterface(getWebViewJsObject()), getWebViewJsObject());
+    }
+
+    @Override
+    public String getWebViewJsObject() {
+        return "";
     }
 
     public JsInterface getJsObject() {
