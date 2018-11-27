@@ -40,9 +40,8 @@ public abstract class JsInterface implements IimgBrower {
      * @param imgSrcs 获取网页图集
      */
     private void setImgSrcs(String[] imgSrcs) {
-        mImgSrcs = imgSrcs;
-
         if (imgSrcs != null && imgSrcs.length > 0) {
+            mImgSrcs = imgSrcs;
         }
 
     }
@@ -53,8 +52,8 @@ public abstract class JsInterface implements IimgBrower {
      * @param srcs
      */
     private void setImgSrcs(List<Map<String, String>> srcs) {
-        mSrcs = srcs;
         if (mSrcs != null && mSrcs.size() > 0) {
+            mSrcs = srcs;
         }
     }
 

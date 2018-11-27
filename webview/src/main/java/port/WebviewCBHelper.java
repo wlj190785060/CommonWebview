@@ -1,6 +1,5 @@
 package port;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.CallSuper;
@@ -84,7 +83,6 @@ public class WebviewCBHelper implements ILongPress, IResultBack,
 
     @CallSuper
     @Override
-    @SuppressLint("JavascriptInterface")
     public void setWebviewConfig(CommonWebView webview) {
         if (jsInterface != null) {
             webview.addJavascriptInterface(jsInterface, getWebViewJsObject());
