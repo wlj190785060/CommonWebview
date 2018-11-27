@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.webkit.JavascriptInterface;
 
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.ChecksumException;
@@ -15,12 +16,12 @@ import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeReader;
 
-import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Hashtable;
-import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -128,20 +129,6 @@ final public class WebviewUtils {
         return isurl;
     }
 
-//    /**
-//     * @return Properties对象
-//     */
-//    public Properties getConfigProperties() {
-//        Properties props = new Properties();
-//        InputStream in = WebviewUtils.class.getResourceAsStream("/publish.properties");
-//        try {
-//            props.load(in);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return props;
-//    }
-
     /**
      * 判断当前 context 是否为夜间模式.
      *
@@ -154,4 +141,30 @@ final public class WebviewUtils {
         return Configuration.UI_MODE_NIGHT_YES == currentUiMode;
     }
 
+//    /**
+//     * 获取泛型子类实例
+//     *
+//     * @param obj
+//     * @param <T>
+//     * @return
+//     */
+//    public <T> T getSuperclassType(Object obj) {
+//        try {
+//            Class<?> aClass = obj.getClass();//先得到类的字节码
+//            Type genericSuperclass = aClass.getGenericSuperclass();
+//            if (genericSuperclass instanceof ParameterizedType) {
+//                ParameterizedType types = (ParameterizedType) genericSuperclass;//抽象类
+//                Type[] actualTypeArguments = types.getActualTypeArguments();
+//                Class<T> reponseClass = (Class) actualTypeArguments[0];
+//                return reponseClass.newInstance();
+//            } else {
+//                return null;
+//            }
+//        } catch (InstantiationException e) {
+//            e.printStackTrace();
+//        } catch (IllegalAccessException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 }

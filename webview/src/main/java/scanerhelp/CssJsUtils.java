@@ -14,6 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
 
+import port.JsInterface;
 import port.WebviewCBHelper;
 
 /**
@@ -173,9 +174,10 @@ final public class CssJsUtils {
     /**
      * 给定的HTML中插入css和js代码
      *
-     * @param
+     * @param page 页面源码
+     * @param css  注入的css
+     * @param js   注入的js
      * @return
-     * @throw
      */
     private String inject(String page, String css, String js) {
         //在body中添加点击属性

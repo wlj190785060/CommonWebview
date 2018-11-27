@@ -1,5 +1,6 @@
 package port;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.CallSuper;
@@ -18,6 +19,7 @@ public class WebviewCBHelper implements ILongPress, IResultBack,
         IUserAgent, IOpenFileChooser,
         IScanerImg, IWebViewSetting {
 
+    //TODO 如何进行外部继承使用
     //配置js注入，重新设置webview等
     private JsInterface jsInterface;
 
@@ -82,8 +84,11 @@ public class WebviewCBHelper implements ILongPress, IResultBack,
 
     @CallSuper
     @Override
+    @SuppressLint("JavascriptInterface")
     public void setWebviewConfig(CommonWebView webview) {
-        webview.addJavascriptInterface(jsInterface = new JsInterface(getWebViewJsObject()), getWebViewJsObject());
+        if (jsInterface != null) {
+            webview.addJavascriptInterface(jsInterface, getWebViewJsObject());
+        }
     }
 
     @Override
@@ -91,8 +96,23 @@ public class WebviewCBHelper implements ILongPress, IResultBack,
         return "";
     }
 
+
+    /**
+     * 获取js绑定对象
+     *
+     * @return
+     */
     public JsInterface getJsObject() {
         return jsInterface;
+    }
+
+    /**
+     * 设置js绑定对象
+     *
+     * @param jsInterface
+     */
+    public void setJsObject(JsInterface jsInterface) {
+        this.jsInterface = jsInterface;
     }
 
 }

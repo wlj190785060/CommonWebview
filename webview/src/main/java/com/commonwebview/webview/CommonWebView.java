@@ -17,8 +17,6 @@ import android.webkit.WebViewClient;
 import com.zjrb.core.utils.PathManager;
 import com.zjrb.core.utils.UIUtils;
 
-import java.util.Properties;
-
 import cn.zgy.utils.system.NetworkUtil;
 import port.WebviewCBHelper;
 import scanerhelp.WebviewUtils;

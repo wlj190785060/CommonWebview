@@ -13,11 +13,11 @@ import java.util.Set;
 import scanerhelp.HtmlPauseUtils;
 
 /**
- * JS公共类，JS必须要继承该类
+ * JS公共类，JS若要注入必须要继承该类
  * Created by wanglinjie.
  * create time:2018/11/16  下午3:53
  */
-public class JsInterface implements IimgBrower {
+public abstract class JsInterface implements IimgBrower {
 
     /**
      * 记录是否被预览过的集合
@@ -36,8 +36,6 @@ public class JsInterface implements IimgBrower {
         this.jsObject = jsObject;
     }
 
-    //TODO
-
     /**
      * @param imgSrcs 获取网页图集
      */
@@ -48,8 +46,6 @@ public class JsInterface implements IimgBrower {
         }
 
     }
-
-    //TODO
 
     /**
      * 超链接图片

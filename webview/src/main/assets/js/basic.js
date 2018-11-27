@@ -1,8 +1,10 @@
 function imageBrowse(jsObject,index) {
+       alert("haha");
     jsObject.imageBrowse(index);
 }
 
 function imageABrowse(jsObject,index) {
+alert("heihei");
     jsObject.imageABrowse(index);
 }
 
