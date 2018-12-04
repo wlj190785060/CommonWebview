@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.webkit.JavascriptInterface;
 
 import com.google.zxing.BinaryBitmap;
@@ -141,30 +142,23 @@ final public class WebviewUtils {
         return Configuration.UI_MODE_NIGHT_YES == currentUiMode;
     }
 
-//    /**
-//     * 获取泛型子类实例
-//     *
-//     * @param obj
-//     * @param <T>
-//     * @return
-//     */
-//    public <T> T getSuperclassType(Object obj) {
-//        try {
-//            Class<?> aClass = obj.getClass();//先得到类的字节码
-//            Type genericSuperclass = aClass.getGenericSuperclass();
-//            if (genericSuperclass instanceof ParameterizedType) {
-//                ParameterizedType types = (ParameterizedType) genericSuperclass;//抽象类
-//                Type[] actualTypeArguments = types.getActualTypeArguments();
-//                Class<T> reponseClass = (Class) actualTypeArguments[0];
-//                return reponseClass.newInstance();
-//            } else {
-//                return null;
-//            }
-//        } catch (InstantiationException e) {
-//            e.printStackTrace();
-//        } catch (IllegalAccessException e) {
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
+
+    /**
+     * string转bitmap
+     * @param string
+     * @return
+     */
+    public Bitmap stringToBitmap(String string) {
+        Bitmap bitmap = null;
+        try {
+            byte[] bitmapArray;
+            bitmapArray = Base64.decode(string, Base64.DEFAULT);
+            bitmap = BitmapFactory.decodeByteArray(bitmapArray, 0,
+                    bitmapArray.length);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bitmap;
+
+    }
 }

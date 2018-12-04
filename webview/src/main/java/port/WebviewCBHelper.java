@@ -31,7 +31,6 @@ public class WebviewCBHelper implements ILongPress, IResultBack,
     //长按逻辑
     @Override
     public void onLongClickCallBack(String imgUrl, boolean isScanerImg) {
-
     }
 
     //返回业务逻辑处理
@@ -69,10 +68,10 @@ public class WebviewCBHelper implements ILongPress, IResultBack,
 
     }
 
-    //是否需要支持二维码 默认支持
+    //是否需要支持二维码 默认不支持
     @Override
     public boolean isNeedScanerImg() {
-        return true;
+        return false;
     }
 
     //关闭二维码识别线程池（如果有的话）

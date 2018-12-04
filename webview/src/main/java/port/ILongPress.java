@@ -9,8 +9,8 @@ package port;
 interface ILongPress {
     /**
      * 用于传递图片地址
-     * @param imgUrl
-     * @param isScanerImg
+     * @param imgUrl  图片地址
+     * @param isScanerImg 是否是二维码
      */
     void onLongClickCallBack(String imgUrl, boolean isScanerImg);
 }
