@@ -5,7 +5,7 @@
 
 
 ### WebviewCBHelper类：
-
+```
 public class WebViewImpl extends WebviewCBHelper {
     //如果不绑定对象，则属于正常的webview加载链接
     @Override
@@ -13,12 +13,13 @@ public class WebViewImpl extends WebviewCBHelper {
         return "zjxw";
     }
 }
-
+```
 #调用方法
-
+ ```
  webImpl = new WebViewImpl();
  webImpl.setJsObject(new JsInterfaceImp(webImpl.getWebViewJsObject()));
  webView.setHelper(webImpl);
+ ```
 该类是抽象类，需要用户自己集成实现。包含了打开文件处理，结果返回处理，二维码扫描结果处理，Webview UA设置。
 
 ### JsInterface：
