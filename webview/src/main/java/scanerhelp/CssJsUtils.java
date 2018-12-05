@@ -1,9 +1,8 @@
 package scanerhelp;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.webkit.WebResourceRequest;
-
-import com.zjrb.core.utils.UIUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,7 +13,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
 
-import port.JsInterface;
 import port.WebviewCBHelper;
 
 /**
@@ -28,16 +26,21 @@ final public class CssJsUtils {
     private String mDefaultEncoding = "UTF-8";
     private volatile static CssJsUtils instance;
     private WebviewCBHelper mHelper;
+    private Context mContext;
 
     private CssJsUtils() {
     }
 
+    private CssJsUtils(Context ctx) {
+        mContext = ctx;
+    }
+
     //获取单例，禁止外部通过构造器创建实例
-    public static CssJsUtils get() {
+    public static CssJsUtils get(Context ctx) {
         if (instance == null) {
             synchronized (CssJsUtils.class) {
                 if (instance == null) {
-                    instance = new CssJsUtils();
+                    instance = new CssJsUtils(ctx);
                 }
             }
         }
@@ -123,11 +126,12 @@ final public class CssJsUtils {
      * @throw
      */
     private String buildCss(String css) {
+        if (mContext == null) return null;
         StringBuilder contents = new StringBuilder();
 
         InputStreamReader reader;
         try {
-            reader = new InputStreamReader(UIUtils.getContext().getAssets().open(css), mDefaultEncoding);
+            reader = new InputStreamReader(mContext.getAssets().open(css), mDefaultEncoding);
             BufferedReader br = new BufferedReader(reader);
 
             String line;
@@ -151,11 +155,12 @@ final public class CssJsUtils {
      * @throw
      */
     private String buildJS(String jsPath) {
+        if (mContext == null) return null;
         StringBuilder contents = new StringBuilder();
 
         InputStreamReader reader;
         try {
-            reader = new InputStreamReader(UIUtils.getContext().getAssets().open(jsPath), mDefaultEncoding);
+            reader = new InputStreamReader(mContext.getAssets().open(jsPath), mDefaultEncoding);
             BufferedReader br = new BufferedReader(reader);
 
             String line;

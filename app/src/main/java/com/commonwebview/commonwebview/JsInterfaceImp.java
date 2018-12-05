@@ -1,6 +1,7 @@
 package com.commonwebview.commonwebview;
 
-import com.zjrb.core.utils.L;
+
+import android.content.Context;
 
 import port.JsInterface;
 
@@ -10,18 +11,16 @@ import port.JsInterface;
  * create time:2018/11/27  上午10:08
  */
 public class JsInterfaceImp extends JsInterface {
-    public JsInterfaceImp(String jsObject) {
-        super(jsObject);
+    public JsInterfaceImp(String jsObject, Context ctx) {
+        super(jsObject, ctx);
     }
 
     @Override
     public void imageABrowseCB(String url) {
-        L.e("WLJ" + url);
     }
 
     @Override
     public void imageBrowseCB(String url) {
-        L.e("WLJ" + url);
     }
 
 

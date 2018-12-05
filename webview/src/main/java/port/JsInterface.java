@@ -1,15 +1,15 @@
 package port;
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.webkit.JavascriptInterface;
-
-import com.zjrb.core.utils.click.ClickTracker;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import scanerhelp.ClickTrackerUtils;
 import scanerhelp.HtmlPauseUtils;
 
 /**
@@ -31,9 +31,11 @@ public abstract class JsInterface implements IimgBrower {
     private int audioCount = 0;
     //js绑定对象名
     private String jsObject;
+    private Context mContext;
 
-    public JsInterface(String jsObject) {
+    public JsInterface(String jsObject, Context ctx) {
         this.jsObject = jsObject;
+        mContext = ctx;
     }
 
     /**
@@ -87,7 +89,7 @@ public abstract class JsInterface implements IimgBrower {
      * @param htmlCode
      */
     public String setAttrHtmlSrc(String htmlCode) {
-        return HtmlPauseUtils.parseHandleHtml(jsObject, htmlCode, new HtmlPauseUtils.ImgSrcsCallBack() {
+        return HtmlPauseUtils.parseHandleHtml(mContext, jsObject, htmlCode, new HtmlPauseUtils.ImgSrcsCallBack() {
             @Override
             public void callBack(String[] imgSrcs) {
                 //兼容现有浙江新闻/县市报/24小时
@@ -129,7 +131,7 @@ public abstract class JsInterface implements IimgBrower {
      */
     @JavascriptInterface
     public void imageBrowse(int index) {
-        if (ClickTracker.isDoubleClick()) {
+        if (ClickTrackerUtils.isDoubleClick()) {
             return;
         }
         imageBrowseCB(mImgSrcs[index]);
@@ -141,7 +143,7 @@ public abstract class JsInterface implements IimgBrower {
      */
     @JavascriptInterface
     public void imageABrowse(int index) {
-        if (ClickTracker.isDoubleClick()) {
+        if (ClickTrackerUtils.isDoubleClick()) {
             return;
         }
         String imgUrl = "";

@@ -14,10 +14,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.zjrb.core.utils.PathManager;
-import com.zjrb.core.utils.UIUtils;
-
-import cn.zgy.utils.system.NetworkUtil;
 import port.WebviewCBHelper;
 import scanerhelp.WebviewUtils;
 
@@ -33,7 +29,10 @@ public class CommonWebView extends WebView implements View.OnLongClickListener {
     private ChromeClientWrapper mChromeClientWrapper;
 
     private WebviewCBHelper helper;
-
+    /**
+     * WebView缓存目录
+     */
+    private final String WEBVIEW_CACHE = "webview";
     private static final String FRAGMENT_TAG = "webView_fragment_lifecycle";
 
     /**
@@ -124,8 +123,8 @@ public class CommonWebView extends WebView implements View.OnLongClickListener {
         settings.setLoadWithOverviewMode(true);
         settings.setSupportZoom(false); // 网页缩放
         // 建议缓存策略为，判断是否有网络，有的话，使用LOAD_DEFAULT,无网络时，使用LOAD_CACHE_ELSE_NETWORK
-        if (NetworkUtil.isNetworkAvailable(getContext())) {
-            if (UIUtils.isDebuggable()) { // debuggable时 no_cache
+        if (WebviewUtils.get().isNetworkAvailable(getContext())) {
+            if (BuildConfig.DEBUG) { // debuggable时 no_cache
                 settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
             } else {
                 settings.setCacheMode(WebSettings.LOAD_DEFAULT);
@@ -137,7 +136,7 @@ public class CommonWebView extends WebView implements View.OnLongClickListener {
         settings.setDomStorageEnabled(true);
         // 开启database storage API功能
         settings.setDatabaseEnabled(true);
-        String cacheDirPath = PathManager.get().getWebViewCacheDir();
+        String cacheDirPath = getContext().getFileStreamPath(WEBVIEW_CACHE).getAbsolutePath();//PathManager.get().getWebViewCacheDir();
         // 设置数据库缓存路径
         settings.setDatabasePath(cacheDirPath); // API 19 deprecated
         // 设置Application caches缓存目录

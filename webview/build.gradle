@@ -43,6 +43,5 @@ dependencies {
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.google.zxing:core:3.3.0'
     implementation 'org.jsoup:jsoup:1.10.2'
-    implementation 'cn.daily.android:commonutils:0.0.7-SNAPSHOT'
-    implementation 'cn.daily.android:common-core:0.0.2-SNAPSHOT'
+//    implementation 'cn.daily.android:common-core:0.0.2-SNAPSHOT'
 }

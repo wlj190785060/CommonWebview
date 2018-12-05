@@ -4,8 +4,9 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Base64;
-import android.webkit.JavascriptInterface;
 
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.ChecksumException;
@@ -18,8 +19,6 @@ import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeReader;
 
 import java.io.InputStream;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Hashtable;
@@ -145,6 +144,7 @@ final public class WebviewUtils {
 
     /**
      * string转bitmap
+     *
      * @param string
      * @return
      */
@@ -161,4 +161,31 @@ final public class WebviewUtils {
         return bitmap;
 
     }
+
+    /**
+     * 判断网络是否可用
+     *
+     * @param context
+     * @return
+     */
+    public boolean isNetworkAvailable(Context context) {
+        // 获取手机所有连接管理对象（包括对wi-fi,net等连接的管理）
+        ConnectivityManager manager = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (manager == null) {
+            return false;
+        }
+        // 获取NetworkInfo对象
+        NetworkInfo[] networkInfo = manager.getAllNetworkInfo();
+        if (networkInfo != null && networkInfo.length > 0) {
+            for (int i = 0; i < networkInfo.length; i++) {
+                // 判断当前网络状态是否为连接状态
+                if (networkInfo[i].getState() == NetworkInfo.State.CONNECTED) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 }

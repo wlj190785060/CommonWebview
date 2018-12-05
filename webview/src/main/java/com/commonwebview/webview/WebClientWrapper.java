@@ -125,8 +125,8 @@ class WebClientWrapper extends WebViewClient {
     public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest
             request) {
         //注入相关的css和js
-        if (helper != null && !TextUtils.isEmpty(helper.getWebViewJsObject()) && !CssJsUtils.get().isInject()) {
-            String page = CssJsUtils.get().getUrlData(helper, request, CookieManager.getInstance().getCookie(request.getUrl().toString()), "null", "js/basic.js");
+        if (helper != null && !TextUtils.isEmpty(helper.getWebViewJsObject()) && !CssJsUtils.get(view.getContext()).isInject()) {
+            String page = CssJsUtils.get(view.getContext()).getUrlData(helper, request, CookieManager.getInstance().getCookie(request.getUrl().toString()), "null", "js/basic.js");
             return new WebResourceResponse("text/html", "utf-8", new ByteArrayInputStream(page.getBytes()));
         } else {
             if (webViewClient != null) {

@@ -1,8 +1,10 @@
 package scanerhelp;
 
+import android.content.Context;
+import android.graphics.Point;
 import android.text.TextUtils;
-
-import com.zjrb.core.utils.UIUtils;
+import android.view.Display;
+import android.view.WindowManager;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -27,6 +29,7 @@ final public class HtmlPauseUtils {
      */
     private static final String REGEX_INTEGER = "^[-\\+]?[\\d]+$";
     private static String mJsObject;
+    private static float screenWidthDip;
 
     /**
      * 解析处理Html内容
@@ -39,7 +42,9 @@ final public class HtmlPauseUtils {
      * @param audioCallBack 音频
      * @return 处理过的Html Body内容
      */
-    public static String parseHandleHtml(String jsObject, String html, ImgSrcsCallBack callBack, ImgASrcsCallBack callBack1, TextCallBack textBack, AudioCallBack audioCallBack) {
+    public static String parseHandleHtml(Context ctx, String jsObject, String html, ImgSrcsCallBack callBack, ImgASrcsCallBack callBack1, TextCallBack textBack, AudioCallBack audioCallBack) {
+        if (ctx == null) return null;
+        screenWidthDip = px2dip(ctx, getScreenW(ctx));
         mJsObject = jsObject;
         Document doc = Jsoup.parseBodyFragment(html);
         List<String> imgSrcs = parseImgTags(doc);
@@ -138,9 +143,9 @@ final public class HtmlPauseUtils {
             }
 
             if (width > 0 && height > 0) {
-                float screenWidthDp = UIUtils.px2dip(UIUtils.getScreenW());
-                if (width > (screenWidthDp - 8 - 8)) {
-                    height = Math.round(height * (screenWidthDp - 8 - 8) / width);
+//                float screenWidthDp = UIUtils.px2dip(UIUtils.getScreenW());
+                if (width > (screenWidthDip - 8 - 8)) {
+                    height = Math.round(height * (screenWidthDip - 8 - 8) / width);
                     node.attr(html.attr.HEIGHT, String.valueOf(height));
                 }
             }
@@ -258,7 +263,7 @@ final public class HtmlPauseUtils {
         }
 
         if (widthPx > 0) {
-            float screenWidthDip = UIUtils.px2dip(UIUtils.getScreenW());
+//            float screenWidthDip = UIUtils.px2dip(UIUtils.getScreenW());
             // 判断像素是否接近屏幕宽度，设置为屏幕宽度
             if (widthPx > screenWidthDip) {
                 widthPx = Math.round(screenWidthDip);
@@ -267,6 +272,29 @@ final public class HtmlPauseUtils {
             // 否则不做处理
         }
         return widthPx;
+    }
+
+    /**
+     * px转换dip
+     */
+    private static float px2dip(Context ctx, int px) {
+        final float scale = ctx.getResources().getDisplayMetrics().density;
+        return px / scale;
+    }
+
+    /**
+     * 获取屏幕宽度
+     *
+     * @param ctx
+     * @return
+     */
+    private static int getScreenW(Context ctx) {
+        WindowManager windowManager = (WindowManager)
+                ctx.getSystemService(Context.WINDOW_SERVICE);
+        Display display = windowManager.getDefaultDisplay();
+        Point point = new Point();
+        display.getRealSize(point);
+        return Math.min(point.x, point.y);
     }
 
     /**

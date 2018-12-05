@@ -19,12 +19,12 @@ public class MainActivity extends AppCompatActivity {
 
         //用户需要设置绑定的对象
         webImpl = new WebViewImpl();
-        webImpl.setJsObject(new JsInterfaceImp(webImpl.getWebViewJsObject()));
+        webImpl.setJsObject(new JsInterfaceImp(webImpl.getWebViewJsObject(), this));
         webView.setHelper(webImpl);
 
         Intent intent = getIntent();
         if (intent.getIntExtra("key", -1) == 1) {
-            webView.loadUrl("http://news.cctv.com/2018/11/19/ARTIXGtItcBfVVLkngV1D2Cb181119.shtml");
+            webView.loadUrl("https://blog.csdn.net/qq953655369/article/details/81184560");
         } else if (intent.getIntExtra("key", -1) == 2) {
             webView.loadUrl("http://www.xinhuanet.com/politics/2018-11/21/c_129999219.htm");
         }
