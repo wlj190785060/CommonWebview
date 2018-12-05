@@ -2,7 +2,12 @@
 
 该webview已将可能存在的特殊逻辑和自定义设置进行剥离。
 
+###长按事件
 
+主要是针对长按识别二维码的功能，默认关闭，需要在WebviewCBHelper类中自定义打开
+```
+public class CommonWebView extends WebView implements View.OnLongClickListener
+```
 
 ### WebviewCBHelper类：
 ```
