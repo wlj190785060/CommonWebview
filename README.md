@@ -14,13 +14,6 @@ public class WebViewImpl extends WebviewCBHelper {
     }
 }
 
-#调用方法
-
- webImpl = new WebViewImpl();
- webImpl.setJsObject(new JsInterfaceImp(webImpl.getWebViewJsObject()));
- webView.setHelper(webImpl);
-该类是抽象类，需要用户自己集成实现。包含了打开文件处理，结果返回处理，二维码扫描结果处理，Webview UA设置。
-
 ### JsInterface：
 
 public class JsInterfaceImp extends JsInterface {
