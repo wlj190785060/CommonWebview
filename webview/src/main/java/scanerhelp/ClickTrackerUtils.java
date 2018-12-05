@@ -10,11 +10,11 @@ import java.lang.ref.SoftReference;
 
 /**
  * 点击跟踪器，记录点击时间、位置信息，以及相关计算
- *
- * @author a_liYa
- * @date 2017/5/18 17:40.
+ * <p>
+ * Created by wanglinjie.
+ * create time:2018/11/21  上午11:18
  */
-public class ClickTrackerUtils {
+final public class ClickTrackerUtils {
 
     private static final int CACHE_MAX_SIZE = 15;
     /**

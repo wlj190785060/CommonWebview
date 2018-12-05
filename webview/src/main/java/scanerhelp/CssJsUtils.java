@@ -35,7 +35,6 @@ final public class CssJsUtils {
         mContext = ctx;
     }
 
-    //获取单例，禁止外部通过构造器创建实例
     public static CssJsUtils get(Context ctx) {
         if (instance == null) {
             synchronized (CssJsUtils.class) {
