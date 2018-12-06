@@ -32,7 +32,7 @@ final public class CssJsUtils {
     }
 
     private CssJsUtils(Context ctx) {
-        mContext = ctx;
+        mContext = ctx.getApplicationContext();
     }
 
     public static CssJsUtils get(Context ctx) {

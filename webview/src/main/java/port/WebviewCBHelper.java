@@ -18,7 +18,6 @@ public class WebviewCBHelper implements ILongPress, IResultBack,
         IUserAgent, IOpenFileChooser,
         IScanerImg, IWebViewSetting {
 
-    //TODO 如何进行外部继承使用
     //配置js注入，重新设置webview等
     private JsInterface jsInterface;
 
