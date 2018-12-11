@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Message;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.webkit.ConsoleMessage;
@@ -86,7 +87,27 @@ public class ChromeClientWrapper extends WebChromeClient
         } else {
             super.onProgressChanged(view, newProgress);
         }
+
+        //加载进度为30时就开始操作页面
+        if (newProgress > 30) {
+            onWebPageComplete();
+
+        }
     }
+
+    /**
+     * webview结束加载操作
+     */
+    private void onWebPageComplete() {
+        Context context = mWebProView.getContext();
+        while (context instanceof ContextThemeWrapper) {
+            if (mHelper != null) {
+                mHelper.onWebPageComplete();
+            }
+            context = ((ContextThemeWrapper) context).getBaseContext();
+        }
+    }
+
 
     @Override
     public void onReceivedTitle(WebView view, String title) {

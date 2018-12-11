@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Base64;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -74,7 +75,6 @@ public class CommonWebView extends WebView implements View.OnLongClickListener {
         return helper;
     }
 
-    //必须要设置,怎么提前设置？
     public void setHelper(WebviewCBHelper helper) {
         this.helper = helper;
         //重置设置相关参数
@@ -276,5 +276,19 @@ public class CommonWebView extends WebView implements View.OnLongClickListener {
                 }
             });
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        if (getParent() != null && getParent() instanceof ViewGroup) {
+            ((ViewGroup) getParent()).removeView(this);
+        }
+        removeAllViews();
     }
 }

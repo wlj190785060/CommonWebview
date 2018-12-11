@@ -22,6 +22,7 @@ import android.webkit.WebViewClient;
 import java.io.ByteArrayInputStream;
 
 import port.WebviewCBHelper;
+import scanerhelp.ClickTrackerUtils;
 import scanerhelp.CssJsUtils;
 
 /**
@@ -34,6 +35,7 @@ class WebClientWrapper extends WebViewClient {
 
     private WebViewClient webViewClient;
     private WebviewCBHelper helper;
+    private boolean isRedirect; // true : 重定向
 
     public WebClientWrapper(WebviewCBHelper helper) {
         super();
@@ -64,6 +66,21 @@ class WebClientWrapper extends WebViewClient {
             view.getContext().startActivity(intent);
             return true;
         }
+        if (!TextUtils.isEmpty(url)) {
+            Uri uri = Uri.parse(url);
+            if (uri != null && !TextUtils.equals(uri.getScheme(), "http") && !TextUtils.equals(uri.getScheme(), "https")) {
+                return super.shouldOverrideUrlLoading(view, url);
+            }
+            if (isRedirect) { // 重定向
+                view.loadUrl(url);
+            } else { // 点击跳转
+                if (ClickTrackerUtils.isDoubleClick()) return true;
+                if (helper != null) {
+                    helper.shouldOverrideUrlLoading(view, url);
+                    return true;
+                }
+            }
+        }
         return super.shouldOverrideUrlLoading(view, url);
     }
 
@@ -82,6 +99,7 @@ class WebClientWrapper extends WebViewClient {
             webViewClient.onPageStarted(view, url, favicon);
         }
         super.onPageStarted(view, url, favicon);
+        isRedirect = true;
     }
 
     @Override
@@ -90,6 +108,7 @@ class WebClientWrapper extends WebViewClient {
             webViewClient.onPageFinished(view, url);
         }
         super.onPageFinished(view, url);
+        isRedirect = false;
     }
 
     @Override

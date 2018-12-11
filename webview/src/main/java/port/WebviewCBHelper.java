@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.support.annotation.CallSuper;
 import android.support.v4.app.Fragment;
 import android.webkit.ValueCallback;
+import android.webkit.WebView;
 
 import com.commonwebview.webview.CommonWebView;
 
@@ -16,7 +17,8 @@ import com.commonwebview.webview.CommonWebView;
 
 public class WebviewCBHelper implements ILongPress, IResultBack,
         IUserAgent, IOpenFileChooser,
-        IScanerImg, IWebViewSetting {
+        IScanerImg, IWebViewSetting,
+        IloadUrl,IWebpageComplete {
 
     //配置js注入，重新设置webview等
     private JsInterface jsInterface;
@@ -111,4 +113,13 @@ public class WebviewCBHelper implements ILongPress, IResultBack,
         this.jsInterface = jsInterface;
     }
 
+    @Override
+    public void shouldOverrideUrlLoading(WebView view, String url) {
+
+    }
+
+    @Override
+    public void onWebPageComplete() {
+
+    }
 }

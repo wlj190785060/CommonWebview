@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent.getIntExtra("key", -1) == 1) {
-            webView.loadUrl("https://blog.csdn.net/qq953655369/article/details/81184560");
+            webView.loadUrl("http://testmediaadmin.8531.cn/liveH5/index?liveId=777");
         } else if (intent.getIntExtra("key", -1) == 2) {
             webView.loadUrl("http://www.xinhuanet.com/politics/2018-11/21/c_129999219.htm");
         }
