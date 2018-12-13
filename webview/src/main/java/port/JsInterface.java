@@ -93,7 +93,7 @@ public abstract class JsInterface implements IimgBrower {
     }
 
     /**
-     * 获取网页源码
+     * 获取网页body源码
      *
      * @param htmlBody
      */
