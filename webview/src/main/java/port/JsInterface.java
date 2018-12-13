@@ -45,7 +45,10 @@ public abstract class JsInterface implements IimgBrower {
         if (imgSrcs != null && imgSrcs.length > 0) {
             mImgSrcs = imgSrcs;
         }
+    }
 
+    public String[] getImgSrcs() {
+        return mImgSrcs;
     }
 
     /**
@@ -59,9 +62,15 @@ public abstract class JsInterface implements IimgBrower {
         }
     }
 
-    public String[] getImgSrcs() {
-        return mImgSrcs;
+    /**
+     * 获取超链接图片集合
+     *
+     * @return
+     */
+    public List<Map<String, String>> getAImgSrcs() {
+        return mSrcs;
     }
+
 
     /**
      * @param text 获取网页文案
@@ -86,10 +95,10 @@ public abstract class JsInterface implements IimgBrower {
     /**
      * 获取网页源码
      *
-     * @param htmlCode
+     * @param htmlBody
      */
-    public String setAttrHtmlSrc(String htmlCode) {
-        return HtmlPauseUtils.parseHandleHtml(mContext, jsObject, htmlCode, new HtmlPauseUtils.ImgSrcsCallBack() {
+    public String setAttrHtmlSrc(String htmlBody) {
+        return HtmlPauseUtils.parseHandleHtml(mContext, jsObject, htmlBody, new HtmlPauseUtils.ImgSrcsCallBack() {
             @Override
             public void callBack(String[] imgSrcs) {
                 //兼容现有浙江新闻/县市报/24小时

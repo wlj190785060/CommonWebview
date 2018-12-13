@@ -57,9 +57,14 @@ final public class CssJsUtils {
      * @return
      * @throw
      */
-    public String getUrlData(WebviewCBHelper helper, WebResourceRequest request, String cookies, String cssPath, String jsPath) {
+    public String getUrlData(WebviewCBHelper helper, WebResourceRequest request, String cookiesUrl, String cssPath, String jsPath) {
         mHelper = helper;
-        String page = getHtml(request, cookies);
+        String page;
+        if (request == null) {
+            page = getHtml(cookiesUrl);
+        } else {
+            page = getHtml(request, cookiesUrl);
+        }
         String css = "";
         if (cssPath != null && !cssPath.isEmpty()) {
             css = buildCss(cssPath);
@@ -117,8 +122,43 @@ final public class CssJsUtils {
         return total.toString();
     }
 
+
     /**
-     * 根据指定路径读取css文件
+     * 根据url获取html代码
+     *
+     * @param urlLink
+     * @return
+     * @throws Exception
+     */
+    private String getHtml(String urlLink) {
+        StringBuilder total = new StringBuilder();
+        try {
+            URL url = new URL(urlLink);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setConnectTimeout(3000);
+            conn.setReadTimeout(3000);
+            InputStream inStream = conn.getInputStream();
+            String encoding = conn.getContentEncoding();
+            if (encoding == null) {
+                encoding = mDefaultEncoding;
+            }
+
+            BufferedReader r = new BufferedReader(new InputStreamReader(inStream, encoding));
+            String line;
+            while ((line = r.readLine()) != null) {
+                total.append(line);
+            }
+            inStream.close();
+            conn.disconnect();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return total.toString();
+    }
+
+    /**
+     * 根据指定路径读取css文件，需要支持现有的浙江新闻详情页的模式
      *
      * @param
      * @return
@@ -143,7 +183,7 @@ final public class CssJsUtils {
             e.printStackTrace();
         }
 
-        return "<style type=\"text/css\">" + contents.toString().trim().replace("\n", "") + "</style>";
+        return "<style  charset=\"UTF-8\" rel=\"stylesheet\" type=\"text/css\">" + contents.toString().trim().replace("\n", "") + "</style>";
     }
 
     /**
@@ -172,7 +212,7 @@ final public class CssJsUtils {
             e.printStackTrace();
         }
 
-        return "<script type=\"text/javascript\">" + contents.toString().trim().replace("\n", "") + "</script>";
+        return "<script type=\"text/javascript\" charset=\"UTF-8\">" + contents.toString().trim().replace("\n", "") + "</script>";
     }
 
     /**

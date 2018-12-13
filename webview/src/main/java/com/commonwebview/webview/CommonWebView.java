@@ -267,6 +267,7 @@ public class CommonWebView extends WebView implements View.OnLongClickListener {
     @Override
     public void onPause() {
         super.onPause();
+        //暂停音频
         if (helper != null && helper.getJsObject() != null && helper.getJsObject().getAudioCount() > 0) {
             final String execUrl = "javascript:musicPause();";
             post(new Runnable() {
@@ -276,11 +277,14 @@ public class CommonWebView extends WebView implements View.OnLongClickListener {
                 }
             });
         }
+        //暂停所有的JS加载
+        pauseTimers();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        resumeTimers();
     }
 
     @Override

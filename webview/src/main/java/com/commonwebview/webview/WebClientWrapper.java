@@ -131,12 +131,19 @@ class WebClientWrapper extends WebViewClient {
     //这里有特殊逻辑就自己重写方法
     //该方法在非UI线程中运行，可以在这里做网络访问等耗时操作
     //不适合在onPageFinished中注入JS/CSS，也闪一下(重新加载)
+    //兼容5.0以下的链接稿CSS/JS注入
     @Override
     public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
-        if (webViewClient != null) {
-            return webViewClient.shouldInterceptRequest(view, url);
+        //注入相关的css和js
+        if (helper != null && !TextUtils.isEmpty(helper.getWebViewJsObject()) && !CssJsUtils.get(view.getContext()).isInject()) {
+            String page = CssJsUtils.get(view.getContext()).getUrlData(helper, null, url, "null", "js/basic.js");
+            return new WebResourceResponse("text/html", "utf-8", new ByteArrayInputStream(page.getBytes()));
+        } else {
+            if (webViewClient != null) {
+                return webViewClient.shouldInterceptRequest(view, url);
+            }
+            return super.shouldInterceptRequest(view, url);
         }
-        return super.shouldInterceptRequest(view, url);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

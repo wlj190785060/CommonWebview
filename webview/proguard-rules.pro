@@ -19,3 +19,13 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-keepattributes *Annotation*
+-keepattributes *JavascriptInterface*
+
+#JavaScript及其内部内的keep混淆
+-keep public class post.JsInterface{
+    public <methods>;
+}
+-keep public class post.JsInterface$InnerClass{
+    public <methods>;
+}
