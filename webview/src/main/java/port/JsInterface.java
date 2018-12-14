@@ -25,7 +25,7 @@ public abstract class JsInterface implements IimgBrower {
     private String mText;
     //图片
     private String[] mImgSrcs;
-    //超链接图片,src->a
+    //超链接图片,map中保存图片地址和文章地址
     private List<Map<String, String>> mSrcs;
     //音频数量
     private int audioCount = 0;

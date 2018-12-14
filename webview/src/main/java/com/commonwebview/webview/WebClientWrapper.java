@@ -20,6 +20,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 
 import port.WebviewCBHelper;
 import scanerhelp.ClickTrackerUtils;
@@ -134,10 +135,21 @@ class WebClientWrapper extends WebViewClient {
     //兼容5.0以下的链接稿CSS/JS注入
     @Override
     public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
-        //注入相关的css和js
+        WebResourceResponse response = null;
+        //注入相关的css和js，只能注入一次
+        //先解析html，再做图片处理
         if (helper != null && !TextUtils.isEmpty(helper.getWebViewJsObject()) && !CssJsUtils.get(view.getContext()).isInject()) {
             String page = CssJsUtils.get(view.getContext()).getUrlData(helper, null, url, "null", "js/basic.js");
             return new WebResourceResponse("text/html", "utf-8", new ByteArrayInputStream(page.getBytes()));
+        } else if (url.contains(".png") || url.contains(".jpg") || url.contains(".webp") || url.contains(".gif") || url.contains(".bmp")) {
+            try {
+                InputStream image = view.getContext().getResources().openRawResource
+                        (+R.mipmap.ic_detail_replace);
+                response = new WebResourceResponse("image/png", "UTF-8", image);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return response;
         } else {
             if (webViewClient != null) {
                 return webViewClient.shouldInterceptRequest(view, url);
@@ -146,14 +158,26 @@ class WebClientWrapper extends WebViewClient {
         }
     }
 
+    //是否需要替换图片的占位图
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest
             request) {
-        //注入相关的css和js
+        WebResourceResponse response = null;
+        String url = request.getUrl().toString();
+        //注入相关的css和js，只能注入一次
         if (helper != null && !TextUtils.isEmpty(helper.getWebViewJsObject()) && !CssJsUtils.get(view.getContext()).isInject()) {
             String page = CssJsUtils.get(view.getContext()).getUrlData(helper, request, CookieManager.getInstance().getCookie(request.getUrl().toString()), "null", "js/basic.js");
             return new WebResourceResponse("text/html", "utf-8", new ByteArrayInputStream(page.getBytes()));
+        } else if (url.contains(".png") || url.contains(".jpg") || url.contains(".webp") || url.contains(".gif") || url.contains(".bmp")) {
+            try {
+                InputStream image = view.getContext().getResources().openRawResource
+                        (+R.mipmap.ic_detail_replace);
+                response = new WebResourceResponse("image/png", "UTF-8", image);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return response;
         } else {
             if (webViewClient != null) {
                 return webViewClient.shouldInterceptRequest(view, request);
@@ -226,11 +250,6 @@ class WebClientWrapper extends WebViewClient {
      */
     @Override
     public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-//        if (webViewClient != null) {
-//            webViewClient.onReceivedSslError(view, handler, error);
-//        } else {
-//            super.onReceivedSslError(view, handler, error);
-//        }
         // 建议
         handler.proceed(); // 针对https，忽略证书错误，相当于信任所有证书
     }

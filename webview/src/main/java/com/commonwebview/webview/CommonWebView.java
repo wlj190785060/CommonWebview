@@ -15,6 +15,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import port.IWebJsCallBack;
 import port.WebviewCBHelper;
 import scanerhelp.WebviewUtils;
 
@@ -24,7 +25,7 @@ import scanerhelp.WebviewUtils;
  * @author wanglinjie
  * @date 2018/6/20 09:44.
  */
-public class CommonWebView extends WebView implements View.OnLongClickListener {
+public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLongClickListener {
 
     private WebClientWrapper mWebClientWrapper;
     private ChromeClientWrapper mChromeClientWrapper;
@@ -295,4 +296,41 @@ public class CommonWebView extends WebView implements View.OnLongClickListener {
         }
         removeAllViews();
     }
+
+    /**
+     * 替换图片
+     *
+     * @param position 位置
+     * @param url      图片url
+     */
+    @Override
+    public void setReplacePic(int position, String url) {
+        final String execUrl = "javascript:replaceImage('" + position + "','" +
+                url + "')";
+        post(new Runnable() {
+            @Override
+            public void run() {
+                loadUrl(execUrl);
+            }
+        });
+    }
+
+    /**
+     * 替换超链接图片
+     *
+     * @param position
+     * @param url
+     */
+    @Override
+    public void setReplaceAPic(int position, String url) {
+        final String execUrl = "javascript:setReplaceAPic('" + position + "','" +
+                url + "')";
+        post(new Runnable() {
+            @Override
+            public void run() {
+                loadUrl(execUrl);
+            }
+        });
+    }
+
 }
