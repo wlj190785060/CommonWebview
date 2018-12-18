@@ -8,14 +8,16 @@ public interface IimgBrower {
     /**
      * 超链接图片点击
      *
+     * @param index
      * @param url 图片地址
      */
-    void imageABrowseCB(String url);
+    void imageABrowseCB(int index,String url);
 
     /**
      * 非超链接图片点击
      *
+     * @param index
      * @param url 图片地址
      */
-    void imageBrowseCB(String url);
+    void imageBrowseCB(int index,String url);
 }

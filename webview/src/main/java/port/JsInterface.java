@@ -143,7 +143,7 @@ public abstract class JsInterface implements IimgBrower {
         if (ClickTrackerUtils.isDoubleClick()) {
             return;
         }
-        imageBrowseCB(mImgSrcs[index]);
+        imageBrowseCB(index, mImgSrcs[index]);
     }
 
 
@@ -165,18 +165,17 @@ public abstract class JsInterface implements IimgBrower {
                 }
             }
         }
-        imageABrowseCB(imgUrl);
+        imageABrowseCB(index, imgUrl);
     }
 
-    //用户自己实现业务逻辑
+    //用户自己实现点击图片的业务逻辑
     @Override
-    public void imageABrowseCB(String url) {
-
+    public void imageABrowseCB(int index, String url) {
     }
 
+    //点击超链接的业务逻辑
     @Override
-    public void imageBrowseCB(String url) {
-
+    public void imageBrowseCB(int index, String url) {
     }
 
 }

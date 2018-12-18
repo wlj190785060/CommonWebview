@@ -30,9 +30,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        webView.onPause();
-    }
+    //webview自己处理生命周期
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        webView.onPause();
+//    }
+//
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        webView.destroy();
+//    }
 }

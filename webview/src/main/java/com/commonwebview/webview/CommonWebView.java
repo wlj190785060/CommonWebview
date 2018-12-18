@@ -8,12 +8,18 @@ import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import port.IWebJsCallBack;
 import port.WebviewCBHelper;
@@ -198,6 +204,7 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
         mWebClientWrapper.setWrapper(client);
     }
 
+    //生命周期fragment
     private WebLifecycleFragment mLifecycleFragment;
 
     @Override
@@ -209,6 +216,7 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
                 FragmentManager fragmentManager = fa.getSupportFragmentManager();
                 if (mLifecycleFragment == null) {
                     mLifecycleFragment = new WebLifecycleFragment();
+                    mLifecycleFragment.setWebview(this);
                 }
                 fragmentManager.beginTransaction().add(mLifecycleFragment, FRAGMENT_TAG)
                         .commitAllowingStateLoss();

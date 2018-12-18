@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Message;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -23,11 +24,6 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebStorage;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
-
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import port.WebviewCBHelper;
 
@@ -96,40 +92,6 @@ public class ChromeClientWrapper extends WebChromeClient
         //加载进度为30时就开始操作页面
         if (newProgress > 30) {
             onWebPageComplete();
-            repleceImgs();
-        }
-    }
-
-    //TODO wljJ 这里图片替换可能存在问题
-
-    /**
-     * 替换图片
-     */
-    private void repleceImgs() {
-        if (mWebProView != null) {
-            //替换普通图片
-            String[] imgSrc = mWebProView.getHelper().getJsObject().getImgSrcs();
-            if (imgSrc != null && imgSrc.length > 0) {
-                for (int i = 0; i < imgSrc.length; i++) {
-                    mWebProView.setReplacePic(i, imgSrc[i]);
-                }
-            }
-
-            //替换超链接图片
-            List<Map<String, String>> aimgSrc = mWebProView.getHelper().getJsObject().getAImgSrcs();
-            if (aimgSrc != null && aimgSrc.size() > 0) {
-                for (int i = 0; i < aimgSrc.size(); i++) {
-                    if (aimgSrc.get(i) != null && !aimgSrc.get(i).isEmpty()) {
-                        Set keys = aimgSrc.get(i).keySet();
-                        if (keys != null) {
-                            Iterator iterator = keys.iterator();
-                            while (iterator.hasNext()) {
-                                mWebProView.setReplaceAPic(i, iterator.next().toString());
-                            }
-                        }
-                    }
-                }
-            }
         }
     }
 

@@ -15,6 +15,11 @@ import java.util.List;
 public class WebLifecycleFragment extends Fragment {
 
     private List<OnActivityResultCallback> mCallbacks = new ArrayList<>();
+    private CommonWebView mWebview;
+
+    public void setWebview(CommonWebView webview){
+        mWebview = webview;
+    }
 
     public void addOnActivityResultCallback(OnActivityResultCallback callback) {
         if (callback != null) {
@@ -37,6 +42,30 @@ public class WebLifecycleFragment extends Fragment {
                 if (callback != null && callback.onActivityResult(requestCode, resultCode, data))
                     mCallbacks.remove(callback);
             }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(mWebview != null){
+            mWebview.onResume();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(mWebview != null){
+            mWebview.onPause();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(mWebview != null){
+            mWebview.destroy();
         }
     }
 

@@ -18,7 +18,7 @@ import com.commonwebview.webview.CommonWebView;
 public class WebviewCBHelper implements ILongPress, IResultBack,
         IUserAgent, IOpenFileChooser,
         IScanerImg, IWebViewSetting,
-        IloadUrl,IWebpageComplete {
+        IloadUrl, IWebpageComplete {
 
     //配置js注入，重新设置webview等
     private JsInterface jsInterface;

@@ -16,11 +16,12 @@ public class JsInterfaceImp extends JsInterface {
     }
 
     @Override
-    public void imageABrowseCB(String url) {
+    public void imageABrowseCB(int index, String url) {
+
     }
 
     @Override
-    public void imageBrowseCB(String url) {
+    public void imageBrowseCB(int index, String url) {
     }
 
 

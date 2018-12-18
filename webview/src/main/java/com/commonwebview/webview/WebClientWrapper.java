@@ -8,6 +8,7 @@ import android.net.http.SslError;
 import android.os.Build;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.webkit.ClientCertRequest;
 import android.webkit.CookieManager;
@@ -20,7 +21,10 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import port.WebviewCBHelper;
 import scanerhelp.ClickTrackerUtils;
@@ -103,6 +107,38 @@ class WebClientWrapper extends WebViewClient {
         isRedirect = true;
     }
 
+
+    /**
+     * 替换图片,只替换1次
+     */
+    private void repleceImgs(CommonWebView view) {
+        if (view != null) {
+            //替换普通图片
+            String[] imgSrc = view.getHelper().getJsObject().getImgSrcs();
+            if (imgSrc != null && imgSrc.length > 0) {
+                for (int i = 0; i < imgSrc.length; i++) {
+                    view.setReplacePic(i, imgSrc[i]);
+                }
+            }
+
+            //替换超链接图片
+            List<Map<String, String>> aimgSrc = view.getHelper().getJsObject().getAImgSrcs();
+            if (aimgSrc != null && aimgSrc.size() > 0) {
+                for (int i = 0; i < aimgSrc.size(); i++) {
+                    if (aimgSrc.get(i) != null && !aimgSrc.get(i).isEmpty()) {
+                        Set keys = aimgSrc.get(i).keySet();
+                        if (keys != null) {
+                            Iterator iterator = keys.iterator();
+                            while (iterator.hasNext()) {
+                                view.setReplaceAPic(i, iterator.next().toString());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     @Override
     public void onPageFinished(WebView view, String url) {
         if (webViewClient != null) {
@@ -141,16 +177,8 @@ class WebClientWrapper extends WebViewClient {
         if (helper != null && !TextUtils.isEmpty(helper.getWebViewJsObject()) && !CssJsUtils.get(view.getContext()).isInject()) {
             String page = CssJsUtils.get(view.getContext()).getUrlData(helper, null, url, "null", "js/basic.js");
             return new WebResourceResponse("text/html", "utf-8", new ByteArrayInputStream(page.getBytes()));
-        } else if (url.contains(".png") || url.contains(".jpg") || url.contains(".webp") || url.contains(".gif") || url.contains(".bmp")) {
-            try {
-                InputStream image = view.getContext().getResources().openRawResource
-                        (+R.mipmap.ic_detail_replace);
-                response = new WebResourceResponse("image/png", "UTF-8", image);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return response;
-        } else {
+        }
+        else {
             if (webViewClient != null) {
                 return webViewClient.shouldInterceptRequest(view, url);
             }
@@ -169,16 +197,8 @@ class WebClientWrapper extends WebViewClient {
         if (helper != null && !TextUtils.isEmpty(helper.getWebViewJsObject()) && !CssJsUtils.get(view.getContext()).isInject()) {
             String page = CssJsUtils.get(view.getContext()).getUrlData(helper, request, CookieManager.getInstance().getCookie(request.getUrl().toString()), "null", "js/basic.js");
             return new WebResourceResponse("text/html", "utf-8", new ByteArrayInputStream(page.getBytes()));
-        } else if (url.contains(".png") || url.contains(".jpg") || url.contains(".webp") || url.contains(".gif") || url.contains(".bmp")) {
-            try {
-                InputStream image = view.getContext().getResources().openRawResource
-                        (+R.mipmap.ic_detail_replace);
-                response = new WebResourceResponse("image/png", "UTF-8", image);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return response;
-        } else {
+        }
+        else {
             if (webViewClient != null) {
                 return webViewClient.shouldInterceptRequest(view, request);
             }
