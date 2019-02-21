@@ -21,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
 
         //用户需要设置绑定的对象
         webImpl = new WebViewImpl();
-        //注入对象,如果需要使用getZBJTWebViewJsObject
         jsInterfaceImp = new JsInterfaceImp(webView, webImpl.getWebViewJsObject(), this);
 //        jsInterfaceImp.setInterFace(jsInterfaceImp);
         webImpl.setJsObject(jsInterfaceImp);

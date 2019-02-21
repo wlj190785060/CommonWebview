@@ -36,6 +36,7 @@ public class JsInterfaceImp extends JsInterface implements ZBJTJSInterFace {
         super(webView, jsObject, ctx);
     }
 
+    //点击图片逻辑
     @Override
     public void imageABrowseCB(int index, String url) {
 

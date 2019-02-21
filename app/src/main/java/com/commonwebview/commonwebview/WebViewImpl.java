@@ -14,6 +14,7 @@ public class WebViewImpl extends WebviewCBHelper {
     }
 
     //如果不绑定对象，则属于正常的webview加载链接
+    //使用浙江新闻通用版本则使用ZBJTJsBridge.PREFIX_JS_METHOD_NAME
     @Override
     public String getWebViewJsObject() {
         return "zjxw";

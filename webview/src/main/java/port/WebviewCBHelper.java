@@ -78,6 +78,7 @@ abstract public class WebviewCBHelper implements ILongPress, IResultBack, IOpenF
 
     }
 
+    //如果要重写需要调用super()
     @CallSuper
     @Override
     public void setWebviewConfig(CommonWebView webview) {
@@ -87,12 +88,6 @@ abstract public class WebviewCBHelper implements ILongPress, IResultBack, IOpenF
     }
 
     abstract public String getWebViewJsObject();
-
-    @Override
-    public String getZBJTWebViewJsObject() {
-        return ZBJTJsBridge.PREFIX_JS_METHOD_NAME;
-    }
-
 
     /**
      * 获取js绑定对象
