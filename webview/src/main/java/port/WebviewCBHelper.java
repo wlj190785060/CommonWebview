@@ -26,6 +26,9 @@ abstract public class WebviewCBHelper implements ILongPress, IResultBack, IOpenF
     //设置us
     abstract public String getUserAgent();
 
+    //是否是链接稿
+    abstract public boolean isBrowserLink();
+
     //长按逻辑
     @Override
     public void onLongClickCallBack(String imgUrl, boolean isScanerImg) {

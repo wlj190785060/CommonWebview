@@ -172,13 +172,14 @@ class WebClientWrapper extends WebViewClient {
     public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
         WebResourceResponse response = null;
         //省流量模式操作
-        if (helper != null && helper.isProvinTrafficMode()) {
+        //原生需要单独注入css.js
+        if (helper != null && helper.isProvinTrafficMode() && !helper.isBrowserLink()) {
             return helper.doProvinTraffic(url);
         }
-        //在非省流量模式下，注入js
+        //外链稿注入js,且没有注入成功
         //注入相关的css和js，只能注入一次
         //先解析html，再做图片处理
-        else if (helper != null && !helper.isProvinTrafficMode() && !TextUtils.isEmpty(helper.getWebViewJsObject()) && !CssJsUtils.get(view.getContext()).isInject()) {
+        else if (helper != null && helper.isBrowserLink() && !TextUtils.isEmpty(helper.getWebViewJsObject()) && !CssJsUtils.get(view.getContext()).isInject()) {
             String page = CssJsUtils.get(view.getContext()).getUrlData(helper, null, url, "null", "js/basic.js");
             return new WebResourceResponse("text/html", "utf-8", new ByteArrayInputStream(page.getBytes()));
         } else {
@@ -197,7 +198,7 @@ class WebClientWrapper extends WebViewClient {
         //注入相关的css和js，只能注入一次
         if (helper != null && helper.isProvinTrafficMode()) {
             return helper.doProvinTraffic(request.getUrl().toString());
-        } else if (helper != null && !helper.isProvinTrafficMode() && !TextUtils.isEmpty(helper.getWebViewJsObject()) && !CssJsUtils.get(view.getContext()).isInject()) {
+        } else if (helper != null && helper.isBrowserLink() && !TextUtils.isEmpty(helper.getWebViewJsObject()) && !CssJsUtils.get(view.getContext()).isInject()) {
             String page = CssJsUtils.get(view.getContext()).getUrlData(helper, request, CookieManager.getInstance().getCookie(request.getUrl().toString()), "null", "js/basic.js");
             return new WebResourceResponse("text/html", "utf-8", new ByteArrayInputStream(page.getBytes()));
         } else {

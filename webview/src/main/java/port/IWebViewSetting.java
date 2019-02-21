@@ -12,4 +12,5 @@ public interface IWebViewSetting {
      * @param webview
      */
     void setWebviewConfig(CommonWebView webview);
+
 }
