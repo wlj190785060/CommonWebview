@@ -3,21 +3,22 @@ package port;
 import android.content.Context;
 import android.text.TextUtils;
 import android.webkit.JavascriptInterface;
+import android.webkit.WebView;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import scanerhelp.ClickTrackerUtils;
-import scanerhelp.HtmlPauseUtils;
+import webutils.ClickTrackerUtils;
+import webutils.HtmlPauseUtils;
 
 /**
- * JS公共类，JS若要注入必须要继承该类
+ * JS公共类，JS若要注入必须要继承该类,默认拥有通用浙报JSSDK的能力
  * Created by wanglinjie.
  * create time:2018/11/16  下午3:53
  */
-public abstract class JsInterface implements IimgBrower {
+public abstract class JsInterface extends ZBJTJsBridge implements IimgBrower {
 
     /**
      * 记录是否被预览过的集合
@@ -33,7 +34,8 @@ public abstract class JsInterface implements IimgBrower {
     private String jsObject;
     private Context mContext;
 
-    public JsInterface(String jsObject, Context ctx) {
+    public JsInterface(WebView webview, String jsObject, Context ctx) {
+        super(webview);
         this.jsObject = jsObject;
         mContext = ctx;
     }

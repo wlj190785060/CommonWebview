@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.support.annotation.CallSuper;
 import android.support.v4.app.Fragment;
 import android.webkit.ValueCallback;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 
 import com.commonwebview.webview.CommonWebView;
@@ -15,19 +16,15 @@ import com.commonwebview.webview.CommonWebView;
  * create time:2018/6/20  下午4:59
  */
 
-public class WebviewCBHelper implements ILongPress, IResultBack,
-        IUserAgent, IOpenFileChooser,
+abstract public class WebviewCBHelper implements ILongPress, IResultBack, IOpenFileChooser,
         IScanerImg, IWebViewSetting,
-        IloadUrl, IWebpageComplete {
+        IloadUrl, IWebpageComplete, IProvinTraffic {
 
     //配置js注入，重新设置webview等
     private JsInterface jsInterface;
 
     //设置us
-    @Override
-    public String getUserAgent() {
-        return null;
-    }
+    abstract public String getUserAgent();
 
     //长按逻辑
     @Override
@@ -89,9 +86,11 @@ public class WebviewCBHelper implements ILongPress, IResultBack,
         }
     }
 
+    abstract public String getWebViewJsObject();
+
     @Override
-    public String getWebViewJsObject() {
-        return "";
+    public String getZBJTWebViewJsObject() {
+        return ZBJTJsBridge.PREFIX_JS_METHOD_NAME;
     }
 
 
@@ -121,5 +120,23 @@ public class WebviewCBHelper implements ILongPress, IResultBack,
     @Override
     public void onWebPageComplete() {
 
+    }
+
+    /**
+     * 默认为非省流量模式
+     *
+     * @return
+     */
+    abstract public boolean isProvinTrafficMode();
+
+    /**
+     * 是否要进行省流量操作
+     *
+     * @param url
+     * @return
+     */
+    @Override
+    public WebResourceResponse doProvinTraffic(String url) {
+        return null;
     }
 }

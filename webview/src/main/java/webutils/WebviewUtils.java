@@ -1,4 +1,4 @@
-package scanerhelp;
+package webutils;
 
 import android.content.Context;
 import android.content.res.Configuration;

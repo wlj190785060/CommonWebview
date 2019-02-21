@@ -8,7 +8,6 @@ import android.net.http.SslError;
 import android.os.Build;
 import android.os.Message;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.webkit.ClientCertRequest;
 import android.webkit.CookieManager;
@@ -27,8 +26,8 @@ import java.util.Map;
 import java.util.Set;
 
 import port.WebviewCBHelper;
-import scanerhelp.ClickTrackerUtils;
-import scanerhelp.CssJsUtils;
+import webutils.ClickTrackerUtils;
+import webutils.CssJsUtils;
 
 /**
  * 通用webview
@@ -172,13 +171,17 @@ class WebClientWrapper extends WebViewClient {
     @Override
     public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
         WebResourceResponse response = null;
+        //省流量模式操作
+        if (helper != null && helper.isProvinTrafficMode()) {
+            return helper.doProvinTraffic(url);
+        }
+        //在非省流量模式下，注入js
         //注入相关的css和js，只能注入一次
         //先解析html，再做图片处理
-        if (helper != null && !TextUtils.isEmpty(helper.getWebViewJsObject()) && !CssJsUtils.get(view.getContext()).isInject()) {
+        else if (helper != null && !helper.isProvinTrafficMode() && !TextUtils.isEmpty(helper.getWebViewJsObject()) && !CssJsUtils.get(view.getContext()).isInject()) {
             String page = CssJsUtils.get(view.getContext()).getUrlData(helper, null, url, "null", "js/basic.js");
             return new WebResourceResponse("text/html", "utf-8", new ByteArrayInputStream(page.getBytes()));
-        }
-        else {
+        } else {
             if (webViewClient != null) {
                 return webViewClient.shouldInterceptRequest(view, url);
             }
@@ -191,14 +194,13 @@ class WebClientWrapper extends WebViewClient {
     @Override
     public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest
             request) {
-        WebResourceResponse response = null;
-        String url = request.getUrl().toString();
         //注入相关的css和js，只能注入一次
-        if (helper != null && !TextUtils.isEmpty(helper.getWebViewJsObject()) && !CssJsUtils.get(view.getContext()).isInject()) {
+        if (helper != null && helper.isProvinTrafficMode()) {
+            return helper.doProvinTraffic(request.getUrl().toString());
+        } else if (helper != null && !helper.isProvinTrafficMode() && !TextUtils.isEmpty(helper.getWebViewJsObject()) && !CssJsUtils.get(view.getContext()).isInject()) {
             String page = CssJsUtils.get(view.getContext()).getUrlData(helper, request, CookieManager.getInstance().getCookie(request.getUrl().toString()), "null", "js/basic.js");
             return new WebResourceResponse("text/html", "utf-8", new ByteArrayInputStream(page.getBytes()));
-        }
-        else {
+        } else {
             if (webViewClient != null) {
                 return webViewClient.shouldInterceptRequest(view, request);
             }

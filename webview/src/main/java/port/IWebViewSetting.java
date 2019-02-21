@@ -12,10 +12,9 @@ public interface IWebViewSetting {
      * @param webview
      */
     void setWebviewConfig(CommonWebView webview);
-
     /**
-     * 继承子类必须要实现的方法
-     * @return 自定义返回JS绑定对象
+     * 获取通用浙报集团JS绑定对象
+     * @return
      */
-    String getWebViewJsObject();
+    String getZBJTWebViewJsObject();
 }

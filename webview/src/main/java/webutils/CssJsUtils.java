@@ -1,7 +1,8 @@
-package scanerhelp;
+package webutils;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.text.TextUtils;
 import android.webkit.WebResourceRequest;
 
 import java.io.BufferedReader;
@@ -11,6 +12,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 import java.util.Map;
 
 import port.WebviewCBHelper;
@@ -253,6 +255,42 @@ final public class CssJsUtils {
         }
 
         return res;
+    }
+
+    /**
+     * 原生详情页注入css和js
+     *
+     * @param htmlCode   assert中的html模板
+     * @param content    接口中的html内容
+     * @param cssContent assert中的css文本内容,目前场景为日夜间模式css
+     * @param jsPath     assert中的js文件路径
+     * @param css        程序初始下发的css集合
+     * @param js         程序初始下发的js集合
+     * @return 注入之后的代码
+     */
+    public String detailInjectCssJs(String htmlCode, String content, String cssContent, String jsPath, List<String> css, List<String> js) {
+        String css_js = "";
+        if (mHelper != null && !TextUtils.isEmpty(htmlCode)) {
+            String htmlBody = mHelper.getJsObject().setAttrHtmlSrc(content);
+            String cssTotal = "<link id=\"ui_mode_link\" charset=\"UTF-8\" href=\"%1$s\" " +
+                    "rel=\"stylesheet\" type=\"text/css\"/>";
+            String html = "<script type=\"text/javascript\" charset=\"UTF-8\" src=\"%1$s\"></script>";
+            css_js += String.format(cssTotal, cssContent);
+            css_js += String.format(html, jsPath);
+            if (css != null && !css.isEmpty()) {
+                for (int i = 0; i < css.size(); i++) {
+                    css_js += String.format(cssTotal, css.get(i));
+                }
+            }
+
+            if (js != null && js.isEmpty()) {
+                for (int i = 0; i < js.size(); i++) {
+                    css_js += String.format(html, js.get(i));
+                }
+            }
+            return String.format(htmlCode, css_js, htmlBody);
+        }
+        return null;
     }
 
 }

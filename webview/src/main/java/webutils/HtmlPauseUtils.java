@@ -1,4 +1,4 @@
-package scanerhelp;
+package webutils;
 
 import android.content.Context;
 import android.graphics.Point;
@@ -263,7 +263,6 @@ final public class HtmlPauseUtils {
         }
 
         if (widthPx > 0) {
-//            float screenWidthDip = UIUtils.px2dip(UIUtils.getScreenW());
             // 判断像素是否接近屏幕宽度，设置为屏幕宽度
             if (widthPx > screenWidthDip) {
                 widthPx = Math.round(screenWidthDip);

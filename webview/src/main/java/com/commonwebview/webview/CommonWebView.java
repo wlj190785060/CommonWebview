@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
@@ -16,14 +15,9 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import port.IWebJsCallBack;
 import port.WebviewCBHelper;
-import scanerhelp.WebviewUtils;
+import webutils.WebviewUtils;
 
 /**
  * 通用webview

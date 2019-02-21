@@ -1,4 +1,4 @@
-package scanerhelp;
+package webutils;
 
 import android.os.SystemClock;
 import android.text.TextUtils;
