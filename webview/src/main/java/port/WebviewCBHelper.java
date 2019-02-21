@@ -18,7 +18,7 @@ import com.commonwebview.webview.CommonWebView;
 
 abstract public class WebviewCBHelper implements ILongPress, IResultBack, IOpenFileChooser,
         IScanerImg, IWebViewSetting,
-        IloadUrl, IWebpageComplete, IProvinTraffic {
+        IloadUrl, IWebpageComplete, IProvinTraffic, IDoFullVideo {
 
     //配置js注入，重新设置webview等
     private JsInterface jsInterface;
@@ -136,5 +136,13 @@ abstract public class WebviewCBHelper implements ILongPress, IResultBack, IOpenF
     @Override
     public WebResourceResponse doProvinTraffic(String url) {
         return null;
+    }
+
+    /**
+     * 视频全屏操作
+     */
+    @Override
+    public void doFullVideo() {
+
     }
 }
