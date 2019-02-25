@@ -36,9 +36,7 @@ public class ChromeClientWrapper extends WebChromeClient
         implements WebLifecycleFragment.OnActivityResultCallback {
 
     private CommonWebView mWebProView;
-
     private WebChromeClient webChromeClient;
-
     private ValueCallback<Uri> mUploadMessage;
     private ValueCallback<Uri[]> mUploadMessage21;
 
@@ -54,6 +52,14 @@ public class ChromeClientWrapper extends WebChromeClient
         super();
         mWebProView = webProView;
         mHelper = mWebProView.getHelper();
+    }
+
+    public void setmUploadMessage(ValueCallback<Uri> mUploadMessage) {
+        this.mUploadMessage = mUploadMessage;
+    }
+
+    public void setmUploadMessage21(ValueCallback<Uri[]> mUploadMessage21) {
+        this.mUploadMessage21 = mUploadMessage21;
     }
 
     public WebChromeClient getWrapper() {
