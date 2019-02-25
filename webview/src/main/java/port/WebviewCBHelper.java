@@ -20,19 +20,23 @@ abstract public class WebviewCBHelper implements IResultBack, IOpenFileChooser,
         IScanerImg, IWebViewSetting,
         IloadUrl, IWebpageComplete, IProvinTraffic, IDoFullVideo {
 
+    //是否是链接稿
+    private boolean isBrowserLink = false;
+
     //配置js注入，重新设置webview等
     private JsInterface jsInterface;
 
     //设置us
     abstract public String getUserAgent();
 
-    //是否是链接稿
-    abstract public boolean isBrowserLink();
+    public boolean isBrowserLink() {
+        return isBrowserLink;
+    }
 
-//    //长按逻辑
-//    @Override
-//    public void onLongClickCallBack(String imgUrl, boolean isScanerImg) {
-//    }
+    //是否是链接稿,如果是外链稿且需要注入则需要设置该项
+    public void setBrowserLinkStat(boolean isBrowserLink) {
+         this.isBrowserLink = isBrowserLink;
+    }
 
     //返回业务逻辑处理
     @Override
