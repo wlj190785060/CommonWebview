@@ -10,7 +10,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Message;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -148,6 +147,10 @@ public class ChromeClientWrapper extends WebChromeClient
      */
     @Override
     public void onShowCustomView(View view, CustomViewCallback callback) {
+        //全屏业务逻辑
+        if (mHelper != null) {
+            mHelper.doFullVideo();
+        }
         if (container != null) {
             callback.onCustomViewHidden();
             return;
@@ -176,6 +179,10 @@ public class ChromeClientWrapper extends WebChromeClient
 
     @Override
     public void onHideCustomView() {
+        //退出全屏业务逻辑
+        if (mHelper != null) {
+            mHelper.exitFullVideo();
+        }
         if (container == null) {
             return;
         }

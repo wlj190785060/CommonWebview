@@ -7,4 +7,5 @@ package port;
  */
 public interface IDoFullVideo {
     void doFullVideo();
+    void exitFullVideo();
 }

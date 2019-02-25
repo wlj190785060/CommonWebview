@@ -16,7 +16,7 @@ import com.commonwebview.webview.CommonWebView;
  * create time:2018/6/20  下午4:59
  */
 
-abstract public class WebviewCBHelper implements ILongPress, IResultBack, IOpenFileChooser,
+abstract public class WebviewCBHelper implements IResultBack, IOpenFileChooser,
         IScanerImg, IWebViewSetting,
         IloadUrl, IWebpageComplete, IProvinTraffic, IDoFullVideo {
 
@@ -29,10 +29,10 @@ abstract public class WebviewCBHelper implements ILongPress, IResultBack, IOpenF
     //是否是链接稿
     abstract public boolean isBrowserLink();
 
-    //长按逻辑
-    @Override
-    public void onLongClickCallBack(String imgUrl, boolean isScanerImg) {
-    }
+//    //长按逻辑
+//    @Override
+//    public void onLongClickCallBack(String imgUrl, boolean isScanerImg) {
+//    }
 
     //返回业务逻辑处理
     @Override
@@ -72,7 +72,7 @@ abstract public class WebviewCBHelper implements ILongPress, IResultBack, IOpenF
     //是否需要支持二维码 默认不支持
     @Override
     public boolean isNeedScanerImg() {
-        return false;
+        return true;
     }
 
     //关闭二维码识别线程池（如果有的话）
@@ -143,6 +143,11 @@ abstract public class WebviewCBHelper implements ILongPress, IResultBack, IOpenF
      */
     @Override
     public void doFullVideo() {
+
+    }
+
+    @Override
+    public void exitFullVideo() {
 
     }
 }
