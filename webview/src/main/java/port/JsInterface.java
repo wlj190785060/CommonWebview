@@ -18,13 +18,13 @@ import webutils.HtmlPauseUtils;
  * Created by wanglinjie.
  * create time:2018/11/16  下午3:53
  */
-public abstract class JsInterface extends ZBJTJsBridge implements IimgBrower {
+public abstract class JsInterface extends ZBJTJsBridge implements IimgBrower, ISetImgs {
 
     /**
      * 记录是否被预览过的集合
      */
     private String mText;
-    //图片
+    //普通图片
     private String[] mImgSrcs;
     //超链接图片,map中保存图片地址和文章地址
     private List<Map<String, String>> mSrcs;
@@ -33,6 +33,10 @@ public abstract class JsInterface extends ZBJTJsBridge implements IimgBrower {
     //js绑定对象名
     private String jsObject;
     private Context mContext;
+    /**
+     * 记录是否被预览过的集合
+     */
+    public SerializableHashMap map, map1;
 
     public JsInterface(WebView webview, String jsObject, Context ctx) {
         super(webview);
@@ -47,6 +51,8 @@ public abstract class JsInterface extends ZBJTJsBridge implements IimgBrower {
         if (imgSrcs != null && imgSrcs.length > 0) {
             mImgSrcs = imgSrcs;
         }
+        //TODO WLJ 这里有特殊逻辑
+        setImgs();
     }
 
     public String[] getImgSrcs() {
@@ -62,6 +68,8 @@ public abstract class JsInterface extends ZBJTJsBridge implements IimgBrower {
         if (mSrcs != null && mSrcs.size() > 0) {
             mSrcs = srcs;
         }
+        //TODO WLJ 这里有特殊逻辑
+        setAImgs();
     }
 
     /**
@@ -138,19 +146,19 @@ public abstract class JsInterface extends ZBJTJsBridge implements IimgBrower {
     }
 
     /**
-     * @param index 点击图片
+     * @param index 点击图片逻辑
      */
     @JavascriptInterface
     public void imageBrowse(int index) {
         if (ClickTrackerUtils.isDoubleClick()) {
             return;
         }
-        imageBrowseCB(index, mImgSrcs[index]);
+        imageBrowseCB(index, mImgSrcs[index], map);
     }
 
 
     /**
-     * @param index 点击超链接图片
+     * @param index 点击超链接图片逻辑
      */
     @JavascriptInterface
     public void imageABrowse(int index) {
@@ -167,17 +175,40 @@ public abstract class JsInterface extends ZBJTJsBridge implements IimgBrower {
                 }
             }
         }
-        imageABrowseCB(index, imgUrl);
+        imageABrowseCB(index, imgUrl, map1);
     }
 
-    //用户自己实现点击图片的业务逻辑
+    //点击图片的业务逻辑
     @Override
-    public void imageABrowseCB(int index, String url) {
+    public void imageABrowseCB(int index, String url, SerializableHashMap map) {
+
     }
 
     //点击超链接的业务逻辑
     @Override
-    public void imageBrowseCB(int index, String url) {
+    public void imageBrowseCB(int index, String url, SerializableHashMap map) {
+    }
+
+    //设置普通图片，默认可以实现一套，也可以外部自己实现
+    @Override
+    public void setImgs() {
+        if (mImgSrcs != null && mImgSrcs.length > 0) {
+            map = new SerializableHashMap();
+            for (int i = 0; i < mImgSrcs.length; i++) {
+                map.getMap().put(i, false);
+            }
+        }
+    }
+
+    //设置超链接图片，默认可以实现一套，也可以外部自己实现
+    @Override
+    public void setAImgs() {
+        if (mSrcs != null && mSrcs.size() > 0) {
+            map1 = new SerializableHashMap();
+            for (int i = 0; i < mSrcs.size(); i++) {
+                map1.getMap().put(i, false);
+            }
+        }
     }
 
 }

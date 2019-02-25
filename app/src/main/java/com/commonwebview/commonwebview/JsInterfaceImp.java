@@ -23,6 +23,7 @@ import bean.ZBJTStartRecordRspBean;
 import bean.ZBJTUploadFileBean;
 import bean.ZBJTUploadFileRspBean;
 import port.JsInterface;
+import port.SerializableHashMap;
 import port.ZBJTJSInterFace;
 
 /**
@@ -36,14 +37,15 @@ public class JsInterfaceImp extends JsInterface implements ZBJTJSInterFace {
         super(webView, jsObject, ctx);
     }
 
-    //点击图片逻辑
+    //点击超链接图片逻辑
     @Override
-    public void imageABrowseCB(int index, String url) {
+    public void imageABrowseCB(int index, String url, SerializableHashMap map) {
 
     }
 
+    //点击图片逻辑
     @Override
-    public void imageBrowseCB(int index, String url) {
+    public void imageBrowseCB(int index, String url, SerializableHashMap map) {
     }
 
     //浙报集团通用JSSDK实现

@@ -10,14 +10,16 @@ public interface IimgBrower {
      *
      * @param index
      * @param url 图片地址
+     * @param map 记录图片是否已经被预览
      */
-    void imageABrowseCB(int index,String url);
+    void imageABrowseCB(int index,String url,SerializableHashMap map);
 
     /**
      * 非超链接图片点击
      *
      * @param index
      * @param url 图片地址
+     * @param map 记录图片是否已经被预览
      */
-    void imageBrowseCB(int index,String url);
+    void imageBrowseCB(int index,String url,SerializableHashMap map);
 }
