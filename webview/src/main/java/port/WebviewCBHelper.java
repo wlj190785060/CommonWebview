@@ -8,6 +8,7 @@ import android.webkit.ValueCallback;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 
+import com.commonwebview.webview.ChromeClientWrapper;
 import com.commonwebview.webview.CommonWebView;
 
 /**
@@ -51,7 +52,7 @@ abstract public class WebviewCBHelper implements IResultBack, IOpenFileChooser,
 
     //文件管理回调
     @Override
-    public void openFileResultCallBack(int requestCode, int resultCode, Intent data, ValueCallback<Uri> mUploadMessage, ValueCallback<Uri[]> mUploadMessage21) {
+    public void openFileResultCallBack(int requestCode, int resultCode, Intent data, ChromeClientWrapper wrapper,ValueCallback<Uri> mUploadMessage, ValueCallback<Uri[]> mUploadMessage21) {
     }
 
     //二维码识别业务逻辑

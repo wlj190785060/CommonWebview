@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.webkit.ValueCallback;
 
+import com.commonwebview.webview.ChromeClientWrapper;
+
 /**
  * 打开相册
  * Created by wanglinjie.
@@ -22,10 +24,11 @@ public interface IOpenFileChooser {
 
     /**
      * 图片选中返回操作
+     *
      * @param requestCode
      * @param resultCode
      * @param data
      * @return
      */
-    void openFileResultCallBack(int requestCode, int resultCode, Intent data, ValueCallback<Uri> mUploadMessage,ValueCallback<Uri[]> mUploadMessage21);
+    void openFileResultCallBack(int requestCode, int resultCode, Intent data, ChromeClientWrapper wrapper, ValueCallback<Uri> mUploadMessage, ValueCallback<Uri[]> mUploadMessage21);
 }
