@@ -49,64 +49,64 @@ final public class WebviewUtils {
         return instance;
     }
 
-    /**
-     * 根据地址获取网络图片
-     *
-     * @param sUrl 图片地址
-     * @return
-     */
-    public Bitmap getBitmap(String sUrl) {
-        try {
-            URL url = new URL(sUrl);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setConnectTimeout(5000);
-            conn.setRequestMethod("GET");
-            if (conn.getResponseCode() == 200) {
-                InputStream inputStream = conn.getInputStream();
-                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                return bitmap;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-
-    /**
-     * 校验二维码
-     *
-     * @param bitmap
-     * @return 调用方式：WebviewUtils.handleQRCodeFormBitmap(getBitmap(sUrl));
-     */
-    public Result handleQRCodeFormBitmap(Bitmap bitmap) {
-        if (bitmap == null) return null;
-        //获取图片宽高
-        int width = bitmap.getWidth();
-        int height = bitmap.getHeight();
-        int[] data = new int[width * height];
-        bitmap.getPixels(data, 0, width, 0, 0, width, height);
-        RGBLuminanceSource source = new RGBLuminanceSource(width, height, data);
-        BinaryBitmap bitmap1 = new BinaryBitmap(new HybridBinarizer(source));
-        QRCodeReader reader = new QRCodeReader();
-
-        Hashtable<DecodeHintType, String> hints = new Hashtable<>();
-        hints.put(DecodeHintType.CHARACTER_SET, "utf-8");
-        Result result = null;
-        try {
-            try {
-                result = reader.decode(bitmap1, hints);
-            } catch (ChecksumException e) {
-                e.printStackTrace();
-            } catch (FormatException e) {
-                e.printStackTrace();
-            }
-
-        } catch (NotFoundException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
+//    /**
+//     * 根据地址获取网络图片
+//     *
+//     * @param sUrl 图片地址
+//     * @return
+//     */
+//    public Bitmap getBitmap(String sUrl) {
+//        try {
+//            URL url = new URL(sUrl);
+//            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+//            conn.setConnectTimeout(5000);
+//            conn.setRequestMethod("GET");
+//            if (conn.getResponseCode() == 200) {
+//                InputStream inputStream = conn.getInputStream();
+//                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+//                return bitmap;
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
+//
+//
+//    /**
+//     * 校验二维码
+//     *
+//     * @param bitmap
+//     * @return 调用方式：WebviewUtils.handleQRCodeFormBitmap(getBitmap(sUrl));
+//     */
+//    public Result handleQRCodeFormBitmap(Bitmap bitmap) {
+//        if (bitmap == null) return null;
+//        //获取图片宽高
+//        int width = bitmap.getWidth();
+//        int height = bitmap.getHeight();
+//        int[] data = new int[width * height];
+//        bitmap.getPixels(data, 0, width, 0, 0, width, height);
+//        RGBLuminanceSource source = new RGBLuminanceSource(width, height, data);
+//        BinaryBitmap bitmap1 = new BinaryBitmap(new HybridBinarizer(source));
+//        QRCodeReader reader = new QRCodeReader();
+//
+//        Hashtable<DecodeHintType, String> hints = new Hashtable<>();
+//        hints.put(DecodeHintType.CHARACTER_SET, "utf-8");
+//        Result result = null;
+//        try {
+//            try {
+//                result = reader.decode(bitmap1, hints);
+//            } catch (ChecksumException e) {
+//                e.printStackTrace();
+//            } catch (FormatException e) {
+//                e.printStackTrace();
+//            }
+//
+//        } catch (NotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        return result;
+//    }
 
 
     /**

@@ -409,7 +409,7 @@ public class ChromeClientWrapper extends WebChromeClient
     }
 
     /**
-     * TODO 照片选择器，也抽离出来
+     * 照片选择器，也抽离出来
      */
     private void openFileChooser() {
         if (mWebProView != null && mWebProView.getFragment() != null) {

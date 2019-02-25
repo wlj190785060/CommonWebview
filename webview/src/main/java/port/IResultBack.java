@@ -1,5 +1,7 @@
 package port;
 
+import android.content.Intent;
+
 /**
  * webview  onActivityResult结果返回操作
  * Created by wanglinjie.
@@ -11,5 +13,5 @@ interface IResultBack {
      * 可以做登录返回等特殊操作
      * @return
      */
-    boolean OnResultCallBack();
+    boolean OnResultCallBack(int requestCode, int resultCode, Intent data);
 }

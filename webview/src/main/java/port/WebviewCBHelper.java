@@ -40,7 +40,7 @@ abstract public class WebviewCBHelper implements IResultBack, IOpenFileChooser,
 
     //返回业务逻辑处理
     @Override
-    public boolean OnResultCallBack() {
+    public boolean OnResultCallBack(int requestCode, int resultCode, Intent data) {
         return false;
     }
 

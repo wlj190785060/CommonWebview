@@ -181,7 +181,7 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
                 @Override
                 public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
                     if (helper != null) {
-                        helper.OnResultCallBack();
+                        helper.OnResultCallBack(requestCode,resultCode,data);
                     }
                     return super.onActivityResult(requestCode, resultCode, data);
                 }
@@ -240,7 +240,7 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
     }
 
     /**
-     * 长按识别二维码功能
+     * 长按识别二维码功能，解析二维码
      * 支持本地图片流,需要将回传的string转换成byte[]用Glide加载
      *
      * @param v
