@@ -13,5 +13,5 @@ interface IResultBack {
      * 可以做登录返回等特殊操作
      * @return
      */
-    boolean OnResultCallBack(int requestCode, int resultCode, Intent data);
+    void OnResultCallBack(int requestCode, int resultCode, Intent data);
 }

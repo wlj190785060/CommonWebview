@@ -425,7 +425,13 @@ public class ChromeClientWrapper extends WebChromeClient
     @Override
     public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
         if (mHelper != null) {
-            mHelper.openFileResultCallBack(requestCode, resultCode, data, mUploadMessage, mUploadMessage21);
+            //文件处理
+            if (requestCode == FILE_CHOOSER_RESULT_CODE) {
+                mHelper.openFileResultCallBack(requestCode, resultCode, data, mUploadMessage, mUploadMessage21);
+            } else {
+                //别的业务逻辑
+                mHelper.OnResultCallBack(requestCode, resultCode, data);
+            }
         }
         return requestCode == FILE_CHOOSER_RESULT_CODE;
     }

@@ -40,8 +40,7 @@ abstract public class WebviewCBHelper implements IResultBack, IOpenFileChooser,
 
     //返回业务逻辑处理
     @Override
-    public boolean OnResultCallBack(int requestCode, int resultCode, Intent data) {
-        return false;
+    public void OnResultCallBack(int requestCode, int resultCode, Intent data) {
     }
 
     //图片选择器
@@ -52,8 +51,7 @@ abstract public class WebviewCBHelper implements IResultBack, IOpenFileChooser,
 
     //文件管理回调
     @Override
-    public boolean openFileResultCallBack(int requestCode, int resultCode, Intent data, ValueCallback<Uri> mUploadMessage, ValueCallback<Uri[]> mUploadMessage21) {
-        return false;
+    public void openFileResultCallBack(int requestCode, int resultCode, Intent data, ValueCallback<Uri> mUploadMessage, ValueCallback<Uri[]> mUploadMessage21) {
     }
 
     //二维码识别业务逻辑

@@ -27,5 +27,5 @@ public interface IOpenFileChooser {
      * @param data
      * @return
      */
-    boolean openFileResultCallBack(int requestCode, int resultCode, Intent data, ValueCallback<Uri> mUploadMessage,ValueCallback<Uri[]> mUploadMessage21);
+    void openFileResultCallBack(int requestCode, int resultCode, Intent data, ValueCallback<Uri> mUploadMessage,ValueCallback<Uri[]> mUploadMessage21);
 }
