@@ -1,5 +1,6 @@
 package port;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.CallSuper;
@@ -119,7 +120,7 @@ abstract public class WebviewCBHelper implements IResultBack, IOpenFileChooser,
     }
 
     @Override
-    public void onWebPageComplete() {
+    public void onWebPageComplete(Context ctx) {
 
     }
 

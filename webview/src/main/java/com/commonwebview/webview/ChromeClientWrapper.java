@@ -107,7 +107,7 @@ public class ChromeClientWrapper extends WebChromeClient
         Context context = mWebProView.getContext();
         while (context instanceof ContextThemeWrapper) {
             if (mHelper != null) {
-                mHelper.onWebPageComplete();
+                mHelper.onWebPageComplete(context);
                 return;
             }
             context = ((ContextThemeWrapper) context).getBaseContext();
