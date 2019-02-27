@@ -122,6 +122,10 @@ public class ChromeClientWrapper extends WebChromeClient
         } else {
             super.onReceivedTitle(view, title);
         }
+        if (mHelper != null) {
+            mHelper.setReceivedTitle(view, title);
+        }
+
     }
 
     @Override
@@ -131,6 +135,9 @@ public class ChromeClientWrapper extends WebChromeClient
         } else {
             super.onReceivedIcon(view, icon);
         }
+        if (mHelper != null) {
+            mHelper.setReceivedIcon(view, icon);
+        }
     }
 
     @Override
@@ -139,6 +146,9 @@ public class ChromeClientWrapper extends WebChromeClient
             webChromeClient.onReceivedTouchIconUrl(view, url, precomposed);
         } else {
             super.onReceivedTouchIconUrl(view, url, precomposed);
+        }
+        if (mHelper != null) {
+            mHelper.setReceivedTouchIconUrl(view, url, precomposed);
         }
     }
 
@@ -433,7 +443,7 @@ public class ChromeClientWrapper extends WebChromeClient
         if (mHelper != null) {
             //文件处理
             if (requestCode == FILE_CHOOSER_RESULT_CODE) {
-                mHelper.openFileResultCallBack(requestCode, resultCode, data,this, mUploadMessage, mUploadMessage21);
+                mHelper.openFileResultCallBack(requestCode, resultCode, data, this, mUploadMessage, mUploadMessage21);
             } else {
                 //别的业务逻辑
                 mHelper.OnResultCallBack(requestCode, resultCode, data);

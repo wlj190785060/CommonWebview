@@ -2,6 +2,7 @@ package port;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.CallSuper;
 import android.support.v4.app.Fragment;
@@ -20,7 +21,7 @@ import com.commonwebview.webview.CommonWebView;
 
 abstract public class WebviewCBHelper implements IResultBack, IOpenFileChooser,
         IScanerImg, IWebViewSetting,
-        IloadUrl, IWebpageComplete, IProvinTraffic, IDoFullVideo {
+        IloadUrl, IWebpageComplete, IProvinTraffic, IDoFullVideo,ISetReceivedTitleIcon{
 
     //是否是链接稿
     private boolean isBrowserLink = false;
@@ -37,7 +38,7 @@ abstract public class WebviewCBHelper implements IResultBack, IOpenFileChooser,
 
     //是否是链接稿,如果是外链稿且需要注入则需要设置该项
     public void setBrowserLinkStat(boolean isBrowserLink) {
-         this.isBrowserLink = isBrowserLink;
+        this.isBrowserLink = isBrowserLink;
     }
 
     //返回业务逻辑处理
@@ -53,7 +54,7 @@ abstract public class WebviewCBHelper implements IResultBack, IOpenFileChooser,
 
     //文件管理回调
     @Override
-    public void openFileResultCallBack(int requestCode, int resultCode, Intent data, ChromeClientWrapper wrapper,ValueCallback<Uri> mUploadMessage, ValueCallback<Uri[]> mUploadMessage21) {
+    public void openFileResultCallBack(int requestCode, int resultCode, Intent data, ChromeClientWrapper wrapper, ValueCallback<Uri> mUploadMessage, ValueCallback<Uri[]> mUploadMessage21) {
     }
 
     //二维码识别业务逻辑
@@ -152,6 +153,24 @@ abstract public class WebviewCBHelper implements IResultBack, IOpenFileChooser,
 
     @Override
     public void exitFullVideo() {
+
+    }
+
+    //设置标题
+    @Override
+    public void setReceivedTitle(WebView view, String title){
+
+    }
+
+    //设置图标
+    @Override
+    public void setReceivedIcon(WebView view, Bitmap icon){
+
+    }
+
+    //设置URL点击事件
+    @Override
+    public void setReceivedTouchIconUrl(WebView view, String url, boolean precomposed){
 
     }
 }
