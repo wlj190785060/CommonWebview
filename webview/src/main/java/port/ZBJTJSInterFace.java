@@ -1,13 +1,9 @@
 package port;
 
-import android.webkit.WebView;
-
-import bean.ZBJTGetAppInfoBean;
 import bean.ZBJTGetAppInfoRspBean;
 import bean.ZBJTGetLocalRspBean;
 import bean.ZBJTGetValueFromLocalBean;
 import bean.ZBJTGetValueFromLocalRspBean;
-import bean.ZBJTModifyUserInfoBean;
 import bean.ZBJTModifyUserInfoRspBean;
 import bean.ZBJTOpenAppMobileBean;
 import bean.ZBJTOpenAppMobileRspBean;
@@ -29,73 +25,73 @@ public interface ZBJTJSInterFace {
     /**
      * 打开分享，分享成功后传入回调
      */
-    void openAppShareMenu(WebView webview, ZBJTOpenAppShareMenuBean bean, ZBJTOpenAppShareMenuRspBean beanRsp, String callback);
+    void openAppShareMenu(ZBJTOpenAppShareMenuBean bean, ZBJTOpenAppShareMenuRspBean beanRsp, String callback);
 
     /**
      * 更新原生分享内容接口
      *
      * @return
      */
-    void updateAppShareData(WebView webview, ZBJTOpenAppShareMenuBean bean, ZBJTReturnBean beanRsp, String callback);
+    void updateAppShareData(ZBJTOpenAppShareMenuBean bean, ZBJTReturnBean beanRsp, String callback);
 
     /**
      * 拍照或从手机相册中选择图片，并将结果回传给Js
      *
      * @return
      */
-    void selectImage(WebView webview, ZBJTSelectImageBean bean, ZBJTSelectImageRspBean beanRsp, String callback);
+    void selectImage(ZBJTSelectImageBean bean, ZBJTSelectImageRspBean beanRsp, String callback);
 
     /**
      * 录音
      *
      * @return
      */
-    void startRecord(WebView webview, ZBJTStartRecordRspBean beanRsp, String callback);
+    void startRecord(ZBJTStartRecordRspBean beanRsp, String callback);
 
     /**
      * 获取客户端信息接口
      *
      * @return
      */
-    void getAppInfo(WebView webview, ZBJTGetAppInfoRspBean BeanRsp, String callback);
+    void getAppInfo(ZBJTGetAppInfoRspBean BeanRsp, String callback);
 
     /**
      * 定位
      *
      * @return
      */
-    void getLocation(WebView webview, ZBJTGetLocalRspBean BeanRsp, String callback);
+    void getLocation(ZBJTGetLocalRspBean BeanRsp, String callback);
 
     /**
      * 文件上传
      */
-    void uploadFile(WebView webview, ZBJTUploadFileBean bean, ZBJTUploadFileRspBean beanRsp, String callback);
+    void uploadFile(ZBJTUploadFileBean bean, ZBJTUploadFileRspBean beanRsp, String callback);
 
     /**
      * 关闭页面
      *
      * @return
      */
-    void closeWindow(WebView webview, ZBJTReturnBean beanRsp, String callback);
+    void closeWindow(ZBJTReturnBean beanRsp, String callback);
 
     /**
      * 利用客户端进行数据Key-Value存值
      *
      * @return
      */
-    void saveValueToLocal(WebView webview, ZBJTGetValueFromLocalBean bean, ZBJTReturnBean beanRsp, String callback);
+    void saveValueToLocal(ZBJTGetValueFromLocalBean bean, ZBJTReturnBean beanRsp, String callback);
 
     /**
      * 利用客户端进行数据Key-Value取值
      */
-    void getValueFromLocal(WebView webview, ZBJTGetValueFromLocalRspBean beanRsp, String callback);
+    void getValueFromLocal(ZBJTGetValueFromLocalRspBean beanRsp, String callback);
 
     /**
      * 登录
      *
      * @return
      */
-    void login(WebView webview, ZBJTReturnBean beanRsp, String callback);
+    void login(ZBJTReturnBean beanRsp, String callback);
 
     //TODO 这里用户信息的bean到具体的业务逻辑中去实现
 
@@ -104,19 +100,19 @@ public interface ZBJTJSInterFace {
      *
      * @return
      */
-    void getUserInfo(WebView webview, String json, String callback);
+    void getUserInfo(String json, String callback);
 
     /**
      * 实名认证功能-绑定手机号（调用判断手机绑定前先判断登录状态）
      *
      * @return
      */
-    void openAppMobile(WebView webVebview, ZBJTOpenAppMobileBean bean, ZBJTOpenAppMobileRspBean beanRsp, String callback);
+    void openAppMobile(ZBJTOpenAppMobileBean bean, ZBJTOpenAppMobileRspBean beanRsp, String callback);
 
     /**
      * 修改用户相关信息-[收货名称\收货地址] 调用判断用户收货名称修改前先判断登录状态
      *
      * @return
      */
-    void modifyUserInfo(WebView webview, ZBJTModifyUserInfoRspBean beanRsp, String callback);
+    void modifyUserInfo(ZBJTModifyUserInfoRspBean beanRsp, String callback);
 }

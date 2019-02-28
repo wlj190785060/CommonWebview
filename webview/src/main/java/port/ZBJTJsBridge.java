@@ -218,7 +218,7 @@ public abstract class ZBJTJsBridge {
         ZBJTOpenAppShareMenuBean bean;
         try {
             bean = JsonUtils.parseObject(json, ZBJTOpenAppShareMenuBean.class);
-            interFace.openAppShareMenu(webview, bean, new ZBJTOpenAppShareMenuRspBean(), callback);
+            interFace.openAppShareMenu(bean, new ZBJTOpenAppShareMenuRspBean(), callback);
         } catch (Exception e) {
             webviewLoadUrl(callback, setErrorRspJson("11002"));
             e.printStackTrace();
@@ -238,7 +238,7 @@ public abstract class ZBJTJsBridge {
         ZBJTOpenAppShareMenuBean bean;
         try {
             bean = JsonUtils.parseObject(json, ZBJTOpenAppShareMenuBean.class);
-            interFace.updateAppShareData(webview, bean, new ZBJTReturnBean(), callback);
+            interFace.updateAppShareData(bean, new ZBJTReturnBean(), callback);
         } catch (Exception e) {
             webviewLoadUrl(callback, setErrorRspJson("11002"));
             e.printStackTrace();
@@ -258,7 +258,7 @@ public abstract class ZBJTJsBridge {
         ZBJTSelectImageBean bean;
         try {
             bean = JsonUtils.parseObject(json, ZBJTSelectImageBean.class);
-            interFace.selectImage(webview, bean, new ZBJTSelectImageRspBean(), callback);
+            interFace.selectImage(bean, new ZBJTSelectImageRspBean(), callback);
         } catch (Exception e) {
             webviewLoadUrl(callback, setErrorRspJson("11002"));
             e.printStackTrace();
@@ -284,7 +284,7 @@ public abstract class ZBJTJsBridge {
             if (bean != null) {
                 rspBean.getData().setRecordId(bean.getRecordId());
             }
-            interFace.startRecord(webview, rspBean, callback);
+            interFace.startRecord(rspBean, callback);
         } catch (Exception e) {
             webviewLoadUrl(callback, setErrorRspJson("11002"));
             e.printStackTrace();
@@ -309,7 +309,7 @@ public abstract class ZBJTJsBridge {
             if (bean != null) {
                 rspBean.getData().setUuid(bean.getUuid());
             }
-            interFace.getAppInfo(webview, rspBean, callback);
+            interFace.getAppInfo(rspBean, callback);
         } catch (Exception e) {
             webviewLoadUrl(callback, setErrorRspJson("11002"));
             e.printStackTrace();
@@ -322,7 +322,7 @@ public abstract class ZBJTJsBridge {
      * @return
      */
     private void getLocation(String json, String callback) {
-        interFace.getLocation(webview, new ZBJTGetLocalRspBean(), callback);
+        interFace.getLocation(new ZBJTGetLocalRspBean(), callback);
     }
 
     /**
@@ -336,7 +336,7 @@ public abstract class ZBJTJsBridge {
         ZBJTUploadFileBean bean;
         try {
             bean = JsonUtils.parseObject(json, ZBJTUploadFileBean.class);
-            interFace.uploadFile(webview, bean, new ZBJTUploadFileRspBean(), callback);
+            interFace.uploadFile(bean, new ZBJTUploadFileRspBean(), callback);
         } catch (Exception e) {
             webviewLoadUrl(callback, setErrorRspJson("11002"));
             e.printStackTrace();
@@ -349,7 +349,7 @@ public abstract class ZBJTJsBridge {
      * @return
      */
     private void closeWindow(String json, String callback) {
-        interFace.closeWindow(webview, new ZBJTReturnBean(), callback);
+        interFace.closeWindow(new ZBJTReturnBean(), callback);
     }
 
     /**
@@ -365,7 +365,7 @@ public abstract class ZBJTJsBridge {
         ZBJTGetValueFromLocalBean bean;
         try {
             bean = JsonUtils.parseObject(json, ZBJTGetValueFromLocalBean.class);
-            interFace.saveValueToLocal(webview, bean, new ZBJTReturnBean(), callback);
+            interFace.saveValueToLocal(bean, new ZBJTReturnBean(), callback);
         } catch (Exception e) {
             webviewLoadUrl(callback, setErrorRspJson("11002"));
             e.printStackTrace();
@@ -389,7 +389,7 @@ public abstract class ZBJTJsBridge {
                 rspBean.getData().setOption(bean.getOption());
                 rspBean.getData().setKey(bean.getKey());
             }
-            interFace.getValueFromLocal(webview, rspBean, callback);
+            interFace.getValueFromLocal(rspBean, callback);
         } catch (Exception e) {
             webviewLoadUrl(callback, setErrorRspJson("11002"));
             e.printStackTrace();
@@ -402,7 +402,7 @@ public abstract class ZBJTJsBridge {
      * @return
      */
     private void login(String json, String callback) {
-        interFace.login(webview, new ZBJTReturnBean(), callback);
+        interFace.login(new ZBJTReturnBean(), callback);
     }
 
     /**
@@ -415,7 +415,7 @@ public abstract class ZBJTJsBridge {
             webviewLoadUrl(callback, setErrorRspJson("11002"));
             return;
         }
-        interFace.getUserInfo(webview, json, callback);
+        interFace.getUserInfo(json, callback);
     }
 
     /**
@@ -431,7 +431,7 @@ public abstract class ZBJTJsBridge {
         ZBJTOpenAppMobileBean bean;
         try {
             bean = JsonUtils.parseObject(json, ZBJTOpenAppMobileBean.class);
-            interFace.openAppMobile(webview, bean, new ZBJTOpenAppMobileRspBean(), callback);
+            interFace.openAppMobile(bean, new ZBJTOpenAppMobileRspBean(), callback);
         } catch (Exception e) {
             webviewLoadUrl(callback, setErrorRspJson("11002"));
             e.printStackTrace();
@@ -456,7 +456,7 @@ public abstract class ZBJTJsBridge {
             if (bean != null) {
                 rspBean.getData().setOption(bean.getOption());
             }
-            interFace.modifyUserInfo(webview, rspBean, callback);
+            interFace.modifyUserInfo(rspBean, callback);
         } catch (Exception e) {
             webviewLoadUrl(callback, setErrorRspJson("11002"));
             e.printStackTrace();
