@@ -16,7 +16,6 @@ import bean.ZBJTOpenAppShareMenuRspBean;
 import bean.ZBJTReturnBean;
 import bean.ZBJTSelectImageBean;
 import bean.ZBJTSelectImageRspBean;
-import bean.ZBJTStartRecordBean;
 import bean.ZBJTStartRecordRspBean;
 import bean.ZBJTUploadFileBean;
 import bean.ZBJTUploadFileRspBean;
@@ -51,14 +50,14 @@ public interface ZBJTJSInterFace {
      *
      * @return
      */
-    void startRecord(WebView webview, ZBJTStartRecordBean bean, ZBJTStartRecordRspBean beanRsp, String callback);
+    void startRecord(WebView webview, ZBJTStartRecordRspBean beanRsp, String callback);
 
     /**
      * 获取客户端信息接口
      *
      * @return
      */
-    void getAppInfo(WebView webview, ZBJTGetAppInfoBean bean, ZBJTGetAppInfoRspBean BeanRsp, String callback);
+    void getAppInfo(WebView webview, ZBJTGetAppInfoRspBean BeanRsp, String callback);
 
     /**
      * 定位
@@ -89,7 +88,7 @@ public interface ZBJTJSInterFace {
     /**
      * 利用客户端进行数据Key-Value取值
      */
-    void getValueFromLocal(WebView webview, ZBJTGetValueFromLocalBean bean, ZBJTGetValueFromLocalRspBean beanRsp, String callback);
+    void getValueFromLocal(WebView webview, ZBJTGetValueFromLocalRspBean beanRsp, String callback);
 
     /**
      * 登录
@@ -119,5 +118,5 @@ public interface ZBJTJSInterFace {
      *
      * @return
      */
-    void modifyUserInfo(WebView webview, ZBJTModifyUserInfoBean bean, ZBJTModifyUserInfoRspBean beanRsp, String callback);
+    void modifyUserInfo(WebView webview, ZBJTModifyUserInfoRspBean beanRsp, String callback);
 }
