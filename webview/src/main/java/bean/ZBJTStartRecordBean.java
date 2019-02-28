@@ -14,13 +14,13 @@ public class ZBJTStartRecordBean implements Serializable{
      * recordId : 1
      */
 
-    private int recordId;
+    private String recordId;
 
-    public int getRecordId() {
+    public String getRecordId() {
         return recordId;
     }
 
-    public void setRecordId(int recordId) {
+    public void setRecordId(String recordId) {
         this.recordId = recordId;
     }
 }

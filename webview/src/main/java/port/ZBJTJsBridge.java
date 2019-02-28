@@ -276,8 +276,11 @@ public abstract class ZBJTJsBridge {
             return;
         }
         ZBJTStartRecordBean bean;
+        ZBJTStartRecordRspBean.DataBean rspBean;
         try {
             bean = JsonUtils.parseObject(json, ZBJTStartRecordBean.class);
+            rspBean = new ZBJTStartRecordRspBean().getData();
+            rspBean.setRecordId(bean.getRecordId());
             interFace.startRecord(webview, bean, new ZBJTStartRecordRspBean(), callback);
         } catch (Exception e) {
             webviewLoadUrl(callback, setErrorRspJson("11002"));

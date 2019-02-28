@@ -14,13 +14,13 @@ public class ZBJTGetAppInfoBean implements Serializable{
      * uuid : 1 /默认为0，只有为1时会回传设备唯一编码
      */
 
-    private int uuid;
+    private String uuid;
 
-    public int getUuid() {
+    public String getUuid() {
         return uuid;
     }
 
-    public void setUuid(int uuid) {
+    public void setUuid(String uuid) {
         this.uuid = uuid;
     }
 }
