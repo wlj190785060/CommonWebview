@@ -17,6 +17,7 @@ public class ZBJTGetValueFromLocalBean implements Serializable {
 
     private String option;
     private String key;
+    private String value;
 
     public String getOption() {
         return option;
@@ -32,5 +33,13 @@ public class ZBJTGetValueFromLocalBean implements Serializable {
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 }
