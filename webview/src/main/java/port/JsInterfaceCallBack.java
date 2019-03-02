@@ -86,9 +86,14 @@ final public class JsInterfaceCallBack {
         exeJs(webview, beanRsp, callback);
     }
 
-    //TODO WLJ 需要自己实现
     public void getUserInfo(String json, String callback) {
-
+        final String execUrl = "javascript:" + callback + "('" + json + "');";
+        webview.post(new Runnable() {
+            @Override
+            public void run() {
+                webview.loadUrl(execUrl);
+            }
+        });
     }
 
     public void openAppMobile(ZBJTOpenAppMobileRspBean beanRsp, String callback) {
