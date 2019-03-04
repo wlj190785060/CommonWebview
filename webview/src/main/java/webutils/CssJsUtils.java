@@ -51,7 +51,16 @@ final public class CssJsUtils {
     public boolean isInject() {
         return isInject;
     }
-
+    /**
+     * 传递helper
+     *
+     * @param mHelper
+     * @return
+     */
+    public CssJsUtils setmHelper(WebviewCBHelper mHelper) {
+        this.mHelper = mHelper;
+        return this;
+    }
     /**
      * 根据给定的网址，获取返回的html注入css和js
      *
