@@ -292,7 +292,7 @@ final public class CssJsUtils {
                 }
             }
 
-            if (js != null && js.isEmpty()) {
+            if (js != null && !js.isEmpty()) {
                 for (int i = 0; i < js.size(); i++) {
                     css_js += String.format(html, js.get(i));
                 }
