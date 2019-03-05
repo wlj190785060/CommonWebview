@@ -48,7 +48,7 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
             super.removeJavascriptInterface("accessibility");
             super.removeJavascriptInterface("accessibilityTraversal");
         }
-        configWebView();
+//        configWebView();
     }
 
     public CommonWebView(Context context, AttributeSet attrs) {
@@ -58,7 +58,7 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
             super.removeJavascriptInterface("accessibility");
             super.removeJavascriptInterface("accessibilityTraversal");
         }
-        configWebView();
+//        configWebView();
     }
 
     public CommonWebView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -68,7 +68,7 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
             super.removeJavascriptInterface("accessibility");
             super.removeJavascriptInterface("accessibilityTraversal");
         }
-        configWebView();
+//        configWebView();
     }
 
     public WebviewCBHelper getHelper() {
@@ -77,6 +77,7 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
 
     public void setHelper(WebviewCBHelper helper) {
         this.helper = helper;
+        configWebView();
         //重置设置相关参数
         init();
     }
@@ -158,7 +159,7 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
         setOnLongClickListener(this);
 
         if (mChromeClientWrapper == null) {
-            super.setWebChromeClient(mChromeClientWrapper = new ChromeClientWrapper(this));
+            super.setWebChromeClient(mChromeClientWrapper = new ChromeClientWrapper(this,helper));
         }
 
         if (mWebClientWrapper == null) {
@@ -176,7 +177,7 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
     @Override
     public void setWebChromeClient(WebChromeClient client) {
         if (mChromeClientWrapper == null) {
-            super.setWebChromeClient(mChromeClientWrapper = new ChromeClientWrapper(this));
+            super.setWebChromeClient(mChromeClientWrapper = new ChromeClientWrapper(this,helper));
         }
         mChromeClientWrapper.setWrapper(client);
     }

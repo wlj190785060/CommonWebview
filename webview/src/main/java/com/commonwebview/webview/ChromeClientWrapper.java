@@ -48,10 +48,10 @@ public class ChromeClientWrapper extends WebChromeClient
      */
     public final static int FILE_CHOOSER_RESULT_CODE = 10;
 
-    public ChromeClientWrapper(CommonWebView webProView) {
+    public ChromeClientWrapper(CommonWebView webProView,WebviewCBHelper helper) {
         super();
         mWebProView = webProView;
-        mHelper = mWebProView.getHelper();
+        mHelper = helper;
     }
 
     public void setmUploadMessage(ValueCallback<Uri> mUploadMessage) {
