@@ -244,7 +244,7 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
             final HitTestResult htr = getHitTestResult();//获取所点击的内容
             if (htr.getType() == HitTestResult.IMAGE_TYPE && !TextUtils.isEmpty(htr.getExtra())) {//判断被点击的类型为图片
                 //如果是链接
-                if (WebviewUtils.get().isHttpUrl(htr.getExtra())) {
+                if (htr.getExtra().startsWith("www") || htr.getExtra().startsWith("http") || htr.getExtra().startsWith("https")) {
                     helper.OnScanerImg(htr.getExtra(), false);
                 } else {
                     //本地图片则进行base64解析后输出
