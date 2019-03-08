@@ -88,15 +88,14 @@ public class ChromeClientWrapper extends WebChromeClient
 
     @Override
     public void onProgressChanged(WebView view, int newProgress) {
+        //加载进度为30时就开始操作页面
+        if (newProgress > 30) {
+            onWebPageComplete();
+        }
         if (webChromeClient != null) {
             webChromeClient.onProgressChanged(view, newProgress);
         } else {
             super.onProgressChanged(view, newProgress);
-        }
-
-        //加载进度为30时就开始操作页面
-        if (newProgress > 30) {
-            onWebPageComplete();
         }
     }
 
