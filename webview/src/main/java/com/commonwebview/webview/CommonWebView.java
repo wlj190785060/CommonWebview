@@ -8,7 +8,6 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Base64;
 import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -75,6 +74,7 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
         return helper;
     }
 
+    //必须要设置这个才能初始化吗
     public void setHelper(WebviewCBHelper helper) {
         this.helper = helper;
         configWebView();
@@ -103,10 +103,6 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
 
         if (helper != null && !TextUtils.isEmpty(this.helper.getUserAgent())) {
             getSettings().setUserAgentString(getSettings().getUserAgentString() + "; " + this.helper.getUserAgent());
-        }
-
-        if (helper != null) {
-            super.setWebViewClient(mWebClientWrapper = new WebClientWrapper(helper));
         }
     }
 
@@ -159,12 +155,15 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
         setOnLongClickListener(this);
 
         if (mChromeClientWrapper == null) {
-            super.setWebChromeClient(mChromeClientWrapper = new ChromeClientWrapper(this,helper));
+            super.setWebChromeClient(mChromeClientWrapper = new ChromeClientWrapper(this, helper));
         }
 
-        if (mWebClientWrapper == null) {
-            super.setWebViewClient(mWebClientWrapper = new WebClientWrapper());
+        if (helper != null && mWebClientWrapper == null) {
+            super.setWebViewClient(mWebClientWrapper = new WebClientWrapper(helper));
         }
+//        if (mWebClientWrapper == null) {
+//            super.setWebViewClient(mWebClientWrapper = new WebClientWrapper());
+//        }
 
     }
 
@@ -176,17 +175,17 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
      */
     @Override
     public void setWebChromeClient(WebChromeClient client) {
-        if (mChromeClientWrapper == null) {
-            super.setWebChromeClient(mChromeClientWrapper = new ChromeClientWrapper(this,helper));
-        }
+//        if (mChromeClientWrapper == null) {
+//            super.setWebChromeClient(mChromeClientWrapper = new ChromeClientWrapper(this, helper));
+//        }
         mChromeClientWrapper.setWrapper(client);
     }
 
     @Override
     public void setWebViewClient(WebViewClient client) {
-        if (mWebClientWrapper == null && helper != null) {
-            super.setWebViewClient(mWebClientWrapper = new WebClientWrapper(helper));
-        }
+//        if (mWebClientWrapper == null && helper != null) {
+//            super.setWebViewClient(mWebClientWrapper = new WebClientWrapper(helper));
+//        }
         mWebClientWrapper.setWrapper(client);
     }
 
@@ -272,23 +271,11 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
                 }
             });
         }
-        //暂停所有的JS加载
-        pauseTimers();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        resumeTimers();
-    }
-
-    @Override
-    public void destroy() {
-        super.destroy();
-        if (getParent() != null && getParent() instanceof ViewGroup) {
-            ((ViewGroup) getParent()).removeView(this);
-        }
-        removeAllViews();
     }
 
     /**
