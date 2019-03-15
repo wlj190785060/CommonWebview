@@ -47,7 +47,6 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
             super.removeJavascriptInterface("accessibility");
             super.removeJavascriptInterface("accessibilityTraversal");
         }
-//        configWebView();
     }
 
     public CommonWebView(Context context, AttributeSet attrs) {
@@ -57,7 +56,6 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
             super.removeJavascriptInterface("accessibility");
             super.removeJavascriptInterface("accessibilityTraversal");
         }
-//        configWebView();
     }
 
     public CommonWebView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -67,7 +65,6 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
             super.removeJavascriptInterface("accessibility");
             super.removeJavascriptInterface("accessibilityTraversal");
         }
-//        configWebView();
     }
 
     public WebviewCBHelper getHelper() {
@@ -75,11 +72,11 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
     }
 
     //必须要设置这个才能初始化吗
+    //优化为不需要设置helper可以初始化webview
     public void setHelper(WebviewCBHelper helper) {
         this.helper = helper;
         configWebView();
         //重置设置相关参数
-        init();
     }
 
     //扩展wrapper
@@ -95,16 +92,6 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
         return mLifecycleFragment;
     }
 
-    private void init() {
-
-        if (helper != null) {
-            helper.setWebviewConfig(this);
-        }
-
-        if (helper != null && !TextUtils.isEmpty(this.helper.getUserAgent())) {
-            getSettings().setUserAgentString(getSettings().getUserAgentString() + "; " + this.helper.getUserAgent());
-        }
-    }
 
     /**
      * 绑定对象需要自己加
@@ -154,6 +141,14 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
         settings.setUserAgentString(userAgent + "; ");
         setOnLongClickListener(this);
 
+        if (helper != null) {
+            helper.setWebviewConfig(this);
+        }
+
+        if (helper != null && !TextUtils.isEmpty(this.helper.getUserAgent())) {
+            getSettings().setUserAgentString(getSettings().getUserAgentString() + "; " + this.helper.getUserAgent());
+        }
+
         if (mChromeClientWrapper == null) {
             super.setWebChromeClient(mChromeClientWrapper = new ChromeClientWrapper(this, helper));
         }
@@ -161,9 +156,6 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
         if (helper != null && mWebClientWrapper == null) {
             super.setWebViewClient(mWebClientWrapper = new WebClientWrapper(helper));
         }
-//        if (mWebClientWrapper == null) {
-//            super.setWebViewClient(mWebClientWrapper = new WebClientWrapper());
-//        }
 
     }
 
@@ -175,17 +167,11 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
      */
     @Override
     public void setWebChromeClient(WebChromeClient client) {
-//        if (mChromeClientWrapper == null) {
-//            super.setWebChromeClient(mChromeClientWrapper = new ChromeClientWrapper(this, helper));
-//        }
         mChromeClientWrapper.setWrapper(client);
     }
 
     @Override
     public void setWebViewClient(WebViewClient client) {
-//        if (mWebClientWrapper == null && helper != null) {
-//            super.setWebViewClient(mWebClientWrapper = new WebClientWrapper(helper));
-//        }
         mWebClientWrapper.setWrapper(client);
     }
 
@@ -201,7 +187,6 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
                 FragmentManager fragmentManager = fa.getSupportFragmentManager();
                 if (mLifecycleFragment == null) {
                     mLifecycleFragment = new WebLifecycleFragment();
-                    mLifecycleFragment.setWebview(this);
                 }
                 fragmentManager.beginTransaction().add(mLifecycleFragment, FRAGMENT_TAG)
                         .commitAllowingStateLoss();
