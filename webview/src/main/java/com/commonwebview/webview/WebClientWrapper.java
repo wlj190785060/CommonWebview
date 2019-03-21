@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Message;
+import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.webkit.ClientCertRequest;
@@ -42,7 +43,7 @@ class WebClientWrapper extends WebViewClient {
         this.helper = helper;
     }
 
-    public WebClientWrapper() {
+    private WebClientWrapper() {
     }
 
     public WebViewClient getWrapper() {
@@ -53,6 +54,7 @@ class WebClientWrapper extends WebViewClient {
         this.webViewClient = webViewClient;
     }
 
+    //url加载拦截
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N
@@ -84,11 +86,33 @@ class WebClientWrapper extends WebViewClient {
         return super.shouldOverrideUrlLoading(view, url);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
         if (webViewClient != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
                 && webViewClient.shouldOverrideUrlLoading(view, request)) {
             return true;
+        }
+        //电话、邮件、短信之类
+        if (request.getUrl().toString().startsWith("tel:") || request.getUrl().toString().startsWith("sms:") || request.getUrl().toString().startsWith("mailto:")) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, request.getUrl());
+            view.getContext().startActivity(intent);
+            return true;
+        }
+        if (!TextUtils.isEmpty(request.getUrl().toString())) {
+            Uri uri = request.getUrl();
+            if (uri != null && !TextUtils.equals(uri.getScheme(), "http") && !TextUtils.equals(uri.getScheme(), "https")) {
+                return super.shouldOverrideUrlLoading(view, request);
+            }
+            if (isRedirect) { // 重定向
+                view.loadUrl(request.getUrl().toString());
+            } else { // 点击跳转
+                if (ClickTrackerUtils.isDoubleClick()) return true;
+                if (helper != null) {
+                    helper.shouldOverrideUrlLoading(view, request.getUrl().toString());
+                    return true;
+                }
+            }
         }
         return super.shouldOverrideUrlLoading(view, request);
     }
@@ -98,6 +122,9 @@ class WebClientWrapper extends WebViewClient {
         if (webViewClient != null) {
             webViewClient.onPageStarted(view, url, favicon);
         }
+        if (helper != null) {
+            helper.onPageStarted(view, url, favicon);
+        }
         super.onPageStarted(view, url, favicon);
         isRedirect = true;
     }
@@ -106,6 +133,9 @@ class WebClientWrapper extends WebViewClient {
     public void onPageFinished(WebView view, String url) {
         if (webViewClient != null) {
             webViewClient.onPageFinished(view, url);
+        }
+        if (helper != null) {
+            helper.onPageFinished(view, url);
         }
         super.onPageFinished(view, url);
         isRedirect = false;
@@ -140,7 +170,7 @@ class WebClientWrapper extends WebViewClient {
         if (helper != null && helper.isProvinTrafficMode() && !helper.isBrowserLink()) {
             return helper.doProvinTraffic(url);
         }
-        //外链稿注入js,且没有注入成功
+        //TODO WLJ 外链稿注入js,且没有注入成功
         //注入相关的css和js，只能注入一次
         //先解析html，再做图片处理
         else if (helper != null && helper.isBrowserLink() && !TextUtils.isEmpty(helper.getWebViewJsObject()) && !CssJsUtils.get(view.getContext()).isInject()) {

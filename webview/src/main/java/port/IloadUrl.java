@@ -1,5 +1,6 @@
 package port;
 
+import android.graphics.Bitmap;
 import android.webkit.WebView;
 
 /**
@@ -9,4 +10,8 @@ import android.webkit.WebView;
  */
 public interface IloadUrl {
     void shouldOverrideUrlLoading(WebView view, String url);
+
+    void onPageFinished(WebView view, String url);
+
+    void onPageStarted(WebView view, String url, Bitmap favicon);
 }

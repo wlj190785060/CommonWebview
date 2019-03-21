@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.CallSuper;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.webkit.ValueCallback;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
@@ -21,7 +22,7 @@ import com.commonwebview.webview.CommonWebView;
 
 abstract public class WebviewCBHelper implements IResultBack, IOpenFileChooser,
         IScanerImg, IWebViewSetting,
-        IloadUrl, IWebpageComplete, IProvinTraffic, IDoFullVideo,ISetReceivedTitleIcon{
+        IloadUrl, IWebpageComplete, IProvinTraffic, IDoFullVideo, ISetReceivedTitleIcon {
 
     //是否是链接稿
     private boolean isBrowserLink = false;
@@ -29,14 +30,14 @@ abstract public class WebviewCBHelper implements IResultBack, IOpenFileChooser,
     //配置js注入，重新设置webview等
     private JsInterface jsInterface;
 
-    //设置us
+    //必须要设置ua
     abstract public String getUserAgent();
 
     public boolean isBrowserLink() {
         return isBrowserLink;
     }
 
-    //是否是链接稿,如果是外链稿且需要注入则需要设置该项
+    //是否是链接稿,如果是外链稿且需要注入则需要手动设置该项
     public void setBrowserLinkStat(boolean isBrowserLink) {
         this.isBrowserLink = isBrowserLink;
     }
@@ -49,7 +50,6 @@ abstract public class WebviewCBHelper implements IResultBack, IOpenFileChooser,
     //图片选择器
     @Override
     public void NavToImageSelect(Fragment fragment, int requestCode) {
-
     }
 
     //文件管理回调
@@ -90,7 +90,7 @@ abstract public class WebviewCBHelper implements IResultBack, IOpenFileChooser,
     @CallSuper
     @Override
     public void setWebviewConfig(CommonWebView webview) {
-        if (jsInterface != null) {
+        if (jsInterface != null && !TextUtils.isEmpty(getWebViewJsObject())) {
             webview.addJavascriptInterface(jsInterface, getWebViewJsObject());
         }
     }
@@ -120,6 +120,21 @@ abstract public class WebviewCBHelper implements IResultBack, IOpenFileChooser,
 
     }
 
+    @Override
+    public void onPageFinished(WebView view, String url) {
+
+    }
+
+    @Override
+    public void onPageStarted(WebView view, String url, Bitmap favicon) {
+
+    }
+
+    /**
+     * webview加载结束
+     *
+     * @param ctx
+     */
     @Override
     public void onWebPageComplete(Context ctx) {
 
@@ -158,19 +173,19 @@ abstract public class WebviewCBHelper implements IResultBack, IOpenFileChooser,
 
     //设置标题
     @Override
-    public void setReceivedTitle(WebView view, String title){
+    public void setReceivedTitle(WebView view, String title) {
 
     }
 
     //设置图标
     @Override
-    public void setReceivedIcon(WebView view, Bitmap icon){
+    public void setReceivedIcon(WebView view, Bitmap icon) {
 
     }
 
     //设置URL点击事件
     @Override
-    public void setReceivedTouchIconUrl(WebView view, String url, boolean precomposed){
+    public void setReceivedTouchIconUrl(WebView view, String url, boolean precomposed) {
 
     }
 }
