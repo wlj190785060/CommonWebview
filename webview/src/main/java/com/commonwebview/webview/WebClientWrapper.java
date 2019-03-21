@@ -102,38 +102,6 @@ class WebClientWrapper extends WebViewClient {
         isRedirect = true;
     }
 
-
-//    /**
-//     * 替换图片,只替换1次
-//     */
-//    private void repleceImgs(CommonWebView view) {
-//        if (view != null) {
-//            //替换普通图片
-//            String[] imgSrc = view.getHelper().getJsObject().getImgSrcs();
-//            if (imgSrc != null && imgSrc.length > 0) {
-//                for (int i = 0; i < imgSrc.length; i++) {
-//                    view.setReplacePic(i, imgSrc[i]);
-//                }
-//            }
-//
-//            //替换超链接图片
-//            List<Map<String, String>> aimgSrc = view.getHelper().getJsObject().getAImgSrcs();
-//            if (aimgSrc != null && aimgSrc.size() > 0) {
-//                for (int i = 0; i < aimgSrc.size(); i++) {
-//                    if (aimgSrc.get(i) != null && !aimgSrc.get(i).isEmpty()) {
-//                        Set keys = aimgSrc.get(i).keySet();
-//                        if (keys != null) {
-//                            Iterator iterator = keys.iterator();
-//                            while (iterator.hasNext()) {
-//                                view.setReplaceAPic(i, iterator.next().toString());
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-
     @Override
     public void onPageFinished(WebView view, String url) {
         if (webViewClient != null) {

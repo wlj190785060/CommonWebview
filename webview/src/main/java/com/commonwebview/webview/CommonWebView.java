@@ -149,7 +149,7 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
             getSettings().setUserAgentString(getSettings().getUserAgentString() + "; " + this.helper.getUserAgent());
         }
 
-        if (mChromeClientWrapper == null) {
+        if (helper != null && mChromeClientWrapper == null) {
             super.setWebChromeClient(mChromeClientWrapper = new ChromeClientWrapper(this, helper));
         }
 
@@ -167,11 +167,17 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
      */
     @Override
     public void setWebChromeClient(WebChromeClient client) {
+        if (mChromeClientWrapper == null) {
+            super.setWebChromeClient(mChromeClientWrapper = new ChromeClientWrapper(this, helper));
+        }
         mChromeClientWrapper.setWrapper(client);
     }
 
     @Override
     public void setWebViewClient(WebViewClient client) {
+        if (mWebClientWrapper == null) {
+            super.setWebViewClient(mWebClientWrapper = new WebClientWrapper(helper));
+        }
         mWebClientWrapper.setWrapper(client);
     }
 
