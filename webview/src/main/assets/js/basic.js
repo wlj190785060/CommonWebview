@@ -43,10 +43,10 @@ function replaceImage(index,url){
 
    function applyNightTheme() {
        var ui_mode_link = document.getElementById("ui_mode_link");
-       ui_mode_link.setAttribute("href", "file:///android_asset/css/night.css");
+//       ui_mode_link.setAttribute("href", "file:///android_asset/css/night.css");
    }
 
    function applyDayTheme() {
        var ui_mode_link = document.getElementById("ui_mode_link");
-       ui_mode_link.setAttribute("href", "file:///android_asset/css/day.css");
+//       ui_mode_link.setAttribute("href", "file:///android_asset/css/day.css");
    }

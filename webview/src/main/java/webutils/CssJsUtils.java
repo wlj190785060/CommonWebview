@@ -279,8 +279,8 @@ final public class CssJsUtils {
      */
     public String detailInjectCssJs(String htmlCode, String content, String cssContent, String jsPath, List<String> css, List<String> js) {
         String css_js = "";
-        if (mHelper != null && !TextUtils.isEmpty(htmlCode)) {
-            String htmlBody = mHelper.getJsObject().setAttrHtmlSrc(content);
+        if (!TextUtils.isEmpty(htmlCode)) {
+//            String htmlBody = mHelper.getJsObject().setAttrHtmlSrc(content);
             String cssTotal = "<link id=\"ui_mode_link\" charset=\"UTF-8\" href=\"%1$s\" " +
                     "rel=\"stylesheet\" type=\"text/css\"/>";
             String html = "<script type=\"text/javascript\" charset=\"UTF-8\" src=\"%1$s\"></script>";
@@ -297,7 +297,7 @@ final public class CssJsUtils {
                     css_js += String.format(html, js.get(i));
                 }
             }
-            return String.format(htmlCode, css_js, htmlBody);
+            return String.format(htmlCode, css_js, content);
         }
         return null;
     }
