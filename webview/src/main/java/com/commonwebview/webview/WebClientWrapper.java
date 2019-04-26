@@ -73,8 +73,16 @@ class WebClientWrapper extends WebViewClient {
             if (uri != null && !TextUtils.equals(uri.getScheme(), "http") && !TextUtils.equals(uri.getScheme(), "https")) {
                 return super.shouldOverrideUrlLoading(view, url);
             }
-            if (isRedirect) { // 重定向
-                view.loadUrl(url);
+            if (isRedirect) { // 重定向 链接稿重定向需要跳转
+                if (helper != null) {
+                    if (!helper.DoNavLinkUrl(url)) {
+                        view.loadUrl(url);
+                    } else {
+                        helper.shouldOverrideUrlLoading(view, url);
+                    }
+                } else {
+                    view.loadUrl(url);
+                }
             } else { // 点击跳转
                 if (ClickTrackerUtils.isDoubleClick()) return true;
                 if (helper != null) {

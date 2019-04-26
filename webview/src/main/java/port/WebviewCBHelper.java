@@ -33,8 +33,15 @@ abstract public class WebviewCBHelper implements IResultBack, IOpenFileChooser,
     //必须要设置ua
     abstract public String getUserAgent();
 
+    //是否是外链稿
     public boolean isBrowserLink() {
         return isBrowserLink;
+    }
+
+    //链接稿是否需要重定向跳转
+    //默认不需要跳转
+    public boolean DoNavLinkUrl(String linkUrl) {
+        return false;
     }
 
     //是否是链接稿,如果是外链稿且需要注入则需要手动设置该项
