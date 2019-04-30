@@ -48,7 +48,7 @@ public class ChromeClientWrapper extends WebChromeClient
      */
     public final static int FILE_CHOOSER_RESULT_CODE = 10;
 
-    public ChromeClientWrapper(CommonWebView webProView,WebviewCBHelper helper) {
+    public ChromeClientWrapper(CommonWebView webProView, WebviewCBHelper helper) {
         super();
         mWebProView = webProView;
         mHelper = helper;
@@ -153,6 +153,7 @@ public class ChromeClientWrapper extends WebChromeClient
 
     private FrameLayout container;
     private CustomViewCallback customViewCallback;
+    private boolean isFullScreen = false;
 
     /**
      * 支持全屏播放视频
@@ -162,24 +163,27 @@ public class ChromeClientWrapper extends WebChromeClient
      */
     @Override
     public void onShowCustomView(View view, CustomViewCallback callback) {
-        //全屏业务逻辑
-        if (mHelper != null) {
-            mHelper.doFullVideo();
-        }
-        if (container != null) {
-            callback.onCustomViewHidden();
-            return;
-        }
-        Activity activity = findAttachActivity();
-        if (activity == null) return;
+        if (!isFullScreen) {
+            isFullScreen = true;
 
-        FrameLayout decor = (FrameLayout) activity.getWindow().getDecorView();
-        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        container = new WebFullScreenContainer(activity.getApplication());
-        decor.addView(container, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-        container.addView(view, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-        customViewCallback = callback;
-        mWebProView.setVisibility(View.GONE);
+            //全屏业务逻辑
+            if (mHelper != null) {
+                mHelper.doFullVideo();
+            }
+            if (container != null) {
+                callback.onCustomViewHidden();
+                return;
+            }
+            Activity activity = findAttachActivity();
+            if (activity == null) return;
+
+            FrameLayout decor = (FrameLayout) activity.getWindow().getDecorView();
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            container = new WebFullScreenContainer(activity.getApplication());
+            decor.addView(container, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+            container.addView(view, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+            customViewCallback = callback;
+        }
     }
 
     @Deprecated
@@ -194,22 +198,25 @@ public class ChromeClientWrapper extends WebChromeClient
 
     @Override
     public void onHideCustomView() {
-        //退出全屏业务逻辑
-        if (mHelper != null) {
-            mHelper.exitFullVideo();
-        }
-        if (container == null) {
-            return;
-        }
+        if (isFullScreen) {
+            isFullScreen = false;
 
-        Activity activity = findAttachActivity();
-        if (activity == null) return;
-        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        FrameLayout decor = (FrameLayout) activity.getWindow().getDecorView();
-        decor.removeView(container);
-        container = null;
-        customViewCallback.onCustomViewHidden();
-        mWebProView.setVisibility(View.VISIBLE);
+            //退出全屏业务逻辑
+            if (mHelper != null) {
+                mHelper.exitFullVideo();
+            }
+            if (container == null) {
+                return;
+            }
+
+            Activity activity = findAttachActivity();
+            if (activity == null) return;
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            FrameLayout decor = (FrameLayout) activity.getWindow().getDecorView();
+            decor.removeView(container);
+            container = null;
+            customViewCallback.onCustomViewHidden();
+        }
     }
 
     @Override
