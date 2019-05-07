@@ -155,12 +155,16 @@ public class ChromeClientWrapper extends WebChromeClient
     private CustomViewCallback customViewCallback;
     private boolean isFullScreen = false;
 
+    public boolean getFullScreen(){
+        return isFullScreen;
+    }
     /**
      * 支持全屏播放视频
      *
      * @param view
      * @param callback
      */
+
     @Override
     public void onShowCustomView(View view, CustomViewCallback callback) {
         if (!isFullScreen) {

@@ -113,7 +113,15 @@ class WebClientWrapper extends WebViewClient {
                 return super.shouldOverrideUrlLoading(view, request);
             }
             if (isRedirect) { // 重定向
-                view.loadUrl(request.getUrl().toString());
+                if (helper != null) {
+                    if (!helper.DoNavLinkUrl(request.getUrl().toString())) {
+                        view.loadUrl(request.getUrl().toString());
+                    } else {
+                        helper.shouldOverrideUrlLoading(view, request.getUrl().toString());
+                    }
+                } else {
+                    view.loadUrl(request.getUrl().toString());
+                }
             } else { // 点击跳转
                 if (ClickTrackerUtils.isDoubleClick()) return true;
                 if (helper != null) {
