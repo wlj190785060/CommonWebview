@@ -220,6 +220,7 @@ public class ChromeClientWrapper extends WebChromeClient
             decor.removeView(container);
             container = null;
             customViewCallback.onCustomViewHidden();
+            mWebProView.setVisibility(View.VISIBLE);
         }
     }
 

@@ -40,6 +40,7 @@ import webutils.JsonUtils;
  * create time:2019/2/14  上午10:32
  */
 public abstract class ZBJTJsBridge {
+    //浙江新闻6.0新版本JS调用对象名
     public static final String PREFIX_JS_METHOD_NAME = "ZBJTJSBridge";
 
     private ZBJTJSInterFace interFace;
