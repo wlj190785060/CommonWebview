@@ -441,7 +441,7 @@ public class ChromeClientWrapper extends WebChromeClient
     private void openFileChooser() {
         if (mWebProView != null && mWebProView.getFragment() != null) {
             WebLifecycleFragment fragment = mWebProView.getFragment();
-            fragment.addOnActivityResultCallback(this);
+//            fragment.addOnActivityResultCallback(this);
             //跳转到图片选中页面
             if (mHelper != null) {
                 mHelper.NavToImageSelect(fragment, FILE_CHOOSER_RESULT_CODE);
