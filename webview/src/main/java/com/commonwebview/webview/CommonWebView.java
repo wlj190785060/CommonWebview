@@ -40,26 +40,8 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
      *
      * @param context
      */
-    public CommonWebView(Context context) {
-        super(context);
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-            super.removeJavascriptInterface("searchBoxJavaBridge_");
-            super.removeJavascriptInterface("accessibility");
-            super.removeJavascriptInterface("accessibilityTraversal");
-        }
-    }
-
     public CommonWebView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-            super.removeJavascriptInterface("searchBoxJavaBridge_");
-            super.removeJavascriptInterface("accessibility");
-            super.removeJavascriptInterface("accessibilityTraversal");
-        }
-    }
-
-    public CommonWebView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
             super.removeJavascriptInterface("searchBoxJavaBridge_");
             super.removeJavascriptInterface("accessibility");
