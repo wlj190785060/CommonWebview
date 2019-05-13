@@ -14,6 +14,8 @@ import android.webkit.WebView;
 import com.commonwebview.webview.ChromeClientWrapper;
 import com.commonwebview.webview.CommonWebView;
 
+import static port.ZBJTJsBridge.PREFIX_JS_METHOD_NAME;
+
 /**
  * webview回调辅助抽象类，可扩展
  * Created by wanglinjie.
@@ -99,6 +101,7 @@ abstract public class WebviewCBHelper implements IResultBack, IOpenFileChooser,
     public void setWebviewConfig(CommonWebView webview) {
         if (jsInterface != null && !TextUtils.isEmpty(getWebViewJsObject())) {
             webview.addJavascriptInterface(jsInterface, getWebViewJsObject());
+            webview.addJavascriptInterface(jsInterface, PREFIX_JS_METHOD_NAME);
         }
     }
 
