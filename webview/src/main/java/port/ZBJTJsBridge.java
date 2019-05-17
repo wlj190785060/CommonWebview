@@ -10,10 +10,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+import bean.ZBJTChechJSApiBean;
 import bean.ZBJTGetAppInfoBean;
 import bean.ZBJTGetAppInfoRspBean;
 import bean.ZBJTGetLocalRspBean;
@@ -39,7 +40,7 @@ import webutils.JsonUtils;
  * Created by wanglinjie.
  * create time:2019/2/14  上午10:32
  */
-public abstract class ZBJTJsBridge {
+public class ZBJTJsBridge {
     //浙江新闻6.0新版本JS调用对象名
     public static final String PREFIX_JS_METHOD_NAME = "ZBJTJSBridge";
 
@@ -75,42 +76,70 @@ public abstract class ZBJTJsBridge {
             return;
         }
 
-        try {
-            //获取方法
-            Method method = getClass().getDeclaredMethod(api, Class.forName("java.lang.String"), Class.forName("java.lang.String"));
-            //调用
-            method.invoke(getClass().newInstance(), json, callback);
-        } catch (NoSuchMethodException e) {
-            webviewLoadUrl(callback, setErrorRspJson("11001"));
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
+        switch (api) {
+            case "checkJSApi":
+                checkJSApi(json, callback);
+                break;
+            case "uploadFile":
+                uploadFile(json, callback);
+                break;
+            case "selectImage":
+                selectImage(json, callback);
+                break;
+            case "saveValueToLocal":
+                saveValueToLocal(json, callback);
+                break;
+            case "getLocation":
+                getLocation(json, callback);
+                break;
+            case "updateAppShareData":
+                updateAppShareData(json, callback);
+                break;
+            case "startRecord":
+                startRecord(json, callback);
+                break;
+            case "openAppMobile":
+                openAppMobile(json, callback);
+                break;
+            case "getAppInfo":
+                getAppInfo(json, callback);
+                break;
+            case "login":
+                login(json, callback);
+                break;
+            case "modifyUserInfo":
+                modifyUserInfo(json, callback);
+                break;
+            case "closeWindow":
+                closeWindow(json, callback);
+                break;
+            case "getValueFromLocal":
+                getValueFromLocal(json, callback);
+                break;
+            case "getUserInfo":
+                getUserInfo(json, callback);
+                break;
+            case "openAppShareMenu":
+                openAppShareMenu(json, callback);
+                break;
+            default:
+                webviewLoadUrl(callback, setErrorRspJson("11001"));
+                break;
         }
-    }
-
-//    /**
-//     * 检测某方法是否存在
-//     *
-//     * @param api
-//     * @return
-//     */
-//    private boolean checkJSApiValid(String api) {
+        //TODO WLJ 反射到抽象类或接口则要无参构造器，不利于代码拓展
 //        try {
-//            Method[] methods = getClass().getMethods();
-//            for (Method method : methods) {
-//                if (method.getName() != null) {
-//                    if (api.equals(method.getName())) {
-//                        return true;
-//                    }
-//                } else {
-//                    return false;
-//                }
-//            }
+//            //获取方法
+//            Method method = ZBJTJsBridge.class.getDeclaredMethod(api, String.class, String.class);
+//            method.setAccessible(true);
+//            //调用
+//            method.invoke(getClass().newInstance(), json, callback);
+//        } catch (NoSuchMethodException e) {
+//            webviewLoadUrl(callback, setErrorRspJson("11001"));
+//            e.printStackTrace();
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
-//        return false;
-//    }
+    }
 
     /**
      * webview加载js方法
@@ -158,35 +187,35 @@ public abstract class ZBJTJsBridge {
      */
     private void checkJSApi(String json, String callback) {
         try {
-            List<String> apiList = JsonUtils.parseArray(json, String.class);
+            ZBJTChechJSApiBean bean = JsonUtils.parseObject(json, ZBJTChechJSApiBean.class);
             //获取方法
-            Method[] methods = getClass().getMethods();
-            if (apiList != null && apiList.size() > 0) {
+            Method[] methods = ZBJTJsBridge.class.getDeclaredMethods();
+            ArrayList<String> arrayMethods = new ArrayList<>();
+            if (bean != null && !bean.getJsApiList().isEmpty()) {
                 //api容器
                 JSONObject jsonObj = new JSONObject();
                 jsonObj.put("code", "1");
                 Map<String, String> checkResult = new HashMap<>();
-                //JS动态传递方法名
-                for (int i = 0; i < apiList.size(); i++) {
-                    if (methods != null && methods.length > 0) {
-                        for (Method method : methods) {
-                            if (method.getName() != null) {
-                                if (apiList.get(i).equals(method.getName())) {
-                                    checkResult.put(apiList.get(i), "1");
-                                } else {
-                                    jsonObj.put("code", "0");
-                                    checkResult.put(apiList.get(i), "0");
-                                }
+                if (methods != null && methods.length > 0) {
+                    for (int i = 0; i < methods.length; i++) {
+                        arrayMethods.add(methods[i].getName());
+                    }
+
+                    for (int i = 0; i < bean.getJsApiList().size(); i++) {
+                        if (arrayMethods != null && !arrayMethods.isEmpty()) {
+                            if (arrayMethods.contains(bean.getJsApiList().get(i))) {
+                                checkResult.put(bean.getJsApiList().get(i), "1");
                             } else {
-                                webviewLoadUrl(callback, setErrorRspJson("11001"));
-                                return;
+                                jsonObj.put("code", "0");
+                                checkResult.put(bean.getJsApiList().get(i), "0");
                             }
+                        } else {
+                            webviewLoadUrl(callback, setErrorRspJson("11001"));
+                            return;
                         }
-                    } else {
-                        webviewLoadUrl(callback, setErrorRspJson("11001"));
-                        return;
                     }
                 }
+
                 //组装json
                 JSONObject jsonObjData = new JSONObject();
                 jsonObjData.put("checkResult", checkResult);

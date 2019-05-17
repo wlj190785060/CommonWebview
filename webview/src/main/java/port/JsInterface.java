@@ -51,7 +51,6 @@ public abstract class JsInterface extends ZBJTJsBridge implements IimgBrower, IS
         if (imgSrcs != null && imgSrcs.length > 0) {
             mImgSrcs = imgSrcs;
         }
-        //TODO WLJ 这里有特殊逻辑
         setImgs();
     }
 
@@ -68,7 +67,6 @@ public abstract class JsInterface extends ZBJTJsBridge implements IimgBrower, IS
         if (mSrcs != null && mSrcs.size() > 0) {
             mSrcs = srcs;
         }
-        //TODO WLJ 这里有特殊逻辑
         setAImgs();
     }
 
