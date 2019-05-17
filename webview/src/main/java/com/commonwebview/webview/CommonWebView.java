@@ -17,6 +17,8 @@ import port.IWebJsCallBack;
 import port.WebviewCBHelper;
 import webutils.WebviewUtils;
 
+import static port.ZBJTJsBridge.PREFIX_JS_METHOD_NAME;
+
 /**
  * 通用webview
  *
@@ -82,6 +84,12 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
         WebSettings settings = getSettings();
         requestFocus(View.FOCUS_DOWN);
         settings.setJavaScriptEnabled(true); // 启用支持javaScript
+        //默认是允许注入
+        if (helper != null && helper.getJsObject() != null && !TextUtils.isEmpty(helper.getWebViewJsObject())) {
+//            addJavascriptInterface(helper.getJsObject(), helper.getWebViewJsObject());
+            addJavascriptInterface(helper.getJsObject(), helper.getWebViewJsObject());
+            addJavascriptInterface(helper.getJsObject(), PREFIX_JS_METHOD_NAME);
+        }
         settings.setGeolocationEnabled(true);
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
         settings.setUseWideViewPort(true);

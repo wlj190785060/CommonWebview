@@ -96,13 +96,12 @@ abstract public class WebviewCBHelper implements IResultBack, IOpenFileChooser,
     }
 
     //如果要重写需要调用super()
-    @CallSuper
     @Override
     public void setWebviewConfig(CommonWebView webview) {
-        if (jsInterface != null && !TextUtils.isEmpty(getWebViewJsObject())) {
-            webview.addJavascriptInterface(jsInterface, getWebViewJsObject());
-            webview.addJavascriptInterface(jsInterface, PREFIX_JS_METHOD_NAME);
-        }
+//        if (jsInterface != null && !TextUtils.isEmpty(getWebViewJsObject())) {
+//            webview.addJavascriptInterface(jsInterface, getWebViewJsObject());
+//            webview.addJavascriptInterface(jsInterface, PREFIX_JS_METHOD_NAME);
+//        }
     }
 
     abstract public String getWebViewJsObject();
