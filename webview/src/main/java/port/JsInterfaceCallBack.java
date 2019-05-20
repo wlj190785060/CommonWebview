@@ -2,6 +2,8 @@ package port;
 
 import android.webkit.WebView;
 
+import java.io.Serializable;
+
 import bean.ZBJTGetAppInfoRspBean;
 import bean.ZBJTGetLocalRspBean;
 import bean.ZBJTGetValueFromLocalRspBean;
@@ -19,8 +21,9 @@ import webutils.JsonUtils;
  * Created by wanglinjie.
  * create time:2019/2/28  上午9:05
  */
-final public class JsInterfaceCallBack {
+final public class JsInterfaceCallBack implements Serializable{
 
+    private static final long serialVersionUID = -415618058441243590L;
     private WebView webview;
 
     public JsInterfaceCallBack(WebView webview) {
