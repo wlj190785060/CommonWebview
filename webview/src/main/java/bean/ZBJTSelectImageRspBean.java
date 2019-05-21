@@ -37,7 +37,8 @@ public class ZBJTSelectImageRspBean implements Serializable {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
+        private static final long serialVersionUID = -4834636286384394386L;
         private List<String> imageList;
         private List<String> base64List;
 

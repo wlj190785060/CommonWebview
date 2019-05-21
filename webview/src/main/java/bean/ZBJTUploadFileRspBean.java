@@ -38,7 +38,8 @@ public class ZBJTUploadFileRspBean implements Serializable {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
+        private static final long serialVersionUID = -2894938759080267031L;
         private String response;
 
         public String getResponse() {

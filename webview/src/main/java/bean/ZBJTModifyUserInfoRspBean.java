@@ -39,7 +39,8 @@ public class ZBJTModifyUserInfoRspBean implements Serializable {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
+        private static final long serialVersionUID = -7480817272943015777L;
         private String option;
         private String value;
 

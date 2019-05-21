@@ -40,7 +40,8 @@ public class ZBJTStartRecordRspBean implements Serializable {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
+        private static final long serialVersionUID = 393092254530195749L;
         private String audioPath;
         private String recordId;
 

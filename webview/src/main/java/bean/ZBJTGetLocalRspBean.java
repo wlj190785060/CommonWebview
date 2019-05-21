@@ -45,7 +45,8 @@ public class ZBJTGetLocalRspBean implements Serializable {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
+        private static final long serialVersionUID = 5498500942009315465L;
         private String latitude;
         private String lontitude;
         private String accuracy;

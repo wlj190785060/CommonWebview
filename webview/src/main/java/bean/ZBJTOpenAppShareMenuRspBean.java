@@ -37,7 +37,8 @@ public class ZBJTOpenAppShareMenuRspBean implements Serializable {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
+        private static final long serialVersionUID = 565962474881394163L;
         private String shareTo;
 
         public String getShareTo() {

@@ -40,7 +40,8 @@ public class ZBJTGetValueFromLocalRspBean implements Serializable {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
+        private static final long serialVersionUID = -6760910188047593671L;
         private String option;
         private String key;
         private String value;

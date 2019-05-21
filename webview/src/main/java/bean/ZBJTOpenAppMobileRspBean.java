@@ -39,7 +39,8 @@ public class ZBJTOpenAppMobileRspBean implements Serializable {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
+        private static final long serialVersionUID = 7914388693829365531L;
         private String mobile;
 
         public String getMobile() {

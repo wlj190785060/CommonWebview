@@ -55,7 +55,8 @@ public class ZBJTGetAppInfoRspBean implements Serializable {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
+        private static final long serialVersionUID = 8478352643245846714L;
         private String app;
         private String version;
         private String networkType;
