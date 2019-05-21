@@ -33,6 +33,7 @@ import bean.ZBJTStartRecordBean;
 import bean.ZBJTStartRecordRspBean;
 import bean.ZBJTUploadFileBean;
 import bean.ZBJTUploadFileRspBean;
+import bean.ZBJTUserInfoBean;
 import webutils.JsonUtils;
 
 /**
@@ -307,12 +308,14 @@ public class ZBJTJsBridge {
         }
         ZBJTStartRecordBean bean;
         ZBJTStartRecordRspBean rspBean;
+        ZBJTStartRecordRspBean.DataBean dataBean = new ZBJTStartRecordRspBean.DataBean();
         try {
             //将js传递的RecordId设置到回传参数rsp中
             bean = JsonUtils.parseObject(json, ZBJTStartRecordBean.class);
             rspBean = new ZBJTStartRecordRspBean();
+            rspBean.setData(dataBean);
             if (bean != null) {
-                rspBean.getData().setRecordId(bean.getRecordId());
+                dataBean.setRecordId(bean.getRecordId());
             }
             interFace.startRecord(rspBean, callback);
         } catch (Exception e) {
@@ -333,11 +336,13 @@ public class ZBJTJsBridge {
         }
         ZBJTGetAppInfoBean bean;
         ZBJTGetAppInfoRspBean rspBean;
+        ZBJTGetAppInfoRspBean.DataBean dataBean = new ZBJTGetAppInfoRspBean.DataBean();
         try {
             bean = JsonUtils.parseObject(json, ZBJTGetAppInfoBean.class);
             rspBean = new ZBJTGetAppInfoRspBean();
+            rspBean.setData(dataBean);
             if (bean != null) {
-                rspBean.getData().setUuid(bean.getUuid());
+                dataBean.setUuid(bean.getUuid());
             }
             interFace.getAppInfo(rspBean, callback);
         } catch (Exception e) {
@@ -412,12 +417,14 @@ public class ZBJTJsBridge {
         }
         ZBJTGetValueFromLocalBean bean;
         ZBJTGetValueFromLocalRspBean rspBean;
+        ZBJTGetValueFromLocalRspBean.DataBean dataBean = new ZBJTGetValueFromLocalRspBean.DataBean();
         try {
             bean = JsonUtils.parseObject(json, ZBJTGetValueFromLocalBean.class);
             rspBean = new ZBJTGetValueFromLocalRspBean();
+            rspBean.setData(dataBean);
             if (bean != null) {
-                rspBean.getData().setOption(bean.getOption());
-                rspBean.getData().setKey(bean.getKey());
+                dataBean.setOption(bean.getOption());
+                dataBean.setKey(bean.getKey());
             }
             interFace.getValueFromLocal(rspBean, callback);
         } catch (Exception e) {
@@ -445,7 +452,15 @@ public class ZBJTJsBridge {
             webviewLoadUrl(callback, setErrorRspJson("11002"));
             return;
         }
-        interFace.getUserInfo(json, callback);
+        ZBJTUserInfoBean bean;
+        try {
+            bean = JsonUtils.parseObject(json, ZBJTUserInfoBean.class);
+            interFace.getUserInfo(bean, callback);
+        } catch (Exception e) {
+            webviewLoadUrl(callback, setErrorRspJson("11002"));
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -480,11 +495,13 @@ public class ZBJTJsBridge {
         }
         ZBJTModifyUserInfoBean bean;
         ZBJTModifyUserInfoRspBean rspBean;
+        ZBJTModifyUserInfoRspBean.DataBean dataBean = new ZBJTModifyUserInfoRspBean.DataBean();
         try {
             bean = JsonUtils.parseObject(json, ZBJTModifyUserInfoBean.class);
             rspBean = new ZBJTModifyUserInfoRspBean();
+            rspBean.setData(dataBean);
             if (bean != null) {
-                rspBean.getData().setOption(bean.getOption());
+                dataBean.setOption(bean.getOption());
             }
             interFace.modifyUserInfo(rspBean, callback);
         } catch (Exception e) {

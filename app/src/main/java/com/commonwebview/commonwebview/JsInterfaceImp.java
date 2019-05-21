@@ -19,6 +19,7 @@ import bean.ZBJTSelectImageRspBean;
 import bean.ZBJTStartRecordRspBean;
 import bean.ZBJTUploadFileBean;
 import bean.ZBJTUploadFileRspBean;
+import bean.ZBJTUserInfoBean;
 import port.JsInterface;
 import port.SerializableHashMap;
 import port.ZBJTJSInterFace;
@@ -102,7 +103,7 @@ public class JsInterfaceImp extends JsInterface implements ZBJTJSInterFace {
     }
 
     @Override
-    public void getUserInfo(String json, String callback) {
+    public void getUserInfo(ZBJTUserInfoBean bean, String callback) {
 
     }
 

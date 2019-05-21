@@ -15,6 +15,7 @@ import bean.ZBJTSelectImageRspBean;
 import bean.ZBJTStartRecordRspBean;
 import bean.ZBJTUploadFileBean;
 import bean.ZBJTUploadFileRspBean;
+import bean.ZBJTUserInfoBean;
 
 /**
  * JSSDK具体业务逻辑接口,可在各个项目中通用
@@ -93,14 +94,12 @@ public interface ZBJTJSInterFace {
      */
     void login(ZBJTReturnBean beanRsp, String callback);
 
-    //TODO 这里用户信息的bean到具体的业务逻辑中去实现
-
     /**
      * 获取当前用户信息
      *
      * @return
      */
-    void getUserInfo(String json, String callback);
+    void getUserInfo(ZBJTUserInfoBean bean, String callback);
 
     /**
      * 实名认证功能-绑定手机号（调用判断手机绑定前先判断登录状态）
