@@ -183,9 +183,9 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
                 FragmentManager fragmentManager = fa.getSupportFragmentManager();
                 if (mLifecycleFragment == null) {
                     mLifecycleFragment = new WebLifecycleFragment();
-                    if (mChromeClientWrapper != null) {
-                        mLifecycleFragment.addOnActivityResultCallback(mChromeClientWrapper);
-                    }
+                }
+                if (mChromeClientWrapper != null) {
+                    mLifecycleFragment.addOnActivityResultCallback(mChromeClientWrapper);
                 }
                 fragmentManager.beginTransaction().add(mLifecycleFragment, FRAGMENT_TAG)
                         .commitAllowingStateLoss();
