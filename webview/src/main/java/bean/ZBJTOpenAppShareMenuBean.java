@@ -27,6 +27,7 @@ public class ZBJTOpenAppShareMenuBean implements Serializable {
     private String onlyImageShare;
     private String videoUrl;
     private String audioUrl;
+    private String callback;
 
     public String getTitle() {
         return title;
@@ -83,4 +84,13 @@ public class ZBJTOpenAppShareMenuBean implements Serializable {
     public void setAudioUrl(String audioUrl) {
         this.audioUrl = audioUrl;
     }
+
+    public String getCallback() {
+        return callback;
+    }
+
+    public void setCallback(String callback) {
+        this.callback = callback;
+    }
+
 }

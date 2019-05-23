@@ -9,6 +9,7 @@ import bean.ZBJTGetLocalRspBean;
 import bean.ZBJTGetValueFromLocalRspBean;
 import bean.ZBJTModifyUserInfoRspBean;
 import bean.ZBJTOpenAppMobileRspBean;
+import bean.ZBJTOpenAppShareMenuBean;
 import bean.ZBJTOpenAppShareMenuRspBean;
 import bean.ZBJTReturnBean;
 import bean.ZBJTSelectImageRspBean;
@@ -21,7 +22,7 @@ import webutils.JsonUtils;
  * Created by wanglinjie.
  * create time:2019/2/28  上午9:05
  */
-final public class JsInterfaceCallBack implements Serializable{
+final public class JsInterfaceCallBack implements Serializable {
 
     private static final long serialVersionUID = -415618058441243590L;
     private WebView webview;
@@ -43,6 +44,11 @@ final public class JsInterfaceCallBack implements Serializable{
 
     //打开分享
     public void openAppShareMenu(ZBJTOpenAppShareMenuRspBean beanRsp, String callback) {
+        exeJs(webview, beanRsp, callback);
+    }
+
+    //更新分享信息(点击分享结果回调)
+    public void updateAppShareData(ZBJTOpenAppShareMenuRspBean beanRsp, String callback) {
         exeJs(webview, beanRsp, callback);
     }
 
