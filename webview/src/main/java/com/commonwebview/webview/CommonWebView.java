@@ -82,7 +82,7 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
      */
     private void configWebView() {
         WebSettings settings = getSettings();
-        requestFocus(View.FOCUS_DOWN);
+//        requestFocus(View.FOCUS_DOWN);
         settings.setJavaScriptEnabled(true); // 启用支持javaScript
         //默认是允许注入
         if (helper != null && helper.getJsObject() != null && !TextUtils.isEmpty(helper.getWebViewJsObject())) {
