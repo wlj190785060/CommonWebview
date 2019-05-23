@@ -34,8 +34,9 @@ public class WebLifecycleFragment extends Fragment {
         if (!mCallbacks.isEmpty()) {
             List<OnActivityResultCallback> copy = new ArrayList(mCallbacks);
             for (OnActivityResultCallback callback : copy) {
-                if (callback != null && callback.onActivityResult(requestCode, resultCode, data))
-                    mCallbacks.remove(callback);
+                callback.onActivityResult(requestCode, resultCode, data);
+//                if (callback != null && callback.onActivityResult(requestCode, resultCode, data))
+//                    mCallbacks.remove(callback);
             }
         }
     }
