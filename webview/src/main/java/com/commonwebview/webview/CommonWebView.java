@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Base64;
+import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -25,7 +26,7 @@ import static port.ZBJTJsBridge.PREFIX_JS_METHOD_NAME;
  * @author wanglinjie
  * @date 2018/6/20 09:44.
  */
-public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLongClickListener {
+public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLongClickListener, View.OnTouchListener {
 
     private WebClientWrapper mWebClientWrapper;
     private ChromeClientWrapper mChromeClientWrapper;
@@ -83,6 +84,7 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
     private void configWebView() {
         WebSettings settings = getSettings();
         requestFocus(View.FOCUS_DOWN);
+        setOnTouchListener(this);
         settings.setJavaScriptEnabled(true); // 启用支持javaScript
         //默认是允许注入
         if (helper != null && helper.getJsObject() != null && !TextUtils.isEmpty(helper.getWebViewJsObject())) {
@@ -301,4 +303,17 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
         });
     }
 
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+            case MotionEvent.ACTION_UP:
+                if (!v.hasFocus()) {
+                    v.requestFocus();
+                    v.requestFocusFromTouch();
+                }
+                break;
+        }
+        return false;
+    }
 }
