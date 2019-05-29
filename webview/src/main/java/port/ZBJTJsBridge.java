@@ -4,6 +4,7 @@ import android.text.TextUtils;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 import org.json.JSONException;
@@ -11,8 +12,6 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import bean.ZBJTChechJSApiBean;
 import bean.ZBJTGetAppInfoBean;
@@ -138,9 +137,9 @@ public class ZBJTJsBridge {
     private void webviewLoadUrl(String callback, String json) {
         final String execUrl;
         if (!TextUtils.isEmpty(callback)) {
-            execUrl = "javascript:" + callback + "(" + json + ")";
+            execUrl = "javascript:" + callback + "('" + json + "');";
         } else {
-            execUrl = "javascript:" + "console.error" + "(" + json + ")";
+            execUrl = "javascript:" + "console.error" + "('" + json + "');";
         }
         if (webview != null) {
             webview.post(new Runnable() {
@@ -176,14 +175,18 @@ public class ZBJTJsBridge {
     private void checkJSApi(String json, String callback) {
         try {
             ZBJTChechJSApiBean bean = JsonUtils.parseObject(json, ZBJTChechJSApiBean.class);
+
             //获取方法
             Method[] methods = ZBJTJsBridge.class.getDeclaredMethods();
             ArrayList<String> arrayMethods = new ArrayList<>();
             if (bean != null && !bean.getJsApiList().isEmpty()) {
                 //api容器
-                JSONObject jsonObj = new JSONObject();
-                jsonObj.put("code", "1");
-                Map<String, String> checkResult = new HashMap<>();
+                JsonObject jsonObj = new JsonObject();
+                jsonObj.addProperty("code", "1");
+                JsonObject checkResult = new JsonObject();
+                jsonObj.add("data", checkResult);
+                JsonObject apiBean = new JsonObject();
+                checkResult.add("checkResult", apiBean);
                 if (methods != null && methods.length > 0) {
                     for (int i = 0; i < methods.length; i++) {
                         arrayMethods.add(methods[i].getName());
@@ -192,10 +195,10 @@ public class ZBJTJsBridge {
                     for (int i = 0; i < bean.getJsApiList().size(); i++) {
                         if (arrayMethods != null && !arrayMethods.isEmpty()) {
                             if (arrayMethods.contains(bean.getJsApiList().get(i))) {
-                                checkResult.put(bean.getJsApiList().get(i), "1");
+                                apiBean.addProperty(bean.getJsApiList().get(i), "1");
                             } else {
-                                jsonObj.put("code", "0");
-                                checkResult.put(bean.getJsApiList().get(i), "0");
+                                jsonObj.addProperty("code", "0");
+                                apiBean.addProperty(bean.getJsApiList().get(i), "0");
                             }
                         } else {
                             webviewLoadUrl(callback, setErrorRspJson("11001"));
@@ -203,12 +206,7 @@ public class ZBJTJsBridge {
                         }
                     }
                 }
-
-                //组装json
-                JSONObject jsonObjData = new JSONObject();
-                jsonObjData.put("checkResult", checkResult);
-                jsonObj.put("data", jsonObjData);
-                webviewLoadUrl(callback, JsonUtils.toJsonString(jsonObj));
+                webviewLoadUrl(callback, String.valueOf(jsonObj));//JsonUtils.toJsonString(jsonObj)
             } else {
                 webviewLoadUrl(callback, setErrorRspJson("11002"));
                 return;
