@@ -127,19 +127,6 @@ public class ZBJTJsBridge {
                 webviewLoadUrl(callback, setErrorRspJson("11001"));
                 break;
         }
-        //TODO WLJ 反射到抽象类或接口则要无参构造器，不利于代码拓展
-//        try {
-//            //获取方法
-//            Method method = ZBJTJsBridge.class.getDeclaredMethod(api, String.class, String.class);
-//            method.setAccessible(true);
-//            //调用
-//            method.invoke(getClass().newInstance(), json, callback);
-//        } catch (NoSuchMethodException e) {
-//            webviewLoadUrl(callback, setErrorRspJson("11001"));
-//            e.printStackTrace();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
     }
 
     /**
@@ -221,7 +208,7 @@ public class ZBJTJsBridge {
                 JSONObject jsonObjData = new JSONObject();
                 jsonObjData.put("checkResult", checkResult);
                 jsonObj.put("data", jsonObjData);
-                webviewLoadUrl(callback, jsonObj.toString());
+                webviewLoadUrl(callback, JsonUtils.toJsonString(jsonObj));
             } else {
                 webviewLoadUrl(callback, setErrorRspJson("11002"));
                 return;
