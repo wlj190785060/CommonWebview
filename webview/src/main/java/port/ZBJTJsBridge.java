@@ -197,7 +197,7 @@ public class ZBJTJsBridge {
                             if (arrayMethods.contains(bean.getJsApiList().get(i))) {
                                 apiBean.addProperty(bean.getJsApiList().get(i), "1");
                             } else {
-                                jsonObj.addProperty("code", "0");
+//                                jsonObj.addProperty("code", "0");
                                 apiBean.addProperty(bean.getJsApiList().get(i), "0");
                             }
                         } else {
