@@ -252,13 +252,14 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
         super.onPause();
         //暂停音频
         if (helper != null && helper.getJsObject() != null && helper.getJsObject().getAudioCount() > 0) {
-            final String execUrl = "javascript:musicPause();";
-            post(new Runnable() {
-                @Override
-                public void run() {
-                    loadUrl(execUrl);
-                }
-            });
+            final String execUrl = "javascript:musicPause()";
+            loadUrl(execUrl);
+//            post(new Runnable() {
+//                @Override
+//                public void run() {
+//                    loadUrl(execUrl);
+//                }
+//            });
         }
     }
 
