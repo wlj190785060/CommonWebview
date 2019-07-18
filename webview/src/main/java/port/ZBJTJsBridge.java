@@ -25,6 +25,7 @@ import bean.ZBJTOpenAppMobileBean;
 import bean.ZBJTOpenAppMobileRspBean;
 import bean.ZBJTOpenAppShareMenuBean;
 import bean.ZBJTOpenAppShareMenuRspBean;
+import bean.ZBJTPreviewImageBean;
 import bean.ZBJTReturnBean;
 import bean.ZBJTSelectImageBean;
 import bean.ZBJTSelectImageRspBean;
@@ -121,6 +122,9 @@ public class ZBJTJsBridge {
                 break;
             case "openAppShareMenu":
                 openAppShareMenu(json, callback);
+                break;
+            case "previewImage":
+                previewImage(json, callback);
                 break;
             default:
                 webviewLoadUrl(callback, setErrorRspJson("11001"));
@@ -489,6 +493,28 @@ public class ZBJTJsBridge {
                 dataBean.setOption(bean.getOption());
             }
             interFace.modifyUserInfo(rspBean, callback);
+        } catch (Exception e) {
+            webviewLoadUrl(callback, setErrorRspJson("11002"));
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 图片预览
+     *
+     * @param json
+     * @param callback
+     */
+    private void previewImage(String json, String callback) {
+        if (TextUtils.isEmpty(json)) {
+            webviewLoadUrl(callback, setErrorRspJson("11002"));
+            return;
+        }
+
+        ZBJTPreviewImageBean bean;
+        try {
+            bean = JsonUtils.parseObject(json, ZBJTPreviewImageBean.class);
+            interFace.previewImage(bean, callback);
         } catch (Exception e) {
             webviewLoadUrl(callback, setErrorRspJson("11002"));
             e.printStackTrace();
