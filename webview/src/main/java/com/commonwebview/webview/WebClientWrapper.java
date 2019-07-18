@@ -62,26 +62,31 @@ class WebClientWrapper extends WebViewClient {
                 && webViewClient.shouldOverrideUrlLoading(view, url)) {
             return true;
         }
-        //电话、邮件、短信之类
-        if (url.startsWith("tel:") || url.startsWith("sms:") || url.startsWith("mailto:")) {
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            view.getContext().startActivity(intent);
-            return true;
-        }
+
         if (!TextUtils.isEmpty(url)) {
+            //电话、邮件、短信之类
+            if (url.startsWith("tel:") || url.startsWith("sms:") || url.startsWith("mailto:")) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                view.getContext().startActivity(intent);
+                return true;
+            }
+
             Uri uri = Uri.parse(url);
-            if (uri != null && !TextUtils.equals(uri.getScheme(), "http") && !TextUtils.equals(uri.getScheme(), "https")) {
-                return super.shouldOverrideUrlLoading(view, url);
+            if (!TextUtils.equals(uri.getScheme(), "http") && !TextUtils.equals(uri.getScheme(), "https")) {
+                return true;
             }
             if (isRedirect) { // 重定向 链接稿重定向需要跳转
                 if (helper != null) {
                     if (!helper.DoNavLinkUrl(url)) {
                         view.loadUrl(url);
+                        return true;
                     } else {
                         helper.shouldOverrideUrlLoading(view, url);
+                        return true;
                     }
                 } else {
                     view.loadUrl(url);
+                    return true;
                 }
             } else { // 点击跳转
                 if (ClickTrackerUtils.isDoubleClick()) return true;
@@ -101,26 +106,31 @@ class WebClientWrapper extends WebViewClient {
                 && webViewClient.shouldOverrideUrlLoading(view, request)) {
             return true;
         }
-        //电话、邮件、短信之类
-        if (request.getUrl().toString().startsWith("tel:") || request.getUrl().toString().startsWith("sms:") || request.getUrl().toString().startsWith("mailto:")) {
-            Intent intent = new Intent(Intent.ACTION_VIEW, request.getUrl());
-            view.getContext().startActivity(intent);
-            return true;
-        }
+
         if (!TextUtils.isEmpty(request.getUrl().toString())) {
+            //电话、邮件、短信之类
+            if (request.getUrl().toString().startsWith("tel:") || request.getUrl().toString().startsWith("sms:") || request.getUrl().toString().startsWith("mailto:")) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, request.getUrl());
+                view.getContext().startActivity(intent);
+                return true;
+            }
+
             Uri uri = request.getUrl();
-            if (uri != null && !TextUtils.equals(uri.getScheme(), "http") && !TextUtils.equals(uri.getScheme(), "https")) {
-                return super.shouldOverrideUrlLoading(view, request);
+            if (!TextUtils.equals(uri.getScheme(), "http") && !TextUtils.equals(uri.getScheme(), "https")) {
+                return true;
             }
             if (isRedirect) { // 重定向
                 if (helper != null) {
                     if (!helper.DoNavLinkUrl(request.getUrl().toString())) {
                         view.loadUrl(request.getUrl().toString());
+                        return true;
                     } else {
                         helper.shouldOverrideUrlLoading(view, request.getUrl().toString());
+                        return true;
                     }
                 } else {
                     view.loadUrl(request.getUrl().toString());
+                    return true;
                 }
             } else { // 点击跳转
                 if (ClickTrackerUtils.isDoubleClick()) return true;
