@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
 //        Intent intent = getIntent();
 //        if (intent.getIntExtra("key", -1) == 1) {
-        webView.loadUrl("http://news.cctv.com/2019/02/20/ARTIZeKIQfykBbJwhtzMOJp4190220.shtml");
+        webView.loadUrl("http://www.163.com");
         webViewCopy = webView;
 //        } else if (intent.getIntExtra("key", -1) == 2) {
 //            webView.loadUrl("http://www.xinhuanet.com/politics/2018-11/21/c_129999219.htm");
