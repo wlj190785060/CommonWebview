@@ -9,8 +9,9 @@ import bean.ZBJTGetLocalRspBean;
 import bean.ZBJTGetValueFromLocalRspBean;
 import bean.ZBJTModifyUserInfoRspBean;
 import bean.ZBJTOpenAppMobileRspBean;
-import bean.ZBJTOpenAppShareMenuBean;
 import bean.ZBJTOpenAppShareMenuRspBean;
+import bean.ZBJTPreviewImageBean;
+import bean.ZBJTPreviewImageRsBean;
 import bean.ZBJTReturnBean;
 import bean.ZBJTSelectImageRspBean;
 import bean.ZBJTStartRecordRspBean;
@@ -111,5 +112,9 @@ final public class JsInterfaceCallBack implements Serializable {
 
     public void modifyUserInfo(ZBJTModifyUserInfoRspBean beanRsp, String callback) {
         exeJs(webview, beanRsp, callback);
+    }
+
+    public void previewImage(ZBJTPreviewImageRsBean bean, String callback) {
+        exeJs(webview, bean, callback);
     }
 }
