@@ -13,6 +13,7 @@ import bean.ZBJTOpenAppMobileBean;
 import bean.ZBJTOpenAppMobileRspBean;
 import bean.ZBJTOpenAppShareMenuBean;
 import bean.ZBJTOpenAppShareMenuRspBean;
+import bean.ZBJTPreviewImageBean;
 import bean.ZBJTReturnBean;
 import bean.ZBJTSelectImageBean;
 import bean.ZBJTSelectImageRspBean;
@@ -114,6 +115,11 @@ public class JsInterfaceImp extends JsInterface implements ZBJTJSInterFace {
 
     @Override
     public void modifyUserInfo(ZBJTModifyUserInfoRspBean beanRsp, String callback) {
+
+    }
+
+    @Override
+    public void previewImage(ZBJTPreviewImageBean bean, String callback) {
 
     }
 }
