@@ -2,16 +2,19 @@ package webutils;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.webkit.WebResourceRequest;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -51,6 +54,7 @@ final public class CssJsUtils {
     public boolean isInject() {
         return isInject;
     }
+
     /**
      * 传递helper
      *
@@ -61,6 +65,7 @@ final public class CssJsUtils {
         this.mHelper = mHelper;
         return this;
     }
+
     /**
      * 根据给定的网址，获取返回的html注入css和js
      *
@@ -278,6 +283,23 @@ final public class CssJsUtils {
      * @return 注入之后的代码
      */
     public String detailInjectCssJs(String htmlCode, String content, String cssContent, String jsPath, List<String> css, List<String> js) {
+        return detailInjectCssJs(htmlCode, content, cssContent, jsPath, css, js, false);
+    }
+
+
+    /**
+     * 原生详情页注入css和js
+     *
+     * @param htmlCode   assert中的html模板
+     * @param content    接口中的html内容
+     * @param cssContent assert中的css文本内容,目前场景为日夜间模式css
+     * @param jsPath     assert中的js文件路径
+     * @param css        程序初始下发的css集合
+     * @param js         程序初始下发的js集合
+     * @param isUseCache 优先使用mContext.getExternalCacheDir()目录下的缓存，如果没有使用Assets目录下的CSS和JS
+     * @return 注入之后的代码
+     */
+    public String detailInjectCssJs(String htmlCode, String content, String cssContent, String jsPath, List<String> css, List<String> js, boolean isUseCache) {
         String css_js = "";
         if (!TextUtils.isEmpty(htmlCode)) {
 //            String htmlBody = mHelper.getJsObject().setAttrHtmlSrc(content);
@@ -288,13 +310,13 @@ final public class CssJsUtils {
             css_js += String.format(html, jsPath);
             if (css != null && !css.isEmpty()) {
                 for (int i = 0; i < css.size(); i++) {
-                    css_js += String.format(cssTotal, css.get(i));
+                    css_js += String.format(cssTotal, isUseCache ? getCachePath("css", css.get(i)) : css.get(i));
                 }
             }
 
             if (js != null && !js.isEmpty()) {
                 for (int i = 0; i < js.size(); i++) {
-                    css_js += String.format(html, js.get(i));
+                    css_js += String.format(html, isUseCache ? getCachePath("js", js.get(i)) : js.get(i));
                 }
             }
             return String.format(htmlCode, css_js, content);
@@ -302,4 +324,30 @@ final public class CssJsUtils {
         return null;
     }
 
+    private String getCachePath(String folder, String cacheUrl) {
+        String fileName = getFileName(cacheUrl);
+        File file = new File(mContext.getExternalCacheDir(), folder + File.separator + fileName);
+        if (file.exists() && file.length() > 0) {
+            return file.getAbsolutePath();
+        }
+        try {
+            String[] css = mContext.getAssets().list(folder);
+            if (css != null && css.length > 0) {
+                if (Arrays.asList(css).contains(fileName)) {
+                    return "file:///android_asset/" + folder + File.separator + fileName;
+                }
+            }
+        } catch (IOException e) {
+            return cacheUrl;
+        }
+
+        return cacheUrl;
+    }
+
+    private String getFileName(String cacheUrl) {
+        if (TextUtils.isEmpty(cacheUrl)) {
+            return cacheUrl;
+        }
+        return Uri.parse(cacheUrl).getLastPathSegment();
+    }
 }
