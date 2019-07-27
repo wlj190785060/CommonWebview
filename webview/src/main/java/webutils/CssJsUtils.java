@@ -328,7 +328,7 @@ final public class CssJsUtils {
         String fileName = getFileName(cacheUrl);
         File file = new File(mContext.getExternalCacheDir(), folder + File.separator + fileName);
         if (file.exists() && file.length() > 0) {
-            return file.getAbsolutePath();
+            return "file:///" + file.getAbsolutePath();
         }
         try {
             String[] css = mContext.getAssets().list(folder);
