@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class ZBJTPreviewImageRsBean implements Serializable {
     private static final long serialVersionUID = 4708881291377835802L;
-    public int code;
+    public String code;
     public DataBean data;
 
     public static class DataBean implements Serializable {
