@@ -203,6 +203,15 @@ class WebClientWrapper extends WebViewClient {
             String page = CssJsUtils.get(view.getContext()).getUrlData(helper, null, url, "null", "js/basic.js");
             return new WebResourceResponse("text/html", "utf-8", new ByteArrayInputStream(page.getBytes()));
         } else {
+
+            //屏蔽快应用跳转 例如:微博中的跳转 <img src="http://thefatherofsalmon.com/?i=com.sina.weibo.quickapp&amp;p=WBDetail&amp;a=blog_id%3D4376329367123399%26luicode%3D10000835%26lfid%3D_detail" style="width: 1px; height: 1px; display: none;">
+            if (!TextUtils.isEmpty(url)) {
+                Uri uri = Uri.parse(url);
+                if (uri != null && TextUtils.equals(uri.getHost(), "thefatherofsalmon.com")) {
+                    return new WebResourceResponse("image/png", "UTF-8", null);
+                }
+            }
+
             if (webViewClient != null) {
                 return webViewClient.shouldInterceptRequest(view, url);
             }
