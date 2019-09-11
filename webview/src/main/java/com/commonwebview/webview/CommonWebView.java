@@ -234,12 +234,10 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
                 //如果是链接
                 if (htr.getExtra().startsWith("www") || htr.getExtra().startsWith("http") || htr.getExtra().startsWith("https")) {
                     helper.OnScanerImg(htr.getExtra(), false);
+                } else {
+                    //本地图片则进行base64解析后输出
+                    helper.OnScanerImg(Base64.decode(htr.getExtra(), Base64.DEFAULT).toString(), true);
                 }
-                //TODO 6.1需要将图片进行base64解码
-//                else {
-//                    //本地图片则进行base64解析后输出
-//                    helper.OnScanerImg(Base64.decode(htr.getExtra(), Base64.DEFAULT).toString(), true);
-//                }
             }
         }
         return false;
