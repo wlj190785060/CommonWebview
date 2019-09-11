@@ -236,7 +236,7 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
                     helper.OnScanerImg(htr.getExtra(), false);
                 } else {
                     //本地图片则进行base64解析后输出
-                    helper.OnScanerImg(Base64.decode(htr.getExtra(), Base64.DEFAULT).toString(), true);
+                    helper.OnScanerImg(htr.getExtra(), true);
                 }
             }
         }
