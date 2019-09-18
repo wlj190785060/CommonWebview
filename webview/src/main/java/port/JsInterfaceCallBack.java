@@ -4,13 +4,14 @@ import android.webkit.WebView;
 
 import java.io.Serializable;
 
+import bean.ZBJTAppEventBean;
+import bean.ZBJTAppEventRspBean;
 import bean.ZBJTGetAppInfoRspBean;
 import bean.ZBJTGetLocalRspBean;
 import bean.ZBJTGetValueFromLocalRspBean;
 import bean.ZBJTModifyUserInfoRspBean;
 import bean.ZBJTOpenAppMobileRspBean;
 import bean.ZBJTOpenAppShareMenuRspBean;
-import bean.ZBJTPreviewImageBean;
 import bean.ZBJTPreviewImageRsBean;
 import bean.ZBJTReturnBean;
 import bean.ZBJTSelectImageRspBean;
@@ -115,6 +116,24 @@ final public class JsInterfaceCallBack implements Serializable {
     }
 
     public void previewImage(ZBJTPreviewImageRsBean bean, String callback) {
+        exeJs(webview, bean, callback);
+    }
+
+    /**
+     * 注册监听事件回调
+     * @param bean
+     * @param callback
+     */
+    public void listenAppEvent(ZBJTAppEventRspBean bean, String callback) {
+        exeJs(webview, bean, callback);
+    }
+
+    /**
+     * 监听事件回调
+     * @param bean
+     * @param callback
+     */
+    public void onAppEvent(ZBJTAppEventBean.EventResponse bean, String callback) {
         exeJs(webview, bean, callback);
     }
 }

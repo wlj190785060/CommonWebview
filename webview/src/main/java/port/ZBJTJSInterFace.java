@@ -1,5 +1,6 @@
 package port;
 
+import bean.ZBJTAppEventBean;
 import bean.ZBJTGetAppInfoRspBean;
 import bean.ZBJTGetLocalRspBean;
 import bean.ZBJTGetValueFromLocalBean;
@@ -116,5 +117,17 @@ public interface ZBJTJSInterFace {
      */
     void modifyUserInfo(ZBJTModifyUserInfoRspBean beanRsp, String callback);
 
+    /**
+     * 图片预览
+     * @param bean
+     * @param callback
+     */
     void previewImage(ZBJTPreviewImageBean bean, String callback);
+
+    /**
+     * 注册监听事件
+     * @param bean
+     * @param callback
+     */
+    void listenAppEvent(ZBJTAppEventBean bean, String callback);
 }

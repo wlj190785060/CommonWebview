@@ -1,12 +1,13 @@
 package com.commonwebview.webview;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Base64;
 import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
