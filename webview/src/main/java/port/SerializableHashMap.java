@@ -10,6 +10,7 @@ import java.util.HashMap;
  */
 public class SerializableHashMap implements Serializable {
 
+    private static final long serialVersionUID = 5522846782158681381L;
     private HashMap<Integer, Boolean> map;
 
     public HashMap<Integer, Boolean> getMap() {
