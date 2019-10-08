@@ -2,7 +2,9 @@ package com.commonwebview.webview;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -10,10 +12,12 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import port.IWebJsCallBack;
 import port.WebviewCBHelper;
@@ -149,6 +153,15 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
         if (helper != null && mWebClientWrapper == null) {
             super.setWebViewClient(mWebClientWrapper = new WebClientWrapper(helper));
         }
+
+        setDownloadListener(new DownloadListener() {
+            @Override
+            public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
+                Uri uri = Uri.parse(url);
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                getContext().startActivity(intent);
+            }
+        });
 
     }
 

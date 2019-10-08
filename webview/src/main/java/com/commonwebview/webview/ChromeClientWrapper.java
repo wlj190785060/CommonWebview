@@ -182,7 +182,7 @@ public class ChromeClientWrapper extends WebChromeClient
             if (activity == null) return;
 
             FrameLayout decor = (FrameLayout) activity.getWindow().getDecorView();
-            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
             container = new WebFullScreenContainer(activity.getApplication());
             decor.addView(container, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
             container.addView(view, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
