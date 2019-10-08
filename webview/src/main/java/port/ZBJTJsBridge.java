@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
+import bean.ZBJTAppEventBean;
 import bean.ZBJTChechJSApiBean;
 import bean.ZBJTGetAppInfoBean;
 import bean.ZBJTGetAppInfoRspBean;
@@ -125,6 +126,9 @@ public class ZBJTJsBridge {
                 break;
             case "previewImage":
                 previewImage(json, callback);
+                break;
+            case "listenAppEvent":
+                listenAppEvent(json,callback);
                 break;
             default:
                 webviewLoadUrl(callback, setErrorRspJson("11001"));
@@ -515,6 +519,22 @@ public class ZBJTJsBridge {
         try {
             bean = JsonUtils.parseObject(json, ZBJTPreviewImageBean.class);
             interFace.previewImage(bean, callback);
+        } catch (Exception e) {
+            webviewLoadUrl(callback, setErrorRspJson("11002"));
+            e.printStackTrace();
+        }
+    }
+
+    private void listenAppEvent(String json, String callback) {
+        if (TextUtils.isEmpty(json)) {
+            webviewLoadUrl(callback, setErrorRspJson("11002"));
+            return;
+        }
+
+        ZBJTAppEventBean bean;
+        try {
+            bean = JsonUtils.parseObject(json, ZBJTAppEventBean.class);
+            interFace.listenAppEvent(bean, callback);
         } catch (Exception e) {
             webviewLoadUrl(callback, setErrorRspJson("11002"));
             e.printStackTrace();
