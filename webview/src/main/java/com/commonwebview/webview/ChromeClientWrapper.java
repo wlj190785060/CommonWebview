@@ -181,7 +181,7 @@ public class ChromeClientWrapper extends WebChromeClient
             Activity activity = findAttachActivity();
             if (activity == null) return;
 
-            FrameLayout decor = (FrameLayout) activity.getWindow().getDecorView();
+            FrameLayout decor =  activity.getWindow().getDecorView().findViewById(android.R.id.content);
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
             container = new WebFullScreenContainer(activity.getApplication());
             decor.addView(container, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
@@ -216,7 +216,7 @@ public class ChromeClientWrapper extends WebChromeClient
             Activity activity = findAttachActivity();
             if (activity == null) return;
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            FrameLayout decor = (FrameLayout) activity.getWindow().getDecorView();
+            FrameLayout decor = activity.getWindow().getDecorView().findViewById(android.R.id.content);
             decor.removeView(container);
             container = null;
             customViewCallback.onCustomViewHidden();
