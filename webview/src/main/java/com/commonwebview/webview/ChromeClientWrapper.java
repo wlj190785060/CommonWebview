@@ -2,6 +2,7 @@ package com.commonwebview.webview;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -46,7 +47,8 @@ public class ChromeClientWrapper extends WebChromeClient
     /**
      * 选择文件 - result_code
      */
-    public final static int FILE_CHOOSER_RESULT_CODE = 10;
+    public static final  int FILE_CHOOSER_RESULT_CODE = 10;
+    public static final int FILE_CHOOSER_21_RESULT_CODE = 11;
 
     public ChromeClientWrapper(CommonWebView webProView, WebviewCBHelper helper) {
         super();
@@ -405,13 +407,19 @@ public class ChromeClientWrapper extends WebChromeClient
     // For Android 3.0+
     public void openFileChooser(ValueCallback uploadMsg, String acceptType) {
         mUploadMessage = uploadMsg;
-        openFileChooser();
+        openFileChooser(uploadMsg, acceptType, null);
     }
 
     //For Android 4.0-4.3 4.4.4
     public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType, String capture) {
         mUploadMessage = uploadMsg;
-        openFileChooser();
+        if (mWebProView != null && mWebProView.getFragment() != null) {
+            WebLifecycleFragment fragment = mWebProView.getFragment();
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType(acceptType);
+            fragment.startActivityForResult(Intent.createChooser(intent, "File Browser"), FILE_CHOOSER_RESULT_CODE);
+        }
     }
 
     // For Android 4.4 无方法。。。
@@ -431,36 +439,43 @@ public class ChromeClientWrapper extends WebChromeClient
             mUploadMessage21 = null;
         }
         mUploadMessage21 = filePathCallback;
-        openFileChooser();
+        Intent intent = fileChooserParams.createIntent();
+        try {
+            if (mWebProView != null && mWebProView.getFragment() != null) {
+                WebLifecycleFragment fragment = mWebProView.getFragment();
+                fragment.startActivityForResult(intent, FILE_CHOOSER_21_RESULT_CODE);
+            }
+        } catch (ActivityNotFoundException e) {
+            mUploadMessage21 = null;
+            return false;
+        }
         return true;
     }
 
-    /**
-     * 照片选择器，也抽离出来
-     */
-    private void openFileChooser() {
-        if (mWebProView != null && mWebProView.getFragment() != null) {
-            WebLifecycleFragment fragment = mWebProView.getFragment();
-//            fragment.addOnActivityResultCallback(this);
-            //跳转到图片选中页面
-            if (mHelper != null) {
-                mHelper.NavToImageSelect(fragment, FILE_CHOOSER_RESULT_CODE);
-            }
-        }
-    }
-
     @Override
-    public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (mHelper != null) {
-            //文件处理
-            if (requestCode == FILE_CHOOSER_RESULT_CODE) {
-                mHelper.openFileResultCallBack(requestCode, resultCode, data, this, mUploadMessage, mUploadMessage21);
-            } else {
-                //别的业务逻辑
-                mHelper.OnResultCallBack(requestCode, resultCode, data);
+    public boolean onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (requestCode == FILE_CHOOSER_RESULT_CODE) {
+            if (null == mUploadMessage) {
+                return false;
             }
+            Uri result = null;
+            if (intent != null && resultCode == Activity.RESULT_OK) {
+                result = intent.getData();
+            }
+            mUploadMessage.onReceiveValue(result);
+            mUploadMessage = null;
+            return true;
+        } else if (requestCode == FILE_CHOOSER_21_RESULT_CODE) {
+            if (null == mUploadMessage21) {
+                return false;
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                mUploadMessage21.onReceiveValue(FileChooserParams.parseResult(resultCode, intent));
+            }
+            mUploadMessage21 = null;
+            return true;
         }
-        return requestCode == FILE_CHOOSER_RESULT_CODE;
+        return false;
     }
 
 }
