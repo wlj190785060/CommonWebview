@@ -91,6 +91,10 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
         requestFocus(View.FOCUS_DOWN);
         setOnTouchListener(this);
         settings.setJavaScriptEnabled(true); // 启用支持javaScript
+        //WebView系统隐藏接口漏洞
+        removeJavascriptInterface("searchBoxJavaBridge_");
+        removeJavascriptInterface("accessibility");
+        removeJavascriptInterface("accessibilityTraversal");
         //默认是允许注入
         if (helper != null && helper.getJsObject() != null && !TextUtils.isEmpty(helper.getWebViewJsObject())) {
 //            addJavascriptInterface(helper.getJsObject(), helper.getWebViewJsObject());
