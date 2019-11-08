@@ -1,9 +1,8 @@
 package com.commonwebview.webview;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.pm.ApplicationInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.FragmentActivity;
@@ -17,7 +16,6 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 import port.IWebJsCallBack;
 import port.WebviewCBHelper;
@@ -87,6 +85,15 @@ public class CommonWebView extends WebView implements IWebJsCallBack, View.OnLon
      * 绑定对象需要自己加
      */
     private void configWebView() {
+
+        //https://developers.google.com/web/tools/chrome-devtools/remote-debugging/webviews?hl=zh-cn
+        //远程调试webView
+        //chrome://inspect
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            if (0 != (getContext().getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE)) {
+                WebView.setWebContentsDebuggingEnabled(true);
+            }
+        }
         WebSettings settings = getSettings();
         requestFocus(View.FOCUS_DOWN);
         setOnTouchListener(this);
