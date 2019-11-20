@@ -47,7 +47,7 @@ public class ChromeClientWrapper extends WebChromeClient
     /**
      * 选择文件 - result_code
      */
-    public static final  int FILE_CHOOSER_RESULT_CODE = 10;
+    public static final int FILE_CHOOSER_RESULT_CODE = 10;
     public static final int FILE_CHOOSER_21_RESULT_CODE = 11;
 
     public ChromeClientWrapper(CommonWebView webProView, WebviewCBHelper helper) {
@@ -157,9 +157,10 @@ public class ChromeClientWrapper extends WebChromeClient
     private CustomViewCallback customViewCallback;
     private boolean isFullScreen = false;
 
-    public boolean getFullScreen(){
+    public boolean getFullScreen() {
         return isFullScreen;
     }
+
     /**
      * 支持全屏播放视频
      *
@@ -183,7 +184,7 @@ public class ChromeClientWrapper extends WebChromeClient
             Activity activity = findAttachActivity();
             if (activity == null) return;
 
-            FrameLayout decor =  activity.getWindow().getDecorView().findViewById(android.R.id.content);
+            FrameLayout decor = activity.getWindow().getDecorView().findViewById(android.R.id.content);
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
             container = new WebFullScreenContainer(activity.getApplication());
             decor.addView(container, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
@@ -474,6 +475,11 @@ public class ChromeClientWrapper extends WebChromeClient
             }
             mUploadMessage21 = null;
             return true;
+        } else {
+            if (mHelper != null) {
+                mHelper.OnResultCallBack(requestCode, resultCode, intent);
+                return true;
+            }
         }
         return false;
     }
