@@ -4,6 +4,7 @@ package com.commonwebview.commonwebview;
 import android.content.Context;
 import android.webkit.WebView;
 
+import bean.ZBJTAppEventBean;
 import bean.ZBJTGetAppInfoRspBean;
 import bean.ZBJTGetLocalRspBean;
 import bean.ZBJTGetValueFromLocalBean;
@@ -120,6 +121,11 @@ public class JsInterfaceImp extends JsInterface implements ZBJTJSInterFace {
 
     @Override
     public void previewImage(ZBJTPreviewImageBean bean, String callback) {
+
+    }
+
+    @Override
+    public void listenAppEvent(ZBJTAppEventBean bean, String callback) {
 
     }
 }
